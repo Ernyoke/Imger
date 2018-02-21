@@ -1,4 +1,4 @@
-package imgur
+package imger
 
 import (
 	"os"
