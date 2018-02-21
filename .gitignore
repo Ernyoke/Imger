@@ -1,8 +1,2 @@
-# Tests
-*_test.go
-
-# Resources
-res/
-
 # Goland
 .idea/
