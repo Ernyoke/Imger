@@ -2,7 +2,6 @@ package imger
 
 import (
 	"testing"
-	//"github.com/stretchr/testify/assert"
 	"fmt"
 	"os"
 	"image"
@@ -10,272 +9,125 @@ import (
 	"image/draw"
 )
 
-func TestThresholdBinray(t *testing.T) {
+func setupThresholdTestCase(t *testing.T) image.Image {
 	imagePath := "res/girl.jpg"
-
 	file, err := os.Open(imagePath)
 	defer file.Close()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
+		t.Log(os.Stderr, "%v\n", err)
 	}
-
 	img, err := jpeg.Decode(file)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
 	}
+	return img
+}
+
+func tearDownThresholdTestCase(t *testing.T, image image.Image, path string) {
+	f, err := os.Create(path)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+	jpeg.Encode(f, image, nil)
+}
+
+func TestThresholdBinray(t *testing.T) {
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale(rgba)
 	thrsh, _ := Threshold(gray, 100, ThreshBinary)
-	f, err := os.Create("res/threshBin.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/threshBin.jpg")
 }
 
 func TestThresholdBinrayInv(t *testing.T) {
-	imagePath := "res/girl.jpg"
-
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
-
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale(rgba)
 	thrsh, _ := Threshold(gray, 100, ThreshBinaryInv)
-	f, err := os.Create("res/threshBinInv.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/threshBinInv.jpg")
 }
 
 func TestThresholdTrunc(t *testing.T) {
-	imagePath := "res/girl.jpg"
-
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
-
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale(rgba)
 	thrsh, _ := Threshold(gray, 100, ThreshTrunc)
-	f, err := os.Create("res/threshTrunc.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/threshTrunc.jpg")
 }
 
 func TestThresholdToZero(t *testing.T) {
-	imagePath := "res/girl.jpg"
-
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
-
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale(rgba)
 	thrsh, _ := Threshold(gray, 100, ThreshToZero)
-	f, err := os.Create("res/threshToZero.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/threshToZero.jpg")
 }
 
 func TestThresholdToZeroInv(t *testing.T) {
-	imagePath := "res/girl.jpg"
-
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
-
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale(rgba)
 	thrsh, _ := Threshold(gray, 100, ThreshToZeroInv)
-	f, err := os.Create("res/threshToZeroInv.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/threshBin.jpg")
 }
 
 func TestThreshold16Bin(t *testing.T) {
-	imagePath := "res/girl.jpg"
-
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
-
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale16(rgba)
 	thrsh, _ := Threshold16(gray, 32000, ThreshBinary)
-	f, err := os.Create("res/thresh16Bin.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/thresh16Bin.jpg")
 }
 
 func TestThreshold16BinInv(t *testing.T) {
-	imagePath := "res/girl.jpg"
-
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
-
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale16(rgba)
 	thrsh, _ := Threshold16(gray, 32000, ThreshBinaryInv)
-	f, err := os.Create("res/thresh16BinInv.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/thresh16BinInv.jpg")
 }
 
 func TestThreshold16Trunc(t *testing.T) {
-	imagePath := "res/girl.jpg"
-
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
-
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale16(rgba)
 	thrsh, _ := Threshold16(gray, 32000, ThreshTrunc)
-	f, err := os.Create("res/thresh16Trunc.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/thresh16Trunc.jpg")
 }
 
 func TestThreshold16ToZero(t *testing.T) {
-	imagePath := "res/girl.jpg"
-
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
-
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale16(rgba)
 	thrsh, _ := Threshold16(gray, 32000, ThreshToZero)
-	f, err := os.Create("res/thresh16ToZero.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/thresh16ToZero.jpg")
 }
 
 func TestThreshold16ToZeroInv(t *testing.T) {
-	imagePath := "res/girl.jpg"
-
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-	}
-
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
+	img := setupThresholdTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale16(rgba)
 	thrsh, _ := Threshold16(gray, 32000, ThreshToZeroInv)
-	f, err := os.Create("res/thresh16ToZeroInv.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, thrsh, nil)
-
+	tearDownThresholdTestCase(t, thrsh, "res/threshold/thresh16ToZeroInv.jpg")
 }
