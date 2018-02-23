@@ -10,7 +10,7 @@ import (
 )
 
 func TestGrayScale(t *testing.T) {
-	imagePath := "res/gray.jpg"
+	imagePath := "res/girl.jpg"
 
 	file, err := os.Open(imagePath)
 	defer file.Close()
@@ -26,7 +26,7 @@ func TestGrayScale(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale(rgba)
-	f, err := os.Create("res/gray_2.jpg")
+	f, err := os.Create("res/gray.jpg")
 	if err != nil {
 		panic(err)
 	}
@@ -35,7 +35,7 @@ func TestGrayScale(t *testing.T) {
 }
 
 func TestGrayScale16(t *testing.T) {
-	imagePath := "res/gray.jpg"
+	imagePath := "res/girl.jpg"
 
 	file, err := os.Open(imagePath)
 	defer file.Close()
