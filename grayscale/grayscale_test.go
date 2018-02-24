@@ -1,4 +1,4 @@
-package imger
+package grayscale
 
 import (
 	"os"
@@ -9,8 +9,8 @@ import (
 	"testing"
 )
 
-func setupGrayscaleTestCase(t *testing.T) image.Image {
-	imagePath := "res/girl.jpg"
+func setupTestCase(t *testing.T) image.Image {
+	imagePath := "../res/girl.jpg"
 	file, err := os.Open(imagePath)
 	defer file.Close()
 	if err != nil {
@@ -23,7 +23,7 @@ func setupGrayscaleTestCase(t *testing.T) image.Image {
 	return img
 }
 
-func tearDownGrayscaleTestCase(t *testing.T, image image.Image, path string) {
+func tearDownTestCase(t *testing.T, image image.Image, path string) {
 	f, err := os.Create(path)
 	if err != nil {
 		panic(err)
@@ -33,21 +33,21 @@ func tearDownGrayscaleTestCase(t *testing.T, image image.Image, path string) {
 }
 
 func TestGrayScale(t *testing.T) {
-	img := setupGrayscaleTestCase(t)
+	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale(rgba)
-	tearDownGrayscaleTestCase(t, gray, "res/grayscale/gray.jpg")
+	tearDownTestCase(t, gray, "../res/grayscale/gray.jpg")
 }
 
 func TestGrayScale16(t *testing.T) {
-	img := setupGrayscaleTestCase(t)
+	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := Grayscale16(rgba)
-	tearDownGrayscaleTestCase(t, gray, "res/grayscale/gray16.jpg")
+	tearDownTestCase(t, gray, "../res/grayscale/gray16.jpg")
 }
 
 

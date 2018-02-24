@@ -1,4 +1,4 @@
-package imger
+package blur
 
 import (
 	"image"

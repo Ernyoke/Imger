@@ -1,4 +1,4 @@
-package imger
+package padding
 
 import (
 	"os"
@@ -7,10 +7,11 @@ import (
 	"image"
 	"image/draw"
 	"testing"
+	"github.com/ernyoke/imgur/grayscale"
 )
 
-func setupPaddingTestCase(t *testing.T) image.Image {
-	imagePath := "res/girl.jpg"
+func setupTestCase(t *testing.T) image.Image {
+	imagePath := "../res/girl.jpg"
 	file, err := os.Open(imagePath)
 	defer file.Close()
 	if err != nil {
@@ -23,7 +24,7 @@ func setupPaddingTestCase(t *testing.T) image.Image {
 	return img
 }
 
-func tearDownPaddingTestCase(t *testing.T, image image.Image, path string) {
+func tearDownTestCase(t *testing.T, image image.Image, path string) {
 	f, err := os.Create(path)
 	if err != nil {
 		panic(err)
@@ -33,68 +34,68 @@ func tearDownPaddingTestCase(t *testing.T, image image.Image, path string) {
 }
 
 func TestGrayPaddingBorderConstant(t *testing.T) {
-	img := setupPaddingTestCase(t)
+	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := Grayscale(rgba)
+	gray := grayscale.Grayscale(rgba)
 	padded, _ := PaddingGray(gray, image.Point{15, 15}, image.Point{8, 8}, BorderConstant)
-	tearDownPaddingTestCase(t, padded, "res/padding/grayPaddingBorderConstant.jpg")
+	tearDownTestCase(t, padded, "../res/padding/grayPaddingBorderConstant.jpg")
 }
 
 func TestGrayPaddingBorderConstantDistortedAnchor(t *testing.T) {
-	img := setupPaddingTestCase(t)
+	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := Grayscale(rgba)
+	gray := grayscale.Grayscale(rgba)
 	padded, _ := PaddingGray(gray, image.Point{50, 50}, image.Point{8, 8}, BorderConstant)
-	tearDownPaddingTestCase(t, padded, "res/padding/grayPaddingBorderConstantDistortedAnchor.jpg")
+	tearDownTestCase(t, padded, "../res/padding/grayPaddingBorderConstantDistortedAnchor.jpg")
 }
 
 func TestGrayPaddingBorderReplicate(t *testing.T) {
-	img := setupPaddingTestCase(t)
+	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := Grayscale(rgba)
+	gray := grayscale.Grayscale(rgba)
 	padded, _ := PaddingGray(gray, image.Point{15, 15}, image.Point{8, 8}, BorderReplicate)
-	tearDownPaddingTestCase(t, padded, "res/padding/grayPaddingBorderReplicate.jpg")
+	tearDownTestCase(t, padded, "../res/padding/grayPaddingBorderReplicate.jpg")
 }
 
 func TestGrayPaddingBorderReflect(t *testing.T) {
-	img := setupPaddingTestCase(t)
+	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := Grayscale(rgba)
+	gray := grayscale.Grayscale(rgba)
 	padded, _ := PaddingGray(gray, image.Point{15, 15}, image.Point{8, 8}, BorderReflect)
-	tearDownPaddingTestCase(t, padded, "res/padding/grayPaddingBorderReflect.jpg")
+	tearDownTestCase(t, padded, "../res/padding/grayPaddingBorderReflect.jpg")
 }
 
 func TestRGBAPaddingBorderConstant(t *testing.T) {
-	img := setupPaddingTestCase(t)
+	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	padded, _ := PaddingRGBA(rgba, image.Point{15, 15}, image.Point{8, 8}, BorderConstant)
-	tearDownPaddingTestCase(t, padded, "res/padding/rgbaPaddedBorderConstant.jpg")
+	tearDownTestCase(t, padded, "../res/padding/rgbaPaddedBorderConstant.jpg")
 }
 
 func TestRGBAPaddingBorderReplicate(t *testing.T) {
-	img := setupPaddingTestCase(t)
+	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	padded, _ := PaddingRGBA(rgba, image.Point{15, 15}, image.Point{8, 8}, BorderReplicate)
-	tearDownPaddingTestCase(t, padded, "res/padding/rgbaPaddedBorderReplicate.jpg")
+	tearDownTestCase(t, padded, "../res/padding/rgbaPaddedBorderReplicate.jpg")
 }
 
 func TestRGBAPaddingBorderReflect(t *testing.T) {
-	img := setupPaddingTestCase(t)
+	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	padded, _ := PaddingRGBA(rgba, image.Point{15, 15}, image.Point{8, 8}, BorderReflect)
-	tearDownPaddingTestCase(t, padded, "res/padding/rgbaPaddedBorderReflect.jpg")
+	tearDownTestCase(t, padded, "../res/padding/rgbaPaddedBorderReflect.jpg")
 }

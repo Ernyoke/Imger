@@ -1,9 +1,10 @@
-package imger
+package threshold
 
 import (
 	"errors"
 	"image"
 	"image/color"
+	"github.com/ernyoke/imgur/utils"
 )
 
 type Method int
@@ -23,18 +24,18 @@ func Threshold(img *image.Gray, t uint8, method Method) (*image.Gray, error) {
 		setPixel = func(gray *image.Gray, x int, y int) {
 			pixel := img.GrayAt(x, y).Y
 			if pixel < t {
-				gray.SetGray(x, y, color.Gray{Y: MinUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MinUint8})
 			} else {
-				gray.SetGray(x, y, color.Gray{Y: MaxUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MaxUint8})
 			}
 		}
 	case ThreshBinaryInv:
 		setPixel = func(gray *image.Gray, x int, y int) {
 			pixel := img.GrayAt(x, y).Y
 			if pixel < t {
-				gray.SetGray(x, y, color.Gray{Y: MaxUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MaxUint8})
 			} else {
-				gray.SetGray(x, y, color.Gray{Y: MinUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MinUint8})
 			}
 		}
 	case ThreshTrunc:
@@ -52,7 +53,7 @@ func Threshold(img *image.Gray, t uint8, method Method) (*image.Gray, error) {
 		setPixel = func(gray *image.Gray, x int, y int) {
 			pixel := img.GrayAt(x, y).Y
 			if pixel < t {
-				gray.SetGray(x, y, color.Gray{Y: MinUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MinUint8})
 			} else {
 				gray.SetGray(x, y, color.Gray{Y: pixel})
 			}
@@ -63,7 +64,7 @@ func Threshold(img *image.Gray, t uint8, method Method) (*image.Gray, error) {
 			if pixel < t {
 				gray.SetGray(x, y, color.Gray{Y: pixel})
 			} else {
-				gray.SetGray(x, y, color.Gray{Y: MinUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MinUint8})
 			}
 		}
 	default:
@@ -79,18 +80,18 @@ func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, err
 		setPixel = func(gray *image.Gray16, x int, y int) {
 			pixel := img.Gray16At(x, y).Y
 			if pixel < t {
-				gray.SetGray16(x, y, color.Gray16{Y: MinUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MinUint16})
 			} else {
-				gray.SetGray16(x, y, color.Gray16{Y: MaxUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MaxUint16})
 			}
 		}
 	case ThreshBinaryInv:
 		setPixel = func(gray *image.Gray16, x int, y int) {
 			pixel := img.Gray16At(x, y).Y
 			if pixel < t {
-				gray.SetGray16(x, y, color.Gray16{Y: MaxUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MaxUint16})
 			} else {
-				gray.SetGray16(x, y, color.Gray16{Y: MinUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MinUint16})
 			}
 		}
 	case ThreshTrunc:
@@ -108,7 +109,7 @@ func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, err
 		setPixel = func(gray *image.Gray16, x int, y int) {
 			pixel := img.Gray16At(x, y).Y
 			if pixel < t {
-				gray.SetGray16(x, y, color.Gray16{Y: MinUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MinUint16})
 			} else {
 				gray.SetGray16(x, y, color.Gray16{Y: pixel})
 			}
@@ -119,7 +120,7 @@ func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, err
 			if pixel < t {
 				gray.SetGray16(x, y, color.Gray16{pixel})
 			} else {
-				gray.SetGray16(x, y, color.Gray16{Y: MinUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MinUint16})
 			}
 		}
 	default:
