@@ -70,7 +70,7 @@ func Threshold(img *image.Gray, t uint8, method Method) (*image.Gray, error) {
 	default:
 		return nil, errors.New("invalid threshold method")
 	}
-	return threshold(img, t, setPixel), nil
+	return threshold(img, setPixel), nil
 }
 
 func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, error) {
@@ -126,10 +126,10 @@ func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, err
 	default:
 		return nil, errors.New("invalid threshold method")
 	}
-	return threshold16(img, t, setPixel), nil
+	return threshold16(img, setPixel), nil
 }
 
-func threshold(img *image.Gray, t uint8, setPixel func(*image.Gray, int, int)) *image.Gray {
+func threshold(img *image.Gray, setPixel func(*image.Gray, int, int)) *image.Gray {
 	size := img.Bounds().Size()
 	gray := image.NewGray(img.Bounds())
 	for x := 0; x < size.X; x++ {
@@ -140,7 +140,7 @@ func threshold(img *image.Gray, t uint8, setPixel func(*image.Gray, int, int)) *
 	return gray
 }
 
-func threshold16(img *image.Gray16, t uint16, setPixel16 func(*image.Gray16, int, int)) *image.Gray16 {
+func threshold16(img *image.Gray16, setPixel16 func(*image.Gray16, int, int)) *image.Gray16 {
 	size := img.Bounds().Size()
 	gray := image.NewGray16(img.Bounds())
 	for x := 0; x < size.X; x++ {
