@@ -2,39 +2,57 @@ package convolution
 
 import (
 	"image"
-	"errors"
-	"image/color"
 	"github.com/ernyoke/imgur/padding"
+	"image/color"
 )
 
-func Convolution(img *image.Gray, kernel [][]uint8, anchor image.Point, border padding.Border) (*image.Gray, error) {
-	n := len(kernel)
-	if n <= 0 {
-		return nil, errors.New("invalid kernel size")
-	}
-	m := len(kernel[0])
-	kernelSize := image.Point{m, n}
+func ConvolveGray(img *image.Gray, kernel *Kernel, anchor image.Point, border padding.Border) (*image.Gray, error) {
+	kernelSize := kernel.Size()
 	padded, error := padding.PaddingGray(img, kernelSize, anchor, border)
 	if error != nil {
 		return nil, error
 	}
 	originalSize := img.Bounds().Size()
-	result := image.NewGray(img.Bounds())
-	_, p, error := padding.GetPaddings(img.Bounds().Size(), kernelSize, anchor)
+	resultImage := image.NewGray(img.Bounds())
 	for x := 0; x < originalSize.X; x++ {
 		for y := 0; y < originalSize.Y; y++ {
-			sum := uint32(0)
+			sum := float64(0)
 			for kx := 0; kx < kernelSize.X; kx++ {
 				for ky := 0; ky < kernelSize.Y; ky++ {
-					pixel := padded.At(x - p.PaddingLeft + kx, y - p.PaddingTop + ky)
-					value, _, _, _ := pixel.RGBA()
-					sum += value * uint32(kernel[kx][ky])
+					pixel := padded.GrayAt(x + kx, y + ky)
+					sum += float64(pixel.Y) * kernel.At(kx, ky)
 				}
 			}
-			result.Set(x, y, color.Gray{uint8(sum / uint32(n * m))})
+			resultImage.Set(x, y, color.Gray{uint8(sum)})
 		}
 	}
+	return resultImage, nil
+}
 
-
-	return nil, nil
+func ConvolveRGBA(img *image.RGBA, kernel *Kernel, anchor image.Point, border padding.Border) (*image.RGBA, error) {
+	kernelSize := kernel.Size()
+	padded, error := padding.PaddingRGBA(img, kernelSize, anchor, border)
+	if error != nil {
+		return nil, error
+	}
+	originalSize := img.Bounds().Size()
+	resultImage := image.NewRGBA(img.Bounds())
+	for x := 0; x < originalSize.X; x++ {
+		for y := 0; y < originalSize.Y; y++ {
+			sumR := float64(0)
+			sumG := float64(0)
+			sumB := float64(0)
+			for kx := 0; kx < kernelSize.X; kx++ {
+				for ky := 0; ky < kernelSize.Y; ky++ {
+					pixel := padded.RGBAAt(x + kx, y + ky)
+					sumR += float64(pixel.R) * kernel.At(kx, ky)
+					sumG += float64(pixel.G) * kernel.At(kx, ky)
+					sumB += float64(pixel.B) * kernel.At(kx, ky)
+				}
+			}
+			rgba := img.RGBAAt(x, y)
+			resultImage.Set(x, y, color.RGBA{uint8(sumR), uint8(sumG), uint8(sumB), rgba.A})
+		}
+	}
+	return resultImage, nil
 }

@@ -102,7 +102,7 @@ func rightPaddingReflect(img image.Image, padded image.Image, p Paddings, setPix
 }
 
 
-func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border Border) (image.Image, error) {
+func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border Border) (*image.Gray, error) {
 	originalSize := img.Bounds().Size()
 	rect, p, error := GetPaddings(originalSize, kernelSize, anchor)
 	if error != nil {
@@ -112,7 +112,7 @@ func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, bo
 
 	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
 		for y := p.PaddingTop; y < originalSize.Y + p.PaddingTop; y++ {
-			padded.Set(x, y, img.At(x - p.PaddingLeft, y - p.PaddingTop))
+			padded.Set(x, y, img.GrayAt(x - p.PaddingLeft, y - p.PaddingTop))
 		}
 	}
 
@@ -175,7 +175,7 @@ func GetPaddings(imgSize image.Point, kernelSize image.Point, anchor image.Point
 	return rect, p, nil
 }
 
-func PaddingRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, border Border) (image.Image, error) {
+func PaddingRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, border Border) (*image.RGBA, error) {
 	originalSize := img.Bounds().Size()
 	rect, p, error := GetPaddings(originalSize, kernelSize, anchor)
 	if error != nil {
@@ -185,7 +185,7 @@ func PaddingRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, bo
 
 	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
 		for y := p.PaddingTop; y < originalSize.Y + p.PaddingTop; y++ {
-			padded.Set(x, y, img.At(x - p.PaddingLeft, y - p.PaddingTop))
+			padded.Set(x, y, img.RGBAAt(x - p.PaddingLeft, y - p.PaddingTop))
 		}
 	}
 

@@ -3,26 +3,40 @@ package blur
 import (
 	"image"
 	"errors"
+	"github.com/ernyoke/imgur/convolution"
+	"github.com/ernyoke/imgur/padding"
 )
 
-func generateKernel(kernelSize *image.Point) [][]uint8 {
-	var kernel [][]uint8
+func generateKernel(kernelSize *image.Point) *convolution.Kernel {
+	kernel,_ := convolution.NewKernel(kernelSize.X, kernelSize.Y)
 	for x := 0; x < kernelSize.X; x++ {
-		var row []uint8
 		for y := 0; y < kernelSize.Y; y++ {
-			row = append(row, 1)
+			kernel.Set(x, y, 1.0 / float64(kernelSize.X * kernelSize.Y))
 		}
-		kernel = append(kernel, row)
 	}
 	return kernel
 }
 
-func Blur(img image.Image, kernelSize image.Point, anchor image.Point) (*image.Image, error) {
-	if kernelSize.X %2 == 0 || kernelSize.Y == 0 {
+func BlurGray(img *image.Gray, kernelSize image.Point, anchor image.Point) (*image.Gray, error) {
+	if kernelSize.X % 2 == 0 || kernelSize.Y == 0 {
 		return nil, errors.New("kernel size must contain odd numbers only")
 	}
-	//kernel := generateKernel(&kernelSize)
+	kernel := generateKernel(&kernelSize)
+	result, error := convolution.ConvolveGray(img, kernel, anchor, padding.BorderConstant)
+	if error != nil {
+		return nil, error
+	}
+	return result, nil
+}
 
-
-	return nil, nil
+func BlurRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point) (*image.RGBA, error) {
+	if kernelSize.X % 2 == 0 || kernelSize.Y == 0 {
+		return nil, errors.New("kernel size must contain odd numbers only")
+	}
+	kernel := generateKernel(&kernelSize)
+	result, error := convolution.ConvolveRGBA(img, kernel, anchor, padding.BorderConstant)
+	if error != nil {
+		return nil, error
+	}
+	return result, nil
 }
