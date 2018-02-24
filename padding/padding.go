@@ -108,7 +108,7 @@ func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, bo
 	if error != nil {
 		return nil, error
 	}
-	rect := getReactangleFromPaddings(p, originalSize)
+	rect := getRectangleFromPaddings(p, originalSize)
 	padded := image.NewGray(rect)
 
 	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
@@ -158,7 +158,7 @@ func PaddingRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, bo
 	if error != nil {
 		return nil, error
 	}
-	rect := getReactangleFromPaddings(p, originalSize)
+	rect := getRectangleFromPaddings(p, originalSize)
 	padded := image.NewRGBA(rect)
 
 	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
@@ -220,7 +220,7 @@ func calculatePaddings(kernelSize image.Point, anchor image.Point) (Paddings, er
 	return p, nil
 }
 
-func getReactangleFromPaddings(p Paddings, imgSize image.Point,) image.Rectangle {
+func getRectangleFromPaddings(p Paddings, imgSize image.Point,) image.Rectangle {
 	x := p.PaddingLeft + p.PaddingRight + imgSize.X
 	y := p.PaddingTop + p.PaddingBottom + imgSize.Y
 	return image.Rect(0, 0, x, y)
