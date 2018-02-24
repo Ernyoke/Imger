@@ -129,6 +129,7 @@ func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, err
 	return threshold16(img, setPixel), nil
 }
 
+//---------------------------------------------------------------------------------
 func threshold(img *image.Gray, setPixel func(*image.Gray, int, int)) *image.Gray {
 	size := img.Bounds().Size()
 	gray := image.NewGray(img.Bounds())

@@ -104,10 +104,11 @@ func rightPaddingReflect(img image.Image, padded image.Image, p Paddings, setPix
 
 func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border Border) (*image.Gray, error) {
 	originalSize := img.Bounds().Size()
-	rect, p, error := GetPaddings(originalSize, kernelSize, anchor)
+	p, error := calculatePaddings(kernelSize, anchor)
 	if error != nil {
 		return nil, error
 	}
+	rect := getReactangleFromPaddings(p, originalSize)
 	padded := image.NewGray(rect)
 
 	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
@@ -151,36 +152,13 @@ func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, bo
 	return padded, nil
 }
 
-func GetPaddings(imgSize image.Point, kernelSize image.Point, anchor image.Point) (image.Rectangle, Paddings, error) {
-	var p Paddings
-	var rect image.Rectangle
-	if kernelSize.X < 0 || kernelSize.Y < 0 {
-		return rect, p, errors.New("negative size")
-	}
-	if anchor.X < 0 || anchor.Y < 0 {
-		return rect, p, errors.New("negative anchor value")
-	}
-	if anchor.X > kernelSize.X || anchor.Y > kernelSize.Y {
-		return rect, p, errors.New("anc" +
-			"hor value outside of the kernel")
-	}
-
-	p = Paddings{PaddingLeft: anchor.X, PaddingRight: kernelSize.X - anchor.X, PaddingTop: anchor.Y, PaddingBottom: kernelSize.Y - anchor.Y}
-
-	imgSize.X += p.PaddingLeft + p.PaddingRight
-	imgSize.Y += p.PaddingTop + p.PaddingBottom
-
-	rect = image.Rect(0, 0, imgSize.X, imgSize.Y)
-
-	return rect, p, nil
-}
-
 func PaddingRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, border Border) (*image.RGBA, error) {
 	originalSize := img.Bounds().Size()
-	rect, p, error := GetPaddings(originalSize, kernelSize, anchor)
+	p, error := calculatePaddings(kernelSize, anchor)
 	if error != nil {
 		return nil, error
 	}
+	rect := getReactangleFromPaddings(p, originalSize)
 	padded := image.NewRGBA(rect)
 
 	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
@@ -222,4 +200,28 @@ func PaddingRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, bo
 		return nil, errors.New("unknown border type")
 	}
 	return padded, nil
+}
+
+// -------------------------------------------------------------------------------------------------------
+func calculatePaddings(kernelSize image.Point, anchor image.Point) (Paddings, error) {
+	var p Paddings
+	if kernelSize.X < 0 || kernelSize.Y < 0 {
+		return p, errors.New("negative size")
+	}
+	if anchor.X < 0 || anchor.Y < 0 {
+		return p, errors.New("negative anchor value")
+	}
+	if anchor.X > kernelSize.X || anchor.Y > kernelSize.Y {
+		return p, errors.New("anc" + "hor value outside of the kernel")
+	}
+
+	p = Paddings{PaddingLeft: anchor.X, PaddingRight: kernelSize.X - anchor.X, PaddingTop: anchor.Y, PaddingBottom: kernelSize.Y - anchor.Y}
+
+	return p, nil
+}
+
+func getReactangleFromPaddings(p Paddings, imgSize image.Point,) image.Rectangle {
+	x := p.PaddingLeft + p.PaddingRight + imgSize.X
+	y := p.PaddingTop + p.PaddingBottom + imgSize.Y
+	return image.Rect(0, 0, x, y)
 }
