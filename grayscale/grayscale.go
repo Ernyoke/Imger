@@ -1,4 +1,4 @@
-package imger
+package grayscale
 
 import (
 	"image"

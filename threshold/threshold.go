@@ -1,7 +1,8 @@
-package imger
+package threshold
 
 import (
 	"errors"
+	"github.com/ernyoke/imgur/utils"
 	"image"
 	"image/color"
 )
@@ -23,18 +24,18 @@ func Threshold(img *image.Gray, t uint8, method Method) (*image.Gray, error) {
 		setPixel = func(gray *image.Gray, x int, y int) {
 			pixel := img.GrayAt(x, y).Y
 			if pixel < t {
-				gray.SetGray(x, y, color.Gray{Y: MinUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MinUint8})
 			} else {
-				gray.SetGray(x, y, color.Gray{Y: MaxUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MaxUint8})
 			}
 		}
 	case ThreshBinaryInv:
 		setPixel = func(gray *image.Gray, x int, y int) {
 			pixel := img.GrayAt(x, y).Y
 			if pixel < t {
-				gray.SetGray(x, y, color.Gray{Y: MaxUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MaxUint8})
 			} else {
-				gray.SetGray(x, y, color.Gray{Y: MinUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MinUint8})
 			}
 		}
 	case ThreshTrunc:
@@ -52,7 +53,7 @@ func Threshold(img *image.Gray, t uint8, method Method) (*image.Gray, error) {
 		setPixel = func(gray *image.Gray, x int, y int) {
 			pixel := img.GrayAt(x, y).Y
 			if pixel < t {
-				gray.SetGray(x, y, color.Gray{Y: MinUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MinUint8})
 			} else {
 				gray.SetGray(x, y, color.Gray{Y: pixel})
 			}
@@ -63,13 +64,13 @@ func Threshold(img *image.Gray, t uint8, method Method) (*image.Gray, error) {
 			if pixel < t {
 				gray.SetGray(x, y, color.Gray{Y: pixel})
 			} else {
-				gray.SetGray(x, y, color.Gray{Y: MinUint8})
+				gray.SetGray(x, y, color.Gray{Y: utils.MinUint8})
 			}
 		}
 	default:
 		return nil, errors.New("invalid threshold method")
 	}
-	return threshold(img, t, setPixel), nil
+	return threshold(img, setPixel), nil
 }
 
 func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, error) {
@@ -79,18 +80,18 @@ func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, err
 		setPixel = func(gray *image.Gray16, x int, y int) {
 			pixel := img.Gray16At(x, y).Y
 			if pixel < t {
-				gray.SetGray16(x, y, color.Gray16{Y: MinUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MinUint16})
 			} else {
-				gray.SetGray16(x, y, color.Gray16{Y: MaxUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MaxUint16})
 			}
 		}
 	case ThreshBinaryInv:
 		setPixel = func(gray *image.Gray16, x int, y int) {
 			pixel := img.Gray16At(x, y).Y
 			if pixel < t {
-				gray.SetGray16(x, y, color.Gray16{Y: MaxUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MaxUint16})
 			} else {
-				gray.SetGray16(x, y, color.Gray16{Y: MinUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MinUint16})
 			}
 		}
 	case ThreshTrunc:
@@ -108,7 +109,7 @@ func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, err
 		setPixel = func(gray *image.Gray16, x int, y int) {
 			pixel := img.Gray16At(x, y).Y
 			if pixel < t {
-				gray.SetGray16(x, y, color.Gray16{Y: MinUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MinUint16})
 			} else {
 				gray.SetGray16(x, y, color.Gray16{Y: pixel})
 			}
@@ -119,16 +120,17 @@ func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, err
 			if pixel < t {
 				gray.SetGray16(x, y, color.Gray16{pixel})
 			} else {
-				gray.SetGray16(x, y, color.Gray16{Y: MinUint16})
+				gray.SetGray16(x, y, color.Gray16{Y: utils.MinUint16})
 			}
 		}
 	default:
 		return nil, errors.New("invalid threshold method")
 	}
-	return threshold16(img, t, setPixel), nil
+	return threshold16(img, setPixel), nil
 }
 
-func threshold(img *image.Gray, t uint8, setPixel func(*image.Gray, int, int)) *image.Gray {
+// -------------------------------------------------------------------------------------------------------
+func threshold(img *image.Gray, setPixel func(*image.Gray, int, int)) *image.Gray {
 	size := img.Bounds().Size()
 	gray := image.NewGray(img.Bounds())
 	for x := 0; x < size.X; x++ {
@@ -139,7 +141,7 @@ func threshold(img *image.Gray, t uint8, setPixel func(*image.Gray, int, int)) *
 	return gray
 }
 
-func threshold16(img *image.Gray16, t uint16, setPixel16 func(*image.Gray16, int, int)) *image.Gray16 {
+func threshold16(img *image.Gray16, setPixel16 func(*image.Gray16, int, int)) *image.Gray16 {
 	size := img.Bounds().Size()
 	gray := image.NewGray16(img.Bounds())
 	for x := 0; x < size.X; x++ {

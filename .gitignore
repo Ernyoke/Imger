@@ -1,5 +1,6 @@
 # Tests
 *_test.go
+utils/test_*
 
 # Resources
 res/
