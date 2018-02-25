@@ -14,13 +14,14 @@ func ConvolveGray(img *image.Gray, kernel *Kernel, anchor image.Point, border pa
 	}
 	originalSize := img.Bounds().Size()
 	resultImage := image.NewGray(img.Bounds())
-	for x := 0; x < originalSize.X; x++ {
-		for y := 0; y < originalSize.Y; y++ {
+	for y := 0; y < originalSize.Y; y++ {
+		for x := 0; x < originalSize.X; x++ {
 			sum := float64(0)
-			for kx := 0; kx < kernelSize.X; kx++ {
-				for ky := 0; ky < kernelSize.Y; ky++ {
+			for ky := 0; ky < kernelSize.Y; ky++ {
+				for kx := 0; kx < kernelSize.X; kx++ {
 					pixel := padded.GrayAt(x+kx, y+ky)
-					sum += float64(pixel.Y) * kernel.At(kx, ky)
+					kE := kernel.At(kx, ky)
+					sum += float64(pixel.Y) * kE
 				}
 			}
 			resultImage.Set(x, y, color.Gray{uint8(sum)})

@@ -13,7 +13,7 @@ import (
 )
 
 // ---------------------------------Unit tests------------------------------------
-func TestRGBAGaussianBlurZeroRadius(t *testing.T) {
+func TestGrayGaussianBlurZeroRadius(t *testing.T) {
 	input := image.RGBA{
 		Rect:   image.Rect(0, 0, 3, 3),
 		Stride: 3 * 4,
@@ -31,65 +31,62 @@ func TestRGBAGaussianBlurZeroRadius(t *testing.T) {
 	}
 }
 
+func TestGrayGaussianBlurOneRadius(t *testing.T) {
+	input := image.Gray{
+		Rect:   image.Rect(0, 0, 3, 3),
+		Stride: 3,
+		Pix: []uint8{
+			0xFF, 0x80, 0x56,
+			0x56, 0x80, 0x69,
+			0xEE, 0x29, 0xBB,
+		},
+	}
+	expected := &image.Gray{
+		Rect:   image.Rect(0, 0, 3, 3),
+		Stride: 3,
+		Pix: []uint8{
+			0x47, 0x5A, 0x33,
+			0x64, 0x88, 0x4D,
+			0x3B, 0x59, 0x36,
+		},
+	}
+	result, error := GaussianBlurGray(&input, 1, 2, padding.BorderConstant)
+	if error != nil {
+		t.Fatal(error)
+	}
+	utils.CompareGrayImagesWithOffset(t, expected, result, 1)
+}
+
 func TestRGBAGaussianBlurOneRadius(t *testing.T) {
 	input := image.RGBA{
 		Rect:   image.Rect(0, 0, 3, 3),
 		Stride: 3 * 4,
 		Pix: []uint8{
-			0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-			0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0x80, 0x80, 0x80, 0xFF,
-			0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0x80, 0x80, 0x80, 0xFF,
+			0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x80, 0x80, 0xFF, 0x56, 0x56, 0x56, 0xFF,
+			0x56, 0x56, 0x56, 0xFF, 0x80, 0x80, 0x80, 0xFF, 0x69, 0x69, 0x69, 0xFF,
+			0xEE, 0xEE, 0xEE, 0xFF, 0x29, 0x29, 0x29, 0xFF, 0xBB, 0xBB, 0xBB, 0xFF,
 		},
 	}
 	expected := &image.RGBA{
 		Rect:   image.Rect(0, 0, 3, 3),
 		Stride: 3 * 4,
 		Pix: []uint8{
-			0xae, 0xae, 0xae, 0xff, 0x56, 0x56, 0x56, 0xff, 0x19, 0x19, 0x19, 0xff,
-			0x4d, 0x4d, 0x4d, 0xff, 0x68, 0x68, 0x68, 0xff, 0x8b, 0x8b, 0x8b, 0xff,
-			0x0, 0x0, 0x0, 0xff, 0x26, 0x26, 0x26, 0xff, 0x59, 0x59, 0x59, 0xff,
+			0x47, 0x47, 0x47, 0xFF, 0x5A, 0x5A, 0x5A, 0xFF, 0x33, 0x33, 0x33, 0xFF,
+			0x64, 0x64, 0x64, 0xFF, 0x88, 0x88, 0x88, 0xFF, 0x4D, 0x4D, 0x4D, 0xFF,
+			0x3B, 0x3B, 0x3B, 0xFF, 0x59, 0x59, 0x59, 0xFF, 0x36, 0x36, 0x36, 0xFF,
 		},
 	}
-	f, err := os.Create("../res/asd.jpg")
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	jpeg.Encode(f, &input, nil)
-
-	result, error := GaussianBlurRGBA(&input, 1, 2, padding.BorderConstant)
+	actual, error := GaussianBlurRGBA(&input, 1, 2, padding.BorderConstant)
 	if error != nil {
 		t.Fatal(error)
 	}
-	utils.CompareRGBAImages(t, expected, result)
+	//utils.PrintRGBA(t, actual)
+	utils.CompareRGBAImagesWithOffset(t, expected, actual, 1)
 }
 
 // ---------------------------------------------------------------------------------
 
 // -----------------------------Acceptance tests------------------------------------
-func TestReadImg(t *testing.T) {
-	imagePath := "../res/image.jpg"
-	file, err := os.Open(imagePath)
-	defer file.Close()
-	if err != nil {
-		t.Log(os.Stderr, "%v\n", err)
-	}
-	img, err := jpeg.Decode(file)
-	rgba := image.NewRGBA(image.Rect(0, 0, img.Bounds().Dx(), img.Bounds().Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, img.Bounds().Min, draw.Src)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
-	}
-	imgSize := rgba.Bounds().Size()
-	for x := 0; x < imgSize.X; x++ {
-		for y := 0; y < imgSize.Y; y++ {
-			c := rgba.RGBAAt(x, y)
-			fmt.Printf("%x %x %x %x\n", c.R, c.G, c.B, c.A)
-		}
-	}
-}
-
-// ----------------------------------------------------------------------------------
 func setupTestCase(t *testing.T) image.Image {
 	imagePath := "../res/girl.jpg"
 	file, err := os.Open(imagePath)
@@ -150,3 +147,4 @@ func Test_Acceptance_RGBAGaussianBlurInt(t *testing.T) {
 	blured, _ := GaussianBlurRGBA(rgba, 5, 500, padding.BorderReflect)
 	tearDownTestCase(t, blured, "../res/blur/rgbaGaussianBlur.jpg")
 }
+// ----------------------------------------------------------------------------------
