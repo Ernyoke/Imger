@@ -1,15 +1,16 @@
 package threshold
 
 import (
-	"testing"
 	"fmt"
-	"os"
-	"image"
-	"image/jpeg"
-	"image/draw"
 	"github.com/ernyoke/imgur/grayscale"
+	"image"
+	"image/draw"
+	"image/jpeg"
+	"os"
+	"testing"
 )
 
+// -----------------------------Acceptance tests------------------------------------
 func setupTestCase(t *testing.T) image.Image {
 	imagePath := "../res/girl.jpg"
 	file, err := os.Open(imagePath)
@@ -33,7 +34,7 @@ func tearDownTestCase(t *testing.T, image image.Image, path string) {
 	jpeg.Encode(f, image, nil)
 }
 
-func TestThresholdBinray(t *testing.T) {
+func Test_Acceptance_ThresholdBinray(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -43,7 +44,7 @@ func TestThresholdBinray(t *testing.T) {
 	tearDownTestCase(t, thrsh, "../res/threshold/threshBin.jpg")
 }
 
-func TestThresholdBinrayInv(t *testing.T) {
+func Test_Acceptance_ThresholdBinrayInv(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -53,7 +54,7 @@ func TestThresholdBinrayInv(t *testing.T) {
 	tearDownTestCase(t, thrsh, "../res/threshold/threshBinInv.jpg")
 }
 
-func TestThresholdTrunc(t *testing.T) {
+func Test_Acceptance_ThresholdTrunc(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -63,7 +64,7 @@ func TestThresholdTrunc(t *testing.T) {
 	tearDownTestCase(t, thrsh, "../res/threshold/threshTrunc.jpg")
 }
 
-func TestThresholdToZero(t *testing.T) {
+func Test_Acceptance_ThresholdToZero(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -73,7 +74,7 @@ func TestThresholdToZero(t *testing.T) {
 	tearDownTestCase(t, thrsh, "../res/threshold/threshToZero.jpg")
 }
 
-func TestThresholdToZeroInv(t *testing.T) {
+func Test_Acceptance_ThresholdToZeroInv(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -83,7 +84,7 @@ func TestThresholdToZeroInv(t *testing.T) {
 	tearDownTestCase(t, thrsh, "../res/threshold/threshBin.jpg")
 }
 
-func TestThreshold16Bin(t *testing.T) {
+func Test_Acceptance_Threshold16Bin(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -93,7 +94,7 @@ func TestThreshold16Bin(t *testing.T) {
 	tearDownTestCase(t, thrsh, "../res/threshold/thresh16Bin.jpg")
 }
 
-func TestThreshold16BinInv(t *testing.T) {
+func Test_Acceptance_Threshold16BinInv(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -103,7 +104,7 @@ func TestThreshold16BinInv(t *testing.T) {
 	tearDownTestCase(t, thrsh, "../res/threshold/thresh16BinInv.jpg")
 }
 
-func TestThreshold16Trunc(t *testing.T) {
+func Test_Acceptance_Threshold16Trunc(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -113,7 +114,7 @@ func TestThreshold16Trunc(t *testing.T) {
 	tearDownTestCase(t, thrsh, "../res/threshold/thresh16Trunc.jpg")
 }
 
-func TestThreshold16ToZero(t *testing.T) {
+func Test_Acceptance_Threshold16ToZero(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -123,7 +124,7 @@ func TestThreshold16ToZero(t *testing.T) {
 	tearDownTestCase(t, thrsh, "../res/threshold/thresh16ToZero.jpg")
 }
 
-func TestThreshold16ToZeroInv(t *testing.T) {
+func Test_Acceptance_Threshold16ToZeroInv(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -132,3 +133,5 @@ func TestThreshold16ToZeroInv(t *testing.T) {
 	thrsh, _ := Threshold16(gray, 32000, ThreshToZeroInv)
 	tearDownTestCase(t, thrsh, "../res/threshold/thresh16ToZeroInv.jpg")
 }
+
+//---------------------------------------------------------------------------------

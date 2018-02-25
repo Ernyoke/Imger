@@ -3,6 +3,7 @@ package convolution
 import (
 	"errors"
 	"image"
+	"math"
 )
 
 type Matrix interface {
@@ -11,11 +12,11 @@ type Matrix interface {
 
 type Kernel struct {
 	content [][]float64
-	Width int
-	Height int
+	Width   int
+	Height  int
 }
 
-func NewKernel(width int, height int) (*Kernel, error){
+func NewKernel(width int, height int) (*Kernel, error) {
 	if width < 0 || height < 0 {
 		return nil, errors.New("negative kernel size")
 	}
@@ -36,4 +37,29 @@ func (k *Kernel) Set(x int, y int, value float64) {
 
 func (k *Kernel) Size() image.Point {
 	return image.Point{X: k.Width, Y: k.Height}
+}
+
+func (k *Kernel) AbSum() float64 {
+	var sum float64
+	for x := 0; x < k.Height; x++ {
+		for y := 0; y < k.Width; y++ {
+			sum += math.Abs(k.At(x, y))
+		}
+	}
+	return sum
+}
+
+func (k *Kernel) Normalize() *Kernel {
+	normalized, _ := NewKernel(k.Width, k.Height)
+	sum := k.AbSum()
+	if sum == 0 {
+		sum = 1
+
+	}
+	for x := 0; x < k.Height; x++ {
+		for y := 0; y < k.Width; y++ {
+			normalized.Set(x, y, k.At(x, y)/sum)
+		}
+	}
+	return normalized
 }

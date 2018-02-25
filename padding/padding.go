@@ -1,8 +1,8 @@
 package padding
 
 import (
-	"image"
 	"errors"
+	"image"
 	"image/color"
 )
 
@@ -15,16 +15,16 @@ const (
 )
 
 type Paddings struct {
-	PaddingLeft int
-	PaddingRight int
-	PaddingTop int
+	PaddingLeft   int
+	PaddingRight  int
+	PaddingTop    int
 	PaddingBottom int
 }
 
 func topPaddingReplicate(img image.Image, p Paddings, setPixel func(int, int, color.Color)) {
 	originalSize := img.Bounds().Size()
-	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
-		firstPixel := img.At(x - p.PaddingLeft, p.PaddingTop)
+	for x := p.PaddingLeft; x < originalSize.X+p.PaddingLeft; x++ {
+		firstPixel := img.At(x-p.PaddingLeft, p.PaddingTop)
 		for y := 0; y < p.PaddingTop; y++ {
 			setPixel(x, y, firstPixel)
 		}
@@ -33,9 +33,9 @@ func topPaddingReplicate(img image.Image, p Paddings, setPixel func(int, int, co
 
 func bottomPaddingReplicate(img image.Image, p Paddings, setPixel func(int, int, color.Color)) {
 	originalSize := img.Bounds().Size()
-	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
-		lastPixel := img.At(x - p.PaddingLeft, originalSize.Y - 1)
-		for y := p.PaddingTop + originalSize.Y; y < originalSize.Y + p.PaddingTop + p.PaddingBottom; y++ {
+	for x := p.PaddingLeft; x < originalSize.X+p.PaddingLeft; x++ {
+		lastPixel := img.At(x-p.PaddingLeft, originalSize.Y-1)
+		for y := p.PaddingTop + originalSize.Y; y < originalSize.Y+p.PaddingTop+p.PaddingBottom; y++ {
 			setPixel(x, y, lastPixel)
 		}
 	}
@@ -43,7 +43,7 @@ func bottomPaddingReplicate(img image.Image, p Paddings, setPixel func(int, int,
 
 func leftPaddingReplicate(img image.Image, padded image.Image, p Paddings, setPixel func(int, int, color.Color)) {
 	originalSize := img.Bounds().Size()
-	for y := 0; y < originalSize.Y + p.PaddingBottom + p.PaddingTop; y++ {
+	for y := 0; y < originalSize.Y+p.PaddingBottom+p.PaddingTop; y++ {
 		firstPixel := padded.At(p.PaddingLeft, y)
 		for x := 0; x < p.PaddingLeft; x++ {
 			setPixel(x, y, firstPixel)
@@ -53,9 +53,9 @@ func leftPaddingReplicate(img image.Image, padded image.Image, p Paddings, setPi
 
 func rightPaddingReplicate(img image.Image, padded image.Image, p Paddings, setPixel func(int, int, color.Color)) {
 	originalSize := img.Bounds().Size()
-	for y := 0; y < originalSize.Y + p.PaddingBottom + p.PaddingTop; y++ {
-		lastPixel := padded.At(originalSize.X + p.PaddingLeft - 1, y)
-		for x := originalSize.X + p.PaddingLeft; x < originalSize.X + p.PaddingLeft + p.PaddingRight; x++ {
+	for y := 0; y < originalSize.Y+p.PaddingBottom+p.PaddingTop; y++ {
+		lastPixel := padded.At(originalSize.X+p.PaddingLeft-1, y)
+		for x := originalSize.X + p.PaddingLeft; x < originalSize.X+p.PaddingLeft+p.PaddingRight; x++ {
 			setPixel(x, y, lastPixel)
 		}
 	}
@@ -63,9 +63,9 @@ func rightPaddingReplicate(img image.Image, padded image.Image, p Paddings, setP
 
 func topPaddingReflect(img image.Image, p Paddings, setPixel func(int, int, color.Color)) {
 	originalSize := img.Bounds().Size()
-	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
+	for x := p.PaddingLeft; x < originalSize.X+p.PaddingLeft; x++ {
 		for y := 0; y < p.PaddingTop; y++ {
-			pixel := img.At(x - p.PaddingLeft, p.PaddingTop - y)
+			pixel := img.At(x-p.PaddingLeft, p.PaddingTop-y)
 			setPixel(x, y, pixel)
 		}
 	}
@@ -73,9 +73,9 @@ func topPaddingReflect(img image.Image, p Paddings, setPixel func(int, int, colo
 
 func bottomPaddingReflect(img image.Image, p Paddings, setPixel func(int, int, color.Color)) {
 	originalSize := img.Bounds().Size()
-	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
-		for y := p.PaddingTop + originalSize.Y; y < originalSize.Y + p.PaddingTop + p.PaddingBottom; y++ {
-			pixel := img.At(x - p.PaddingLeft, originalSize.Y - (y - p.PaddingTop - originalSize.Y) - 1)
+	for x := p.PaddingLeft; x < originalSize.X+p.PaddingLeft; x++ {
+		for y := p.PaddingTop + originalSize.Y; y < originalSize.Y+p.PaddingTop+p.PaddingBottom; y++ {
+			pixel := img.At(x-p.PaddingLeft, originalSize.Y-(y-p.PaddingTop-originalSize.Y)-2)
 			setPixel(x, y, pixel)
 		}
 	}
@@ -83,9 +83,9 @@ func bottomPaddingReflect(img image.Image, p Paddings, setPixel func(int, int, c
 
 func leftPaddingReflect(img image.Image, padded image.Image, p Paddings, setPixel func(int, int, color.Color)) {
 	originalSize := img.Bounds().Size()
-	for y := 0; y < originalSize.Y + p.PaddingBottom + p.PaddingTop; y++ {
+	for y := 0; y < originalSize.Y+p.PaddingBottom+p.PaddingTop; y++ {
 		for x := 0; x < p.PaddingLeft; x++ {
-			pixel := padded.At(2 * p.PaddingLeft - x, y)
+			pixel := padded.At(2*p.PaddingLeft-x, y)
 			setPixel(x, y, pixel)
 		}
 	}
@@ -93,14 +93,13 @@ func leftPaddingReflect(img image.Image, padded image.Image, p Paddings, setPixe
 
 func rightPaddingReflect(img image.Image, padded image.Image, p Paddings, setPixel func(int, int, color.Color)) {
 	originalSize := img.Bounds().Size()
-	for y := 0; y < originalSize.Y + p.PaddingBottom + p.PaddingTop; y++ {
-		for x := originalSize.X + p.PaddingLeft; x < originalSize.X + p.PaddingLeft + p.PaddingRight; x++ {
-			pixel := padded.At(originalSize.X + p.PaddingRight - (x - originalSize.X - p.PaddingLeft), y)
+	for y := 0; y < originalSize.Y+p.PaddingBottom+p.PaddingTop; y++ {
+		for x := originalSize.X + p.PaddingLeft; x < originalSize.X+p.PaddingLeft+p.PaddingRight; x++ {
+			pixel := padded.At(originalSize.X+p.PaddingLeft-(x-originalSize.X-p.PaddingLeft)-2, y)
 			setPixel(x, y, pixel)
 		}
 	}
 }
-
 
 func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border Border) (*image.Gray, error) {
 	originalSize := img.Bounds().Size()
@@ -111,9 +110,9 @@ func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, bo
 	rect := getRectangleFromPaddings(p, originalSize)
 	padded := image.NewGray(rect)
 
-	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
-		for y := p.PaddingTop; y < originalSize.Y + p.PaddingTop; y++ {
-			padded.Set(x, y, img.GrayAt(x - p.PaddingLeft, y - p.PaddingTop))
+	for x := p.PaddingLeft; x < originalSize.X+p.PaddingLeft; x++ {
+		for y := p.PaddingTop; y < originalSize.Y+p.PaddingTop; y++ {
+			padded.Set(x, y, img.GrayAt(x-p.PaddingLeft, y-p.PaddingTop))
 		}
 	}
 
@@ -121,29 +120,29 @@ func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, bo
 	case BorderConstant:
 		// do nothing
 	case BorderReplicate:
-		topPaddingReplicate(img, p, func(x int, y int, pixel color.Color){
+		topPaddingReplicate(img, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		bottomPaddingReplicate(img, p, func(x int, y int, pixel color.Color){
+		bottomPaddingReplicate(img, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		leftPaddingReplicate(img, padded, p, func(x int, y int, pixel color.Color){
+		leftPaddingReplicate(img, padded, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		rightPaddingReplicate(img, padded, p, func(x int, y int, pixel color.Color){
+		rightPaddingReplicate(img, padded, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
 	case BorderReflect:
-		topPaddingReflect(img, p, func(x int, y int, pixel color.Color){
+		topPaddingReflect(img, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		bottomPaddingReflect(img, p, func(x int, y int, pixel color.Color){
+		bottomPaddingReflect(img, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		leftPaddingReflect(img, padded, p, func(x int, y int, pixel color.Color){
+		leftPaddingReflect(img, padded, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		rightPaddingReflect(img, padded, p, func(x int, y int, pixel color.Color){
+		rightPaddingReflect(img, padded, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
 	default:
@@ -161,9 +160,9 @@ func PaddingRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, bo
 	rect := getRectangleFromPaddings(p, originalSize)
 	padded := image.NewRGBA(rect)
 
-	for x := p.PaddingLeft; x < originalSize.X + p.PaddingLeft; x++ {
-		for y := p.PaddingTop; y < originalSize.Y + p.PaddingTop; y++ {
-			padded.Set(x, y, img.RGBAAt(x - p.PaddingLeft, y - p.PaddingTop))
+	for x := p.PaddingLeft; x < originalSize.X+p.PaddingLeft; x++ {
+		for y := p.PaddingTop; y < originalSize.Y+p.PaddingTop; y++ {
+			padded.Set(x, y, img.RGBAAt(x-p.PaddingLeft, y-p.PaddingTop))
 		}
 	}
 
@@ -171,29 +170,29 @@ func PaddingRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, bo
 	case BorderConstant:
 		// do nothing
 	case BorderReplicate:
-		topPaddingReplicate(img, p, func(x int, y int, pixel color.Color){
+		topPaddingReplicate(img, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		bottomPaddingReplicate(img, p, func(x int, y int, pixel color.Color){
+		bottomPaddingReplicate(img, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		leftPaddingReplicate(img, padded, p, func(x int, y int, pixel color.Color){
+		leftPaddingReplicate(img, padded, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		rightPaddingReplicate(img, padded, p, func(x int, y int, pixel color.Color){
+		rightPaddingReplicate(img, padded, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
 	case BorderReflect:
-		topPaddingReflect(img, p, func(x int, y int, pixel color.Color){
+		topPaddingReflect(img, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		bottomPaddingReflect(img, p, func(x int, y int, pixel color.Color){
+		bottomPaddingReflect(img, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		leftPaddingReflect(img, padded, p, func(x int, y int, pixel color.Color){
+		leftPaddingReflect(img, padded, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
-		rightPaddingReflect(img, padded, p, func(x int, y int, pixel color.Color){
+		rightPaddingReflect(img, padded, p, func(x int, y int, pixel color.Color) {
 			padded.Set(x, y, pixel)
 		})
 	default:
@@ -215,12 +214,12 @@ func calculatePaddings(kernelSize image.Point, anchor image.Point) (Paddings, er
 		return p, errors.New("anc" + "hor value outside of the kernel")
 	}
 
-	p = Paddings{PaddingLeft: anchor.X, PaddingRight: kernelSize.X - anchor.X, PaddingTop: anchor.Y, PaddingBottom: kernelSize.Y - anchor.Y}
+	p = Paddings{PaddingLeft: anchor.X, PaddingRight: kernelSize.X - anchor.X - 1, PaddingTop: anchor.Y, PaddingBottom: kernelSize.Y - anchor.Y - 1}
 
 	return p, nil
 }
 
-func getRectangleFromPaddings(p Paddings, imgSize image.Point,) image.Rectangle {
+func getRectangleFromPaddings(p Paddings, imgSize image.Point) image.Rectangle {
 	x := p.PaddingLeft + p.PaddingRight + imgSize.X
 	y := p.PaddingTop + p.PaddingBottom + imgSize.Y
 	return image.Rect(0, 0, x, y)

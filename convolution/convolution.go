@@ -1,8 +1,8 @@
 package convolution
 
 import (
-	"image"
 	"github.com/ernyoke/imgur/padding"
+	"image"
 	"image/color"
 )
 
@@ -19,7 +19,7 @@ func ConvolveGray(img *image.Gray, kernel *Kernel, anchor image.Point, border pa
 			sum := float64(0)
 			for kx := 0; kx < kernelSize.X; kx++ {
 				for ky := 0; ky < kernelSize.Y; ky++ {
-					pixel := padded.GrayAt(x + kx, y + ky)
+					pixel := padded.GrayAt(x+kx, y+ky)
 					sum += float64(pixel.Y) * kernel.At(kx, ky)
 				}
 			}
@@ -44,7 +44,7 @@ func ConvolveRGBA(img *image.RGBA, kernel *Kernel, anchor image.Point, border pa
 			sumB := float64(0)
 			for kx := 0; kx < kernelSize.X; kx++ {
 				for ky := 0; ky < kernelSize.Y; ky++ {
-					pixel := padded.RGBAAt(x + kx, y + ky)
+					pixel := padded.RGBAAt(x+kx, y+ky)
 					sumR += float64(pixel.R) * kernel.At(kx, ky)
 					sumG += float64(pixel.G) * kernel.At(kx, ky)
 					sumB += float64(pixel.B) * kernel.At(kx, ky)

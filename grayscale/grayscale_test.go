@@ -1,14 +1,15 @@
 package grayscale
 
 import (
-	"os"
 	"fmt"
-	"image/jpeg"
 	"image"
 	"image/draw"
+	"image/jpeg"
+	"os"
 	"testing"
 )
 
+// -----------------------------Acceptance tests------------------------------------
 func setupTestCase(t *testing.T) image.Image {
 	imagePath := "../res/girl.jpg"
 	file, err := os.Open(imagePath)
@@ -32,7 +33,7 @@ func tearDownTestCase(t *testing.T, image image.Image, path string) {
 	jpeg.Encode(f, image, nil)
 }
 
-func TestGrayScale(t *testing.T) {
+func Test_Acceptance_GrayScale(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -41,7 +42,7 @@ func TestGrayScale(t *testing.T) {
 	tearDownTestCase(t, gray, "../res/grayscale/gray.jpg")
 }
 
-func TestGrayScale16(t *testing.T) {
+func Test_Acceptance_GrayScale16(t *testing.T) {
 	img := setupTestCase(t)
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
@@ -50,4 +51,4 @@ func TestGrayScale16(t *testing.T) {
 	tearDownTestCase(t, gray, "../res/grayscale/gray16.jpg")
 }
 
-
+// ---------------------------------------------------------------------------------

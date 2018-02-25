@@ -1,14 +1,15 @@
 package convolution
 
 import (
-	"testing"
-	"image"
 	"github.com/ernyoke/imgur/padding"
+	"image"
+	"testing"
 )
 
+// ---------------------------------Unit tests------------------------------------
 func TestGrayScale(t *testing.T) {
 	var gray image.Gray
-	gray = image.Gray {
+	gray = image.Gray{
 		Rect:   image.Rect(0, 0, 3, 3),
 		Stride: 3,
 		Pix: []uint8{
@@ -16,7 +17,7 @@ func TestGrayScale(t *testing.T) {
 		},
 	}
 	var expected image.Gray
-	expected = image.Gray {
+	expected = image.Gray{
 		Rect:   image.Rect(0, 0, 3, 3),
 		Stride: 3,
 		Pix: []uint8{
@@ -43,3 +44,5 @@ func TestGrayScale(t *testing.T) {
 		}
 	}
 }
+
+// -------------------------------------------------------------------------------
