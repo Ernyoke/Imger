@@ -38,7 +38,7 @@ func CompareGrayImagesWithOffset(t *testing.T, expected *image.Gray, actual *ima
 		for y := 0; y < expected.Bounds().Size().Y; y++ {
 			c1 := expected.GrayAt(x, y)
 			c2 := actual.GrayAt(x, y)
-			if uint16(c1.Y) >= uint16(c2.Y) - offset && uint16(c1.Y) <= uint16(c2.Y) + offset  {
+			if uint16(c1.Y) >= uint16(c2.Y)-offset && uint16(c1.Y) <= uint16(c2.Y)+offset {
 				continue
 			} else {
 				t.Errorf("Expected gray: %d - actual gray: %d at: %d %d", c1.Y, c2.Y, y, x)
@@ -81,16 +81,16 @@ func CompareRGBAImagesWithOffset(t *testing.T, expected *image.RGBA, actual *ima
 		for y := 0; y < expected.Bounds().Size().Y; y++ {
 			c1 := expected.RGBAAt(x, y)
 			c2 := actual.RGBAAt(x, y)
-			if uint16(c1.R) < uint16(c2.R) - offset || uint16(c1.R) > uint16(c2.R) + offset {
+			if uint16(c1.R) < uint16(c2.R)-offset || uint16(c1.R) > uint16(c2.R)+offset {
 				t.Errorf("Expected red: %d - actual red: %d at: %d %d", c1.R, c2.R, y, x)
 			}
-			if uint16(c1.G) < uint16(c2.G) - offset || uint16(c1.G) > uint16(c2.G) + offset {
+			if uint16(c1.G) < uint16(c2.G)-offset || uint16(c1.G) > uint16(c2.G)+offset {
 				t.Errorf("Expected green: %d - actual green: %d at: %d %d", c1.G, c2.G, y, x)
 			}
-			if uint16(c1.B) < uint16(c2.B) - offset || uint16(c1.B) > uint16(c2.B) + offset {
+			if uint16(c1.B) < uint16(c2.B)-offset || uint16(c1.B) > uint16(c2.B)+offset {
 				t.Errorf("Expected blue: %d - actual blue: %d at: %d %d", c1.B, c2.B, y, x)
 			}
-			if uint16(c1.A) < uint16(c2.A) - offset || uint16(c1.A) > uint16(c2.A) + offset {
+			if uint16(c1.A) < uint16(c2.A)-offset || uint16(c1.A) > uint16(c2.A)+offset {
 				t.Errorf("Expected alpha: %d - actual alpha: %d at: %d %d", c1.A, c2.A, y, x)
 			}
 		}

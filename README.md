@@ -5,10 +5,10 @@
 * Threshold (Binary, BinaryInv, Trunc, ToZero, ToZeroInv)
 * Image padding (BorderConstant, BorderReplicate, BorderReflect)
 * Convolution
-* Blur (Average)
+* Blur (Average - Box, Gaussian)
 
-## Mege into ```master```
+## Merge into ```master```
 ```
 git checkout master
-git merge --no-commit --no-ff dev    
+git merge --no-commit --no-ff dev
 ```

@@ -40,8 +40,8 @@ func Test_Acceptance_ThresholdBinray(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale(rgba)
-	thrsh, _ := Threshold(gray, 100, ThreshBinary)
-	tearDownTestCase(t, thrsh, "../res/threshold/threshBin.jpg")
+	thresh, _ := Threshold(gray, 100, ThreshBinary)
+	tearDownTestCase(t, thresh, "../res/threshold/threshBin.jpg")
 }
 
 func Test_Acceptance_ThresholdBinrayInv(t *testing.T) {
@@ -50,8 +50,8 @@ func Test_Acceptance_ThresholdBinrayInv(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale(rgba)
-	thrsh, _ := Threshold(gray, 100, ThreshBinaryInv)
-	tearDownTestCase(t, thrsh, "../res/threshold/threshBinInv.jpg")
+	thresh, _ := Threshold(gray, 100, ThreshBinaryInv)
+	tearDownTestCase(t, thresh, "../res/threshold/threshBinInv.jpg")
 }
 
 func Test_Acceptance_ThresholdTrunc(t *testing.T) {
@@ -60,8 +60,8 @@ func Test_Acceptance_ThresholdTrunc(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale(rgba)
-	thrsh, _ := Threshold(gray, 100, ThreshTrunc)
-	tearDownTestCase(t, thrsh, "../res/threshold/threshTrunc.jpg")
+	thresh, _ := Threshold(gray, 100, ThreshTrunc)
+	tearDownTestCase(t, thresh, "../res/threshold/threshTrunc.jpg")
 }
 
 func Test_Acceptance_ThresholdToZero(t *testing.T) {
@@ -70,8 +70,8 @@ func Test_Acceptance_ThresholdToZero(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale(rgba)
-	thrsh, _ := Threshold(gray, 100, ThreshToZero)
-	tearDownTestCase(t, thrsh, "../res/threshold/threshToZero.jpg")
+	thresh, _ := Threshold(gray, 100, ThreshToZero)
+	tearDownTestCase(t, thresh, "../res/threshold/threshToZero.jpg")
 }
 
 func Test_Acceptance_ThresholdToZeroInv(t *testing.T) {
@@ -80,8 +80,8 @@ func Test_Acceptance_ThresholdToZeroInv(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale(rgba)
-	thrsh, _ := Threshold(gray, 100, ThreshToZeroInv)
-	tearDownTestCase(t, thrsh, "../res/threshold/threshBin.jpg")
+	thresh, _ := Threshold(gray, 100, ThreshToZeroInv)
+	tearDownTestCase(t, thresh, "../res/threshold/threshBin.jpg")
 }
 
 func Test_Acceptance_Threshold16Bin(t *testing.T) {
@@ -90,8 +90,8 @@ func Test_Acceptance_Threshold16Bin(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale16(rgba)
-	thrsh, _ := Threshold16(gray, 32000, ThreshBinary)
-	tearDownTestCase(t, thrsh, "../res/threshold/thresh16Bin.jpg")
+	thresh, _ := Threshold16(gray, 32000, ThreshBinary)
+	tearDownTestCase(t, thresh, "../res/threshold/thresh16Bin.jpg")
 }
 
 func Test_Acceptance_Threshold16BinInv(t *testing.T) {
@@ -100,8 +100,8 @@ func Test_Acceptance_Threshold16BinInv(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale16(rgba)
-	thrsh, _ := Threshold16(gray, 32000, ThreshBinaryInv)
-	tearDownTestCase(t, thrsh, "../res/threshold/thresh16BinInv.jpg")
+	thresh, _ := Threshold16(gray, 32000, ThreshBinaryInv)
+	tearDownTestCase(t, thresh, "../res/threshold/thresh16BinInv.jpg")
 }
 
 func Test_Acceptance_Threshold16Trunc(t *testing.T) {
@@ -110,8 +110,8 @@ func Test_Acceptance_Threshold16Trunc(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale16(rgba)
-	thrsh, _ := Threshold16(gray, 32000, ThreshTrunc)
-	tearDownTestCase(t, thrsh, "../res/threshold/thresh16Trunc.jpg")
+	thresh, _ := Threshold16(gray, 32000, ThreshTrunc)
+	tearDownTestCase(t, thresh, "../res/threshold/thresh16Trunc.jpg")
 }
 
 func Test_Acceptance_Threshold16ToZero(t *testing.T) {
@@ -120,8 +120,8 @@ func Test_Acceptance_Threshold16ToZero(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale16(rgba)
-	thrsh, _ := Threshold16(gray, 32000, ThreshToZero)
-	tearDownTestCase(t, thrsh, "../res/threshold/thresh16ToZero.jpg")
+	thresh, _ := Threshold16(gray, 32000, ThreshToZero)
+	tearDownTestCase(t, thresh, "../res/threshold/thresh16ToZero.jpg")
 }
 
 func Test_Acceptance_Threshold16ToZeroInv(t *testing.T) {
@@ -130,8 +130,8 @@ func Test_Acceptance_Threshold16ToZeroInv(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale16(rgba)
-	thrsh, _ := Threshold16(gray, 32000, ThreshToZeroInv)
-	tearDownTestCase(t, thrsh, "../res/threshold/thresh16ToZeroInv.jpg")
+	thresh, _ := Threshold16(gray, 32000, ThreshToZeroInv)
+	tearDownTestCase(t, thresh, "../res/threshold/thresh16ToZeroInv.jpg")
 }
 
 //---------------------------------------------------------------------------------

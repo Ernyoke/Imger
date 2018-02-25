@@ -8,7 +8,7 @@ import (
 	"math"
 )
 
-func BlurGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border padding.Border) (*image.Gray, error) {
+func BoxGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border padding.Border) (*image.Gray, error) {
 	kernel := generateBoxKernel(&kernelSize)
 	result, error := convolution.ConvolveGray(img, kernel.Normalize(), anchor, border)
 	if error != nil {
@@ -17,7 +17,7 @@ func BlurGray(img *image.Gray, kernelSize image.Point, anchor image.Point, borde
 	return result, nil
 }
 
-func BlurRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, border padding.Border) (*image.RGBA, error) {
+func BoxRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, border padding.Border) (*image.RGBA, error) {
 	kernel := generateBoxKernel(&kernelSize)
 	result, error := convolution.ConvolveRGBA(img, kernel.Normalize(), anchor, border)
 	if error != nil {

@@ -116,7 +116,7 @@ func Test_Acceptance_GrayBlurInt(t *testing.T) {
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
 	gray := grayscale.Grayscale(rgba)
-	blured, _ := BlurGray(gray, image.Point{15, 15}, image.Point{8, 8}, padding.BorderReflect)
+	blured, _ := BoxGray(gray, image.Point{15, 15}, image.Point{8, 8}, padding.BorderReflect)
 	tearDownTestCase(t, blured, "../res/blur/grayBlur.jpg")
 }
 
@@ -125,7 +125,7 @@ func Test_Acceptance_RGBABlurInt(t *testing.T) {
 	bounds := img.Bounds()
 	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
 	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	blured, _ := BlurRGBA(rgba, image.Point{15, 15}, image.Point{8, 8}, padding.BorderReflect)
+	blured, _ := BoxRGBA(rgba, image.Point{15, 15}, image.Point{8, 8}, padding.BorderReflect)
 	tearDownTestCase(t, blured, "../res/blur/rgbaBlur.jpg")
 }
 
@@ -147,4 +147,5 @@ func Test_Acceptance_RGBAGaussianBlurInt(t *testing.T) {
 	blured, _ := GaussianBlurRGBA(rgba, 5, 500, padding.BorderReflect)
 	tearDownTestCase(t, blured, "../res/blur/rgbaGaussianBlur.jpg")
 }
+
 // ----------------------------------------------------------------------------------
