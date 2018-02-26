@@ -6,6 +6,7 @@
 * Image padding (BorderConstant, BorderReplicate, BorderReflect)
 * Convolution
 * Blur (Average - Box, Gaussian)
+* Edge detection (Sobel, Laplacian)
 
 ## Merge into ```master```
 ```
