@@ -2,8 +2,8 @@ package padding
 
 import (
 	"fmt"
-	"github.com/ernyoke/imgur/grayscale"
-	"github.com/ernyoke/imgur/utils"
+	"github.com/ernyoke/imger/grayscale"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"image/draw"
 	"image/jpeg"

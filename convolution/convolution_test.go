@@ -1,7 +1,7 @@
 package convolution
 
 import (
-	"github.com/ernyoke/imgur/padding"
+	"github.com/ernyoke/imger/padding"
 	"image"
 	"testing"
 )

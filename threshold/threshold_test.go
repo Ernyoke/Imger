@@ -2,7 +2,7 @@ package threshold
 
 import (
 	"fmt"
-	"github.com/ernyoke/imgur/grayscale"
+	"github.com/ernyoke/imger/grayscale"
 	"image"
 	"image/draw"
 	"image/jpeg"

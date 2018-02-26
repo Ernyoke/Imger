@@ -2,7 +2,7 @@ package threshold
 
 import (
 	"errors"
-	"github.com/ernyoke/imgur/utils"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"image/color"
 )

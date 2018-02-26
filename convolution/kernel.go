@@ -11,7 +11,7 @@ type Matrix interface {
 }
 
 type Kernel struct {
-	content [][]float64
+	Content [][]float64
 	Width   int
 	Height  int
 }
@@ -24,15 +24,15 @@ func NewKernel(width int, height int) (*Kernel, error) {
 	for i := range m {
 		m[i] = make([]float64, width)
 	}
-	return &Kernel{content: m, Width: width, Height: height}, nil
+	return &Kernel{Content: m, Width: width, Height: height}, nil
 }
 
 func (k *Kernel) At(x, y int) float64 {
-	return k.content[x][y]
+	return k.Content[x][y]
 }
 
 func (k *Kernel) Set(x int, y int, value float64) {
-	k.content[x][y] = value
+	k.Content[x][y] = value
 }
 
 func (k *Kernel) Size() image.Point {
