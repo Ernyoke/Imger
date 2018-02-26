@@ -1,7 +1,7 @@
 package convolution
 
 import (
-	"github.com/ernyoke/imgur/padding"
+	"github.com/ernyoke/imger/padding"
 	"image"
 	"image/color"
 )
@@ -23,6 +23,12 @@ func ConvolveGray(img *image.Gray, kernel *Kernel, anchor image.Point, border pa
 					kE := kernel.At(kx, ky)
 					sum += float64(pixel.Y) * kE
 				}
+			}
+			if sum < 0 {
+				sum = 0
+			}
+			if sum > 255 {
+				sum = 255
 			}
 			resultImage.Set(x, y, color.Gray{uint8(sum)})
 		}
