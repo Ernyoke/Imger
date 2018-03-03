@@ -9,3 +9,7 @@ go:
 script:
 - go vet ./...
 - go test -v ./...
+
+branches:
+  only:
+  - dev
