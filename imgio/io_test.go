@@ -1,8 +1,8 @@
-package io
+package imgio
 
 import (
-	"testing"
 	"image"
+	"testing"
 )
 
 // -----------------------------Acceptance tests------------------------------------
@@ -112,7 +112,3 @@ func Test_Imwrite_InvalidExtension(t *testing.T) {
 	}
 	t.Fatal("Should not reach this point!")
 }
-
-
-
-

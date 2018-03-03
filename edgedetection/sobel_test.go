@@ -1,78 +1,73 @@
 package edgedetection
 
 import (
-	"fmt"
-	"github.com/ernyoke/imger/grayscale"
 	"github.com/ernyoke/imger/padding"
 	"image"
-	"image/draw"
-	"image/png"
-	"os"
 	"testing"
+	"github.com/ernyoke/imger/imgio"
 )
 
 // -----------------------------Acceptance tests------------------------------------
 
-func setupTestCase(t *testing.T) image.Image {
-	imagePath := "../res/engine.png"
-	file, err := os.Open(imagePath)
-	defer file.Close()
+func setupTestCaseGraySobel(t *testing.T) *image.Gray {
+	path := "../res/engine.png"
+	img, err := imgio.ImreadGray(path)
 	if err != nil {
-		t.Log(os.Stderr, "%v\n", err)
-	}
-	img, err := png.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
+		t.Errorf("Could not read image from path: %s", path)
 	}
 	return img
 }
 
-func tearDownTestCase(t *testing.T, image image.Image, path string) {
-	f, err := os.Create(path)
+func setupTestCaseRGBASobel(t *testing.T) *image.RGBA {
+	path := "../res/engine.png"
+	img, err := imgio.ImreadRGBA(path)
 	if err != nil {
-		panic(err)
+		t.Errorf("Could not read image from path: %s", path)
 	}
-	defer f.Close()
-	png.Encode(f, image)
+	return img
+}
+
+func tearDownTestCaseSobel(t *testing.T, img image.Image, path string) {
+	err := imgio.Imwrite(img, path)
+	if err != nil {
+		t.Errorf("Could not write image to path: %s", path)
+	}
 }
 
 func Test_Acceptance_HorizontalSobelGray(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGraySobel(t)
 	sobel, _ := HorizontalSobelGray(gray, padding.BorderReflect)
-	tearDownTestCase(t, sobel, "../res/sobel/horizontalSobelGray.png")
+	tearDownTestCaseSobel(t, sobel, "../res/edge/horizontalSobelGray.png")
 }
 
 func Test_Acceptance_VerticalSobelGray(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGraySobel(t)
 	sobel, _ := VerticalSobelGray(gray, padding.BorderReflect)
-	tearDownTestCase(t, sobel, "../res/sobel/verticalSobelGray.png")
+	tearDownTestCaseSobel(t, sobel, "../res/edge/verticalSobelGray.png")
 }
 
 func Test_Acceptance_SobelGray(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGraySobel(t)
 	sobel, _ := SobelGray(gray, padding.BorderReflect)
-	tearDownTestCase(t, sobel, "../res/sobel/sobelGray.png")
+	tearDownTestCaseSobel(t, sobel, "../res/edge/sobelGray.png")
+}
+
+func Test_Acceptance_HorizontalSobelRGBA(t *testing.T) {
+	rgba := setupTestCaseRGBASobel(t)
+	sobel, _ := HorizontalSobelRGBA(rgba, padding.BorderReflect)
+	tearDownTestCaseSobel(t, sobel, "../res/edge/horizontalSobelRGBA.png")
+}
+
+func Test_Acceptance_VerticalSobelRGBA(t *testing.T) {
+	rgba := setupTestCaseRGBASobel(t)
+	sobel, _ := VerticalSobelRGBA(rgba, padding.BorderReflect)
+	tearDownTestCaseSobel(t, sobel, "../res/edge/verticalSobelRGBA.png")
 }
 
 func Test_Acceptance_SobelRGBA(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBASobel(t)
 	sobel, _ := SobelRGBA(rgba, padding.BorderReflect)
-	tearDownTestCase(t, sobel, "../res/sobel/sobelRGBA.png")
+	tearDownTestCaseSobel(t, sobel, "../res/edge/sobelRGBA.png")
 }
 
 // ---------------------------------------------------------------------------------

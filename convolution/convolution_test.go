@@ -2,6 +2,7 @@ package convolution
 
 import (
 	"github.com/ernyoke/imger/padding"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"testing"
 )
@@ -32,17 +33,13 @@ func TestGrayScale(t *testing.T) {
 	}, 3, 3}
 	conv, _ := ConvolveGray(&gray, &kernel, image.Point{1, 1}, padding.BorderConstant)
 	size := conv.Bounds().Size()
-	for x := 0; x < size.X; x++ {
-		for y := 0; y < size.Y; y++ {
-			rRes, gRes, bRes, aRes := conv.At(x, y).RGBA()
-			rExp, gExp, bExp, aExp := expected.At(x, y).RGBA()
-			if rRes == rExp && gRes == gExp && bRes == bExp && aRes == aExp {
-				continue
-			} else {
-				t.Errorf("Expected: %d %d %d %d - Actual: %d %d %d %d at %d, %d", rExp, gExp, bExp, aExp, rRes, gRes, bRes, aRes, x, y)
-			}
+	utils.ForEchPixel(size, func(x, y int) {
+		pExp := expected.GrayAt(x, y).Y
+		pRes := conv.GrayAt(x, y).Y
+		if pExp != pRes {
+			t.Errorf("Expected: %d - Actual: %d at %d, %d", pExp, pRes, x, y)
 		}
-	}
+	})
 }
 
 // -------------------------------------------------------------------------------

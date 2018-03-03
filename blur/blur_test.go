@@ -1,15 +1,11 @@
 package blur
 
 import (
-	"fmt"
-	"github.com/ernyoke/imger/grayscale"
 	"github.com/ernyoke/imger/padding"
 	"github.com/ernyoke/imger/utils"
 	"image"
-	"image/draw"
-	"image/jpeg"
-	"os"
 	"testing"
+	"github.com/ernyoke/imger/imgio"
 )
 
 // ---------------------------------Unit tests------------------------------------
@@ -87,63 +83,51 @@ func TestRGBAGaussianBlurOneRadius(t *testing.T) {
 // ---------------------------------------------------------------------------------
 
 // -----------------------------Acceptance tests------------------------------------
-func setupTestCase(t *testing.T) image.Image {
-	imagePath := "../res/girl.jpg"
-	file, err := os.Open(imagePath)
-	defer file.Close()
+func setupTestCaseGray(t *testing.T) *image.Gray {
+	path := "../res/girl.jpg"
+	img, err := imgio.ImreadGray(path)
 	if err != nil {
-		t.Log(os.Stderr, "%v\n", err)
-	}
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
+		t.Errorf("Could not read image from path: %s", path)
 	}
 	return img
 }
 
-func tearDownTestCase(t *testing.T, image image.Image, path string) {
-	f, err := os.Create(path)
+func setupTestCaseRGBA(t *testing.T) *image.RGBA {
+	path := "../res/girl.jpg"
+	img, err := imgio.ImreadRGBA(path)
 	if err != nil {
-		panic(err)
+		t.Errorf("Could not read image from path: %s", path)
 	}
-	defer f.Close()
-	jpeg.Encode(f, image, nil)
+	return img
+}
+
+func tearDownTestCase(t *testing.T, img image.Image, path string) {
+	err := imgio.Imwrite(img, path)
+	if err != nil {
+		t.Errorf("Could not write image to path: %s", path)
+	}
 }
 
 func Test_Acceptance_GrayBlurInt(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
-	blured, _ := BoxGray(gray, image.Point{15, 15}, image.Point{8, 8}, padding.BorderReflect)
+	gray := setupTestCaseGray(t)
+	blured, _ := BoxGray(gray, image.Point{X: 15, Y: 15}, image.Point{X: 8, Y: 8}, padding.BorderReflect)
 	tearDownTestCase(t, blured, "../res/blur/grayBlur.jpg")
 }
 
 func Test_Acceptance_RGBABlurInt(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	blured, _ := BoxRGBA(rgba, image.Point{15, 15}, image.Point{8, 8}, padding.BorderReflect)
+	rgba := setupTestCaseRGBA(t)
+	blured, _ := BoxRGBA(rgba, image.Point{X: 15, Y: 15}, image.Point{X: 8, Y: 8}, padding.BorderReflect)
 	tearDownTestCase(t, blured, "../res/blur/rgbaBlur.jpg")
 }
 
 func Test_Acceptance_GrayGaussianBlurInt(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGray(t)
 	blured, _ := GaussianBlurGray(gray, 7, 6, padding.BorderReflect)
 	tearDownTestCase(t, blured, "../res/blur/grayGaussianBlur.jpg")
 }
 
 func Test_Acceptance_RGBAGaussianBlurInt(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBA(t)
 	blured, _ := GaussianBlurRGBA(rgba, 5, 500, padding.BorderReflect)
 	tearDownTestCase(t, blured, "../res/blur/rgbaGaussianBlur.jpg")
 }

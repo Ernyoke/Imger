@@ -1,8 +1,8 @@
 package resize
 
 import (
-	"testing"
 	"github.com/ernyoke/imger/utils"
+	"testing"
 )
 
 // --------------------------------Unit tests----------------------------------------
@@ -140,4 +140,5 @@ func Test_Lanczos_0(t *testing.T) {
 		t.Errorf("Expected %f is not equal to actual: %f\n", expected, actual)
 	}
 }
+
 // ----------------------------------------------------------------------------------

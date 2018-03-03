@@ -7,7 +7,7 @@ type Filter interface {
 	getS() float64
 }
 
-type Linear struct {}
+type Linear struct{}
 
 func NewLinear() *Linear {
 	return &Linear{}
@@ -25,7 +25,7 @@ func (r *Linear) getS() float64 {
 	return 1.0
 }
 
-type CatmullRom struct {}
+type CatmullRom struct{}
 
 func NewCatmullRom() *CatmullRom {
 	return &CatmullRom{}
@@ -48,7 +48,7 @@ func (r *CatmullRom) getS() float64 {
 	return 2.0
 }
 
-type Lanczos struct {}
+type Lanczos struct{}
 
 func NewLanczos() *Lanczos {
 	return &Lanczos{}

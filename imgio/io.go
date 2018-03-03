@@ -1,13 +1,13 @@
-package io
+package imgio
 
 import (
+	"errors"
 	"image"
-	"os"
-	"path/filepath"
+	"image/draw"
 	"image/jpeg"
 	"image/png"
-	"errors"
-	"image/draw"
+	"os"
+	"path/filepath"
 )
 
 // Reads and decodes image from a given path. Supported extensions are: jpg, jpeg, png
@@ -30,7 +30,7 @@ func decode(path string) (image.Image, error) {
 }
 
 // Encodes and writes image to the given path
-func encode(img image.Image, path string,) error {
+func encode(img image.Image, path string) error {
 	file, err := os.Create(path)
 	if err != nil {
 		return err

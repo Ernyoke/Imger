@@ -6,8 +6,8 @@ package utils
 import (
 	"fmt"
 	"image"
-	"testing"
 	"math"
+	"testing"
 )
 
 // Compares two Gray images and prints out if there is a difference between the pixels
@@ -123,5 +123,5 @@ func PrintRGBA(t *testing.T, rgba *image.RGBA) {
 // Compares 2 float values and returns true if they are inside of the interval of [-eps, +eps]
 func IsEqualFloat64(x float64, y float64) bool {
 	eps := 0.0000001
-	return math.Abs(x - y) <= eps
+	return math.Abs(x-y) <= eps
 }

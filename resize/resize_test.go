@@ -1,45 +1,39 @@
 package resize
 
 import (
-	"testing"
 	"image"
-	"os"
-	"image/jpeg"
-	"fmt"
-	"image/draw"
-	"github.com/ernyoke/imger/grayscale"
+	"testing"
+	"github.com/ernyoke/imger/imgio"
 )
 
 // -----------------------------Acceptance tests------------------------------------
-func setupTestCase(t *testing.T) image.Image {
-	imagePath := "../res/girl.jpg"
-	file, err := os.Open(imagePath)
-	defer file.Close()
+func setupTestCaseGray(t *testing.T) *image.Gray {
+	path := "../res/girl.jpg"
+	img, err := imgio.ImreadGray(path)
 	if err != nil {
-		t.Log(os.Stderr, "%v\n", err)
-	}
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
+		t.Errorf("Could not read image from path: %s", path)
 	}
 	return img
 }
 
-func tearDownTestCase(t *testing.T, image image.Image, path string) {
-	f, err := os.Create(path)
+func setupTestCaseRGBA(t *testing.T) *image.RGBA {
+	path := "../res/girl.jpg"
+	img, err := imgio.ImreadRGBA(path)
 	if err != nil {
-		panic(err)
+		t.Errorf("Could not read image from path: %s", path)
 	}
-	defer f.Close()
-	jpeg.Encode(f, image, nil)
+	return img
+}
+
+func tearDownTestCase(t *testing.T, img image.Image, path string) {
+	err := imgio.Imwrite(img, path)
+	if err != nil {
+		t.Errorf("Could not write image to path: %s", path)
+	}
 }
 
 func Test_Acceptance_GrayResize_NN_2X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGray(t)
 	actual, _ := ResizeGray(gray, 2, 2, InterNearest)
 	originalSize := gray.Bounds().Size()
 	expectedSize := image.Point{X: originalSize.X * 2, Y: originalSize.Y * 2}
@@ -51,11 +45,7 @@ func Test_Acceptance_GrayResize_NN_2X(t *testing.T) {
 }
 
 func Test_Acceptance_GrayResize_NN_1_5X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGray(t)
 	actual, _ := ResizeGray(gray, 1.5, 1.5, InterNearest)
 	originalSize := gray.Bounds().Size()
 	expectedSize := image.Point{X: int(float64(originalSize.X) * 1.5), Y: int(float64(originalSize.Y) * 1.5)}
@@ -67,11 +57,7 @@ func Test_Acceptance_GrayResize_NN_1_5X(t *testing.T) {
 }
 
 func Test_Acceptance_GrayResize_NN_2_5_AND_3_5X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGray(t)
 	actual, _ := ResizeGray(gray, 2.5, 3.5, InterNearest)
 	originalSize := gray.Bounds().Size()
 	expectedSize := image.Point{X: int(float64(originalSize.X) * 2.5), Y: int(float64(originalSize.Y) * 3.5)}
@@ -83,11 +69,7 @@ func Test_Acceptance_GrayResize_NN_2_5_AND_3_5X(t *testing.T) {
 }
 
 func Test_Acceptance_GrayResize_NN_0_5X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGray(t)
 	actual, _ := ResizeGray(gray, 0.5, 0.5, InterNearest)
 	originalSize := gray.Bounds().Size()
 	expectedSize := image.Point{X: int(float64(originalSize.X) * 0.5), Y: int(float64(originalSize.Y) * 0.5)}
@@ -99,11 +81,7 @@ func Test_Acceptance_GrayResize_NN_0_5X(t *testing.T) {
 }
 
 func Test_Acceptance_GrayResize_Linear_2X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGray(t)
 	actual, _ := ResizeGray(gray, 2, 2, InterLinear)
 	originalSize := gray.Bounds().Size()
 	expectedSize := image.Point{X: originalSize.X * 2, Y: originalSize.Y * 2}
@@ -115,11 +93,7 @@ func Test_Acceptance_GrayResize_Linear_2X(t *testing.T) {
 }
 
 func Test_Acceptance_GrayResize_CatmullRom_2X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGray(t)
 	actual, _ := ResizeGray(gray, 2, 2, InterCatmullRom)
 	originalSize := gray.Bounds().Size()
 	expectedSize := image.Point{X: originalSize.X * 2, Y: originalSize.Y * 2}
@@ -131,11 +105,7 @@ func Test_Acceptance_GrayResize_CatmullRom_2X(t *testing.T) {
 }
 
 func Test_Acceptance_GrayResize_Lanczos_2X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGray(t)
 	actual, _ := ResizeGray(gray, 2, 2, InterLanczos)
 	originalSize := gray.Bounds().Size()
 	expectedSize := image.Point{X: originalSize.X * 2, Y: originalSize.Y * 2}
@@ -147,10 +117,7 @@ func Test_Acceptance_GrayResize_Lanczos_2X(t *testing.T) {
 }
 
 func Test_Acceptance_RGBAResize_NN_2X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBA(t)
 	actual, _ := ResizeRGBA(rgba, 2, 2, InterNearest)
 	originalSize := rgba.Bounds().Size()
 	expectedSize := image.Point{X: originalSize.X * 2, Y: originalSize.Y * 2}
@@ -162,10 +129,7 @@ func Test_Acceptance_RGBAResize_NN_2X(t *testing.T) {
 }
 
 func Test_Acceptance_RGBAResize_NN_1_5X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBA(t)
 	actual, _ := ResizeRGBA(rgba, 1.5, 1.5, InterNearest)
 	originalSize := rgba.Bounds().Size()
 	expectedSize := image.Point{X: int(float64(originalSize.X) * 1.5), Y: int(float64(originalSize.Y) * 1.5)}
@@ -177,10 +141,7 @@ func Test_Acceptance_RGBAResize_NN_1_5X(t *testing.T) {
 }
 
 func Test_Acceptance_RGBAResize_NN_2_5_AND_3_5X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBA(t)
 	actual, _ := ResizeRGBA(rgba, 2.5, 3.5, InterNearest)
 	originalSize := rgba.Bounds().Size()
 	expectedSize := image.Point{X: int(float64(originalSize.X) * 2.5), Y: int(float64(originalSize.Y) * 3.5)}
@@ -192,10 +153,7 @@ func Test_Acceptance_RGBAResize_NN_2_5_AND_3_5X(t *testing.T) {
 }
 
 func Test_Acceptance_RGBAResize_NN_0_5X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBA(t)
 	actual, _ := ResizeRGBA(rgba, 0.5, 0.5, InterNearest)
 	originalSize := rgba.Bounds().Size()
 	expectedSize := image.Point{X: int(float64(originalSize.X) * 0.5), Y: int(float64(originalSize.Y) * 0.5)}
@@ -207,10 +165,7 @@ func Test_Acceptance_RGBAResize_NN_0_5X(t *testing.T) {
 }
 
 func Test_Acceptance_RGBAResize_Linear_2X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBA(t)
 	actual, _ := ResizeRGBA(rgba, 2, 2, InterLinear)
 	originalSize := rgba.Bounds().Size()
 	expectedSize := image.Point{X: originalSize.X * 2, Y: originalSize.Y * 2}
@@ -222,10 +177,7 @@ func Test_Acceptance_RGBAResize_Linear_2X(t *testing.T) {
 }
 
 func Test_Acceptance_RGBAResize_CatmullRom_2X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBA(t)
 	actual, _ := ResizeRGBA(rgba, 2, 2, InterCatmullRom)
 	originalSize := rgba.Bounds().Size()
 	expectedSize := image.Point{X: originalSize.X * 2, Y: originalSize.Y * 2}
@@ -237,10 +189,7 @@ func Test_Acceptance_RGBAResize_CatmullRom_2X(t *testing.T) {
 }
 
 func Test_Acceptance_RGBAResize_Lanczos_2X(t *testing.T) {
-	img := setupTestCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBA(t)
 	actual, _ := ResizeRGBA(rgba, 2, 2, InterLanczos)
 	originalSize := rgba.Bounds().Size()
 	expectedSize := image.Point{X: originalSize.X * 2, Y: originalSize.Y * 2}

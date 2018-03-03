@@ -1,77 +1,61 @@
 package edgedetection
 
 import (
-	"fmt"
-	"github.com/ernyoke/imger/grayscale"
 	"github.com/ernyoke/imger/padding"
 	"image"
-	"image/draw"
-	"image/png"
-	"os"
 	"testing"
+	"github.com/ernyoke/imger/imgio"
 )
 
 // -----------------------------Acceptance tests------------------------------------
 
-func setupTestLaplacianCase(t *testing.T) image.Image {
-	imagePath := "../res/engine.png"
-	file, err := os.Open(imagePath)
-	defer file.Close()
+func setupTestCaseGrayLapl(t *testing.T) *image.Gray {
+	path := "../res/engine.png"
+	img, err := imgio.ImreadGray(path)
 	if err != nil {
-		t.Log(os.Stderr, "%v\n", err)
-	}
-	img, err := png.Decode(file)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s: %v\n", imagePath, err)
+		t.Errorf("Could not read image from path: %s", path)
 	}
 	return img
 }
 
-func tearDownLaplacianTestCase(t *testing.T, image image.Image, path string) {
-	f, err := os.Create(path)
+func setupTestCaseRGBALapl(t *testing.T) *image.RGBA {
+	path := "../res/engine.png"
+	img, err := imgio.ImreadRGBA(path)
 	if err != nil {
-		panic(err)
+		t.Errorf("Could not read image from path: %s", path)
 	}
-	defer f.Close()
-	png.Encode(f, image)
+	return img
+}
+
+func tearDownTestCaseLapl(t *testing.T, img image.Image, path string) {
+	err := imgio.Imwrite(img, path)
+	if err != nil {
+		t.Errorf("Could not write image to path: %s", path)
+	}
 }
 
 func Test_Acceptance_LaplacianGrayK4(t *testing.T) {
-	img := setupTestLaplacianCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGrayLapl(t)
 	laplacian, _ := LaplacianGray(gray, padding.BorderReflect, K4)
-	tearDownLaplacianTestCase(t, laplacian, "../res/sobel/laplacianGrayK4.png")
+	tearDownTestCaseLapl(t, laplacian, "../res/edge/laplacianGrayK4.png")
 }
 
 func Test_Acceptance_LaplacianGrayK8(t *testing.T) {
-	img := setupTestLaplacianCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
-	gray := grayscale.Grayscale(rgba)
+	gray := setupTestCaseGrayLapl(t)
 	laplacian, _ := LaplacianGray(gray, padding.BorderReflect, K8)
-	tearDownLaplacianTestCase(t, laplacian, "../res/sobel/laplacianGrayK8.png")
+	tearDownTestCaseLapl(t, laplacian, "../res/edge/laplacianGrayK8.png")
 }
 
 func Test_Acceptance_LaplacianRGBAK4(t *testing.T) {
-	img := setupTestLaplacianCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBALapl(t)
 	laplacian, _ := LaplacianRGBA(rgba, padding.BorderReflect, K4)
-	tearDownLaplacianTestCase(t, laplacian, "../res/sobel/laplacianRGBAK4.png")
+	tearDownTestCaseLapl(t, laplacian, "../res/edge/laplacianRGBAK4.png")
 }
 
 func Test_Acceptance_LaplacianRGBAK8(t *testing.T) {
-	img := setupTestLaplacianCase(t)
-	bounds := img.Bounds()
-	rgba := image.NewRGBA(image.Rect(0, 0, bounds.Dx(), bounds.Dy()))
-	draw.Draw(rgba, rgba.Bounds(), img, bounds.Min, draw.Src)
+	rgba := setupTestCaseRGBALapl(t)
 	laplacian, _ := LaplacianRGBA(rgba, padding.BorderReflect, K8)
-	tearDownLaplacianTestCase(t, laplacian, "../res/sobel/laplacianRGBAK8.png")
+	tearDownTestCaseLapl(t, laplacian, "../res/edge/laplacianRGBAK8.png")
 }
 
 // ---------------------------------------------------------------------------------
