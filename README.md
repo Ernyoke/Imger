@@ -1,6 +1,6 @@
 # Imger
 
-The repository contains a collection of image processing algorithms written in pure Go. The packages are under development, their API may change over time.
+This repository contains a collection of image processing algorithms written in pure Go. The packages are under development, their API may change over time.
 
 ## Currently supported
 * IO (ImreadGray, ImreadGray16, ImreadRGBA, ImreadRGBA64, Imwrite). Supported extensions: jpg, jpeg, png
@@ -12,7 +12,7 @@ The repository contains a collection of image processing algorithms written in p
 * Edge detection (Sobel, Laplacian)
 * Resize (Nearest Neighbour, Linear, Catmull-Rom, Lanczos)
 
-## Instal
+## Install
 ```
 go get -u https://github.com/Ernyoke/Imger/...
 ```
