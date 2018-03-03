@@ -33,7 +33,7 @@ func TestGrayScale(t *testing.T) {
 	}, 3, 3}
 	conv, _ := ConvolveGray(&gray, &kernel, image.Point{1, 1}, padding.BorderConstant)
 	size := conv.Bounds().Size()
-	utils.ForEchPixel(size, func(x, y int) {
+	utils.ForEachPixel(size, func(x, y int) {
 		pExp := expected.GrayAt(x, y).Y
 		pRes := conv.GrayAt(x, y).Y
 		if pExp != pRes {

@@ -8,17 +8,17 @@ import (
 	"image"
 )
 
-var horizontalKernel = convolution.Kernel{[][]float64{
+var horizontalKernel = convolution.Kernel{Content: [][]float64{
 	{-1, 0, 1},
 	{-2, 0, 2},
 	{-1, 0, 1},
-}, 3, 3}
+}, Width: 3, Height: 3}
 
-var verticalKernel = convolution.Kernel{[][]float64{
+var verticalKernel = convolution.Kernel{Content: [][]float64{
 	{-1, -2, -1},
 	{0, 0, 0},
 	{1, 2, 1},
-}, 3, 3}
+}, Width: 3, Height: 3}
 
 func HorizontalSobelGray(gray *image.Gray, border padding.Border) (*image.Gray, error) {
 	return convolution.ConvolveGray(gray, &horizontalKernel, image.Point{X: 1, Y: 1}, border)
