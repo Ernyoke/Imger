@@ -1,5 +1,7 @@
 # Imger
 
+The repository contains a collection of image processing algorithms written in pure Go. The packages are under development, their API may change over time.
+
 ## Currently supported
 * IO (ImreadGray, ImreadGray16, ImreadRGBA, ImreadRGBA64, Imwrite). Supported extensions: jpg, jpeg, png
 * Grayscale
@@ -10,8 +12,16 @@
 * Edge detection (Sobel, Laplacian)
 * Resize (Nearest Neighbour, Linear, Catmull-Rom, Lanczos)
 
+## Instal
+```
+go get -u https://github.com/Ernyoke/Imger/...
+```
+
 ## Merge into ```master```
 ```
 git checkout master
 git merge --no-commit --no-ff dev
 ```
+
+## License
+This project is under the MIT License. See the LICENSE file for the full license text.
