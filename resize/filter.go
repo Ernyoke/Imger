@@ -7,12 +7,10 @@ type Filter interface {
 	getS() float64
 }
 
-type Linear struct {
-	S float64
-}
+type Linear struct {}
 
 func NewLinear() *Linear {
-	return &Linear{ S: 1.0 }
+	return &Linear{}
 }
 
 func (r *Linear) interpolate(x float64) float64 {
@@ -23,63 +21,47 @@ func (r *Linear) interpolate(x float64) float64 {
 	return 0
 }
 
-func (r* Linear) getS() float64 {
-	return r.S
+func (r *Linear) getS() float64 {
+	return 1.0
 }
 
-type CatmullRom struct {
-	S float64
-}
+type CatmullRom struct {}
 
 func NewCatmullRom() *CatmullRom {
-	return &CatmullRom{ S: 2.0 }
+	return &CatmullRom{}
 }
 
 func (r *CatmullRom) interpolate(x float64) float64 {
 	b := 0.0
 	c := 0.5
-	var w [4]float64
 	x = math.Abs(x)
 
 	if x < 1.0 {
-		w[0] = 0
-		w[1] = 6 - 2*b
-		w[2] = (-18 + 12*b + 6*c) * x * x
-		w[3] = (12 - 9*b - 6*c) * x * x * x
+		return (6 - 2*b + (-18+12*b+6*c)*math.Pow(x, 2) + (12-9*b-6*c)*math.Pow(x, 3)) / 6
 	} else if x <= 2.0 {
-		w[0] = 8*b + 24*c
-		w[1] = (-12*b - 48*c) * x
-		w[2] = (6*b + 30*c) * x * x
-		w[3] = (-b - 6*c) * x * x * x
-	} else {
-		return 0
+		return (8*b + 24*c + (-12*b-48*c)*x + (6*b+30*c)*math.Pow(x, 2) + (-b-6*c)*math.Pow(x, 3)) / 6
 	}
-	return (w[0] + w[1] + w[2] + w[3]) / 6
+	return 0
 }
 
-func (r* CatmullRom) getS() float64 {
-	return r.S
+func (r *CatmullRom) getS() float64 {
+	return 2.0
 }
 
-type Lanczos struct {
-	S float64
-}
+type Lanczos struct {}
 
 func NewLanczos() *Lanczos {
-	return &Lanczos{ S: 3.0 }
+	return &Lanczos{}
 }
 
 func (r *Lanczos) interpolate(x float64) float64 {
 	x = math.Abs(x)
-	if x == 0 {
-		return 1.0
-	} else if x < 3.0 {
+	if x > 0.0 && x < 3.0 {
 		return (3.0 * math.Sin(math.Pi*x) * math.Sin(math.Pi*(x/3.0))) / (math.Pi * math.Pi * x * x)
 	}
 	return 0.0
 }
 
-func (r* Lanczos) getS() float64 {
-	return r.S
+func (r *Lanczos) getS() float64 {
+	return 3.0
 }
-
