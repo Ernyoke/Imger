@@ -44,6 +44,16 @@ func SobelGray(img *image.Gray, border padding.Border) (*image.Gray, error) {
 	return res, nil
 }
 
+func HorizontalSobelRGBA(img *image.RGBA, border padding.Border) (*image.Gray, error) {
+	gray := grayscale.Grayscale(img)
+	return convolution.ConvolveGray(gray, &horizontalKernel, image.Point{X: 1, Y: 1}, border)
+}
+
+func VerticalSobelRGBA(img *image.RGBA, border padding.Border) (*image.Gray, error) {
+	gray := grayscale.Grayscale(img)
+	return convolution.ConvolveGray(gray, &verticalKernel, image.Point{X: 1, Y: 1}, border)
+}
+
 func SobelRGBA(img *image.RGBA, border padding.Border) (*image.Gray, error) {
 	gray := grayscale.Grayscale(img)
 	return SobelGray(gray, border)
