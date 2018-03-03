@@ -7,6 +7,7 @@
 * Convolution
 * Blur (Average - Box, Gaussian)
 * Edge detection (Sobel, Laplacian)
+* Resize (Nearest Neighbour, Linear, Catmull-Rom, Lanczos)
 
 ## Merge into ```master```
 ```
