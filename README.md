@@ -17,7 +17,7 @@ This repository contains a collection of image processing algorithms written in 
 go get -u https://github.com/Ernyoke/Imger/...
 ```
 
-## Test and examples
+## Tests and examples
 You can find tests and examples for every package on the `dev` branch.
 
 ## License
