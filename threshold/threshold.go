@@ -133,21 +133,17 @@ func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, err
 func threshold(img *image.Gray, setPixel func(*image.Gray, int, int)) *image.Gray {
 	size := img.Bounds().Size()
 	gray := image.NewGray(img.Bounds())
-	for x := 0; x < size.X; x++ {
-		for y := 0; y < size.Y; y++ {
-			setPixel(gray, x, y)
-		}
-	}
+	utils.ForEachPixel(size, func(x, y int) {
+		setPixel(gray, x, y)
+	})
 	return gray
 }
 
 func threshold16(img *image.Gray16, setPixel16 func(*image.Gray16, int, int)) *image.Gray16 {
 	size := img.Bounds().Size()
 	gray := image.NewGray16(img.Bounds())
-	for x := 0; x < size.X; x++ {
-		for y := 0; y < size.Y; y++ {
-			setPixel16(gray, x, y)
-		}
-	}
+	utils.ForEachPixel(size, func(x, y int) {
+		setPixel16(gray, x, y)
+	})
 	return gray
 }

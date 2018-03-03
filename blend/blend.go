@@ -14,7 +14,7 @@ func AddGray(img1 *image.Gray, img2 *image.Gray) (*image.Gray, error) {
 		return nil, errors.New("the size of the two image does not match")
 	}
 	res := image.NewGray(img1.Bounds())
-	utils.ForEchPixel(size1, func(x int, y int) {
+	utils.ForEachPixel(size1, func(x int, y int) {
 		p1 := img1.GrayAt(x, y)
 		p2 := img2.GrayAt(x, y)
 		sum := uint16(p1.Y) + uint16(p2.Y)
@@ -33,7 +33,7 @@ func AddGrayWeighted(img1 *image.Gray, w1 float64, img2 *image.Gray, w2 float64)
 		return nil, errors.New("the size of the two image does not match")
 	}
 	res := image.NewGray(img1.Bounds())
-	utils.ForEchPixel(size1, func(x int, y int) {
+	utils.ForEachPixel(size1, func(x int, y int) {
 		p1 := img1.GrayAt(x, y)
 		p2 := img2.GrayAt(x, y)
 		sum := float64(p1.Y)*w1 + float64(p2.Y)*w2
