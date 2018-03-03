@@ -3,7 +3,7 @@ package grayscale
 import (
 	"image"
 	"testing"
-	"github.com/ernyoke/imger/imgio"
+	"github.com/Ernyoke/Imger/imgio"
 )
 
 // -----------------------------Acceptance tests------------------------------------

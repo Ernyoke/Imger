@@ -3,7 +3,7 @@ package grayscale
 import (
 	"image"
 	"image/color"
-	"github.com/ernyoke/imger/utils"
+	"github.com/Ernyoke/Imger/utils"
 )
 
 func Grayscale(img image.Image) *image.Gray {
