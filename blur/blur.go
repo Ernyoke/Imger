@@ -2,8 +2,8 @@ package blur
 
 import (
 	"errors"
-	"github.com/ernyoke/imger/convolution"
-	"github.com/ernyoke/imger/padding"
+	"github.com/Ernyoke/Imger/convolution"
+	"github.com/Ernyoke/Imger/padding"
 	"image"
 	"math"
 )

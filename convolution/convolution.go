@@ -1,8 +1,8 @@
 package convolution
 
 import (
-	"github.com/ernyoke/imger/padding"
-	"github.com/ernyoke/imger/utils"
+	"github.com/Ernyoke/Imger/padding"
+	"github.com/Ernyoke/Imger/utils"
 	"image"
 	"image/color"
 )

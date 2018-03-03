@@ -1,24 +1,24 @@
 package edgedetection
 
 import (
-	"github.com/ernyoke/imger/blend"
-	"github.com/ernyoke/imger/convolution"
-	"github.com/ernyoke/imger/grayscale"
-	"github.com/ernyoke/imger/padding"
+	"github.com/Ernyoke/Imger/blend"
+	"github.com/Ernyoke/Imger/convolution"
+	"github.com/Ernyoke/Imger/grayscale"
+	"github.com/Ernyoke/Imger/padding"
 	"image"
 )
 
-var horizontalKernel = convolution.Kernel{[][]float64{
+var horizontalKernel = convolution.Kernel{Content: [][]float64{
 	{-1, 0, 1},
 	{-2, 0, 2},
 	{-1, 0, 1},
-}, 3, 3}
+}, Width: 3, Height: 3}
 
-var verticalKernel = convolution.Kernel{[][]float64{
+var verticalKernel = convolution.Kernel{Content: [][]float64{
 	{-1, -2, -1},
 	{0, 0, 0},
 	{1, 2, 1},
-}, 3, 3}
+}, Width: 3, Height: 3}
 
 func HorizontalSobelGray(gray *image.Gray, border padding.Border) (*image.Gray, error) {
 	return convolution.ConvolveGray(gray, &horizontalKernel, image.Point{X: 1, Y: 1}, border)

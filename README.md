@@ -1,4 +1,5 @@
 # Imger
+[![Build Status](https://travis-ci.org/Ernyoke/Imger.svg?branch=dev)](https://travis-ci.org/Ernyoke/Imger)
 
 This repository contains a collection of image processing algorithms written in pure Go. The packages are under development, their API may change over time.
 

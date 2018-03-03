@@ -2,23 +2,23 @@ package edgedetection
 
 import (
 	"errors"
-	"github.com/ernyoke/imger/convolution"
-	"github.com/ernyoke/imger/grayscale"
-	"github.com/ernyoke/imger/padding"
+	"github.com/Ernyoke/Imger/convolution"
+	"github.com/Ernyoke/Imger/grayscale"
+	"github.com/Ernyoke/Imger/padding"
 	"image"
 )
 
-var kernel4 = convolution.Kernel{[][]float64{
+var kernel4 = convolution.Kernel{Content: [][]float64{
 	{0, 1, 0},
 	{1, -4, 1},
 	{0, 1, 0},
-}, 3, 3}
+}, Width: 3, Height: 3}
 
-var kernel8 = convolution.Kernel{[][]float64{
+var kernel8 = convolution.Kernel{Content: [][]float64{
 	{1, 1, 1},
 	{1, -8, 1},
 	{1, 1, 1},
-}, 3, 3}
+}, Width: 3, Height: 3}
 
 type LaplacianKernel int
 
