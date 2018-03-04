@@ -81,10 +81,6 @@ func resizeLanczosGray(img *image.Gray, fx float64, fy float64) (*image.Gray, er
 }
 
 func resizeHorizontalGray(img *image.Gray, fx float64, filter Filter) (*image.Gray, error) {
-	if fx < 1.0 {
-		return nil, errors.New("size must be bigger than 1.0")
-	}
-
 	originalSize := img.Bounds().Size()
 	newWidth := int(float64(originalSize.X) * fx)
 	res := image.NewGray(image.Rect(0, 0, newWidth, originalSize.Y))
@@ -111,10 +107,6 @@ func resizeHorizontalGray(img *image.Gray, fx float64, filter Filter) (*image.Gr
 }
 
 func resizeVerticalGray(img *image.Gray, fy float64, filter Filter) (*image.Gray, error) {
-	if fy < 1.0 {
-		return nil, errors.New("size must be bigger than 1.0")
-	}
-
 	originalSize := img.Bounds().Size()
 	newHeight := int(float64(originalSize.Y) * fy)
 	res := image.NewGray(image.Rect(0, 0, originalSize.X, newHeight))
@@ -204,10 +196,6 @@ func resizeLanczosRGBA(img *image.RGBA, fx float64, fy float64) (*image.RGBA, er
 }
 
 func resizeHorizontalRGBA(img *image.RGBA, fx float64, filter Filter) (*image.RGBA, error) {
-	if fx < 1.0 {
-		return nil, errors.New("size must be bigger than 1.0")
-	}
-
 	originalSize := img.Bounds().Size()
 	newWidth := int(float64(originalSize.X) * fx)
 	res := image.NewRGBA(image.Rect(0, 0, newWidth, originalSize.Y))
@@ -243,10 +231,6 @@ func resizeHorizontalRGBA(img *image.RGBA, fx float64, filter Filter) (*image.RG
 }
 
 func resizeVerticalRGBA(img *image.RGBA, fy float64, filter Filter) (*image.RGBA, error) {
-	if fy < 1.0 {
-		return nil, errors.New("size must be bigger than 1.0")
-	}
-
 	originalSize := img.Bounds().Size()
 	newHeight := int(float64(originalSize.Y) * fy)
 	res := image.NewRGBA(image.Rect(0, 0, originalSize.X, newHeight))
@@ -282,6 +266,9 @@ func resizeVerticalRGBA(img *image.RGBA, fy float64, filter Filter) (*image.RGBA
 }
 
 func ResizeGray(img *image.Gray, fx float64, fy float64, interpolation Interpolation) (*image.Gray, error) {
+	if fx < 0 || fy < 0 {
+		return nil, errors.New("scale value should be greater then 0")
+	}
 	switch interpolation {
 	case InterNearest:
 		return resizeNearestGray(img, fx, fy)
@@ -296,6 +283,9 @@ func ResizeGray(img *image.Gray, fx float64, fy float64, interpolation Interpola
 }
 
 func ResizeRGBA(img *image.RGBA, fx float64, fy float64, interpolation Interpolation) (*image.RGBA, error) {
+	if fx < 0 || fy < 0 {
+		return nil, errors.New("scale value should be greater then 0")
+	}
 	switch interpolation {
 	case InterNearest:
 		return resizeNearestRGBA(img, fx, fy)
