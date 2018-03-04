@@ -8,12 +8,17 @@ import (
 	"math"
 )
 
+// Interpolation method types
 type Interpolation int
 
 const (
+	// Takes the nearest pixel.
 	InterNearest Interpolation = iota
+	// Linear interpolation between two pixels. More info: https://en.wikipedia.org/wiki/Linear_interpolation
 	InterLinear
+	// Catmull-Rom resampling. More info: https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline
 	InterCatmullRom
+	// Lanczos resampling. More info: https://en.wikipedia.org/wiki/Lanczos_resampling
 	InterLanczos
 )
 
@@ -86,7 +91,7 @@ func resizeHorizontalGray(img *image.Gray, fx float64, filter Filter) (*image.Gr
 	res := image.NewGray(image.Rect(0, 0, newWidth, originalSize.Y))
 	dfx := 1 / fx
 
-	radius := math.Ceil(fx * filter.getS())
+	radius := math.Ceil(fx * filter.GetS())
 	for y := 0; y < originalSize.Y; y++ {
 		for x := 0; x < newWidth; x++ {
 			ix := (float64(x)+0.5)*dfx - 0.5
@@ -95,7 +100,7 @@ func resizeHorizontalGray(img *image.Gray, fx float64, filter Filter) (*image.Gr
 			var fPix float64
 			var sum float64
 			for i := start; i < end; i++ {
-				filterValue := filter.interpolate(float64(i)-ix) / fx
+				filterValue := filter.Interpolate(float64(i)-ix) / fx
 				pix := img.GrayAt(i, y)
 				fPix += float64(pix.Y) * filterValue
 				sum += filterValue
@@ -112,7 +117,7 @@ func resizeVerticalGray(img *image.Gray, fy float64, filter Filter) (*image.Gray
 	res := image.NewGray(image.Rect(0, 0, originalSize.X, newHeight))
 	dfy := 1 / fy
 
-	radius := math.Ceil(fy * filter.getS())
+	radius := math.Ceil(fy * filter.GetS())
 	for y := 0; y < newHeight; y++ {
 		iy := (float64(y)+0.5)*dfy - 0.5
 		start := utils.ClampInt(int(iy-radius+0.5), 0, originalSize.Y)
@@ -121,7 +126,7 @@ func resizeVerticalGray(img *image.Gray, fy float64, filter Filter) (*image.Gray
 			var sum float64
 			var fPix float64
 			for i := start; i < end; i++ {
-				filterValue := filter.interpolate(float64(i)-iy) / fy
+				filterValue := filter.Interpolate(float64(i)-iy) / fy
 				pix := img.GrayAt(x, i)
 				fPix += float64(pix.Y) * filterValue
 				sum += filterValue
@@ -201,7 +206,7 @@ func resizeHorizontalRGBA(img *image.RGBA, fx float64, filter Filter) (*image.RG
 	res := image.NewRGBA(image.Rect(0, 0, newWidth, originalSize.Y))
 	dfx := 1 / fx
 
-	radius := math.Ceil(fx * filter.getS())
+	radius := math.Ceil(fx * filter.GetS())
 	for y := 0; y < originalSize.Y; y++ {
 		for x := 0; x < newWidth; x++ {
 			ix := (float64(x)+0.5)*dfx - 0.5
@@ -213,7 +218,7 @@ func resizeHorizontalRGBA(img *image.RGBA, fx float64, filter Filter) (*image.RG
 			var fPixA float64
 			var sum float64
 			for i := start; i < end; i++ {
-				filterValue := filter.interpolate(float64(i)-ix) / fx
+				filterValue := filter.Interpolate(float64(i)-ix) / fx
 				pix := img.RGBAAt(i, y)
 				fPixR += float64(pix.R) * filterValue
 				fPixG += float64(pix.G) * filterValue
@@ -236,7 +241,7 @@ func resizeVerticalRGBA(img *image.RGBA, fy float64, filter Filter) (*image.RGBA
 	res := image.NewRGBA(image.Rect(0, 0, originalSize.X, newHeight))
 	dfy := 1 / fy
 
-	radius := math.Ceil(fy * filter.getS())
+	radius := math.Ceil(fy * filter.GetS())
 	for y := 0; y < newHeight; y++ {
 		iy := (float64(y)+0.5)*dfy - 0.5
 		start := utils.ClampInt(int(iy-radius+0.5), 0, originalSize.Y)
@@ -248,7 +253,7 @@ func resizeVerticalRGBA(img *image.RGBA, fy float64, filter Filter) (*image.RGBA
 			var fPixA float64
 			var sum float64
 			for i := start; i < end; i++ {
-				filterValue := filter.interpolate(float64(i)-iy) / fy
+				filterValue := filter.Interpolate(float64(i)-iy) / fy
 				pix := img.RGBAAt(x, i)
 				fPixR += float64(pix.R) * filterValue
 				fPixG += float64(pix.G) * filterValue
@@ -265,6 +270,14 @@ func resizeVerticalRGBA(img *image.RGBA, fy float64, filter Filter) (*image.RGBA
 	return res, nil
 }
 
+// Resize an grayscale (Gray) image.
+// Input parameters: rbga imaga which will be resized; fx, fy scaling factors, their value has to be a positive float,
+// the new size of the image will be computed as originalWidth * fx and originalHeight * fy; interpolation method,
+// currently the following methods are supported: InterNearest, InterLinear, InterCatmullRom, InterLanczos.
+// Example of usage:
+//
+//		result := Imger.ResizeGray(img, 2.5, 3.5, Imger.InterLinear)
+//
 func ResizeGray(img *image.Gray, fx float64, fy float64, interpolation Interpolation) (*image.Gray, error) {
 	if fx < 0 || fy < 0 {
 		return nil, errors.New("scale value should be greater then 0")
@@ -282,6 +295,14 @@ func ResizeGray(img *image.Gray, fx float64, fy float64, interpolation Interpola
 	return nil, errors.New("invalid interpolation method")
 }
 
+// Resize an RGBA image.
+// Input parameters: rbga imaga which will be resized; fx, fy scaling factors, their value has to be a positive float,
+// the new size of the image will be computed as originalWidth * fx and originalHeight * fy; interpolation method,
+// currently the following methods are supported: InterNearest, InterLinear, InterCatmullRom, InterLanczos.
+// Example of usage:
+//
+//		result := Imger.ResizeRGBA(img, 2.5, 3.5, Imger.InterLinear)
+//
 func ResizeRGBA(img *image.RGBA, fx float64, fy float64, interpolation Interpolation) (*image.RGBA, error) {
 	if fx < 0 || fy < 0 {
 		return nil, errors.New("scale value should be greater then 0")
