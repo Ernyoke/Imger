@@ -9,24 +9,21 @@ import (
 
 // ---------------------------------Unit tests------------------------------------
 func Test_ConvolveGray_0Kernel(t *testing.T) {
-	var gray image.Gray
-	gray = image.Gray{
+	gray := image.Gray{
 		Rect:   image.Rect(0, 0, 3, 3),
 		Stride: 3,
 		Pix: []uint8{
 			0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 		},
 	}
-	var expected image.Gray
-	expected = image.Gray{
+	expected := image.Gray{
 		Rect:   image.Rect(0, 0, 3, 3),
 		Stride: 3,
 		Pix: []uint8{
 			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		},
 	}
-	var kernel Kernel
-	kernel = Kernel{[][]float64{
+	kernel := Kernel{[][]float64{
 		{0, 0, 0},
 		{0, 0, 0},
 		{0, 0, 0},

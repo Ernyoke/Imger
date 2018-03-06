@@ -125,3 +125,4 @@ func IsEqualFloat64(x float64, y float64) bool {
 	eps := 0.0000001
 	return math.Abs(x-y) <= eps
 }
+
