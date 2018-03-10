@@ -8,6 +8,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"errors"
 )
 
 // CannyGray computes the edges of a given grayscale image using the Canny edge detection algorithm. The returned image
@@ -15,29 +16,33 @@ import (
 func CannyGray(img *image.Gray, lower float64, upper float64, kernelSize uint) (*image.Gray, error) {
 
 	// blur the image using Gaussian filter
-	blurred, error := blur.GaussianBlurGray(img, float64(kernelSize), 3, padding.BorderReflect)
-	if error != nil {
-		return nil, error
+	blurred, err := blur.GaussianBlurGray(img, float64(kernelSize), 1, padding.BorderConstant)
+	if err != nil {
+		return nil, err
 	}
 
 	// get vertical and horizontal edges using Sobel filter
-	vertical, error := VerticalSobelGray(blurred, padding.BorderReflect)
-	if error != nil {
-		return nil, error
+	vertical, err := VerticalSobelGray(blurred, padding.BorderConstant)
+	if err != nil {
+		return nil, err
 	}
-	horizontal, error := HorizontalSobelGray(blurred, padding.BorderReflect)
-	if error != nil {
-		return nil, error
+	horizontal, err := HorizontalSobelGray(blurred, padding.BorderConstant)
+	if err != nil {
+		return nil, err
 	}
 
 	// calculate the gradient values and orientation angles for each pixel
-	g, theta := gradientAndOrientation(vertical, horizontal)
+	g, theta, err := gradientAndOrientation(vertical, horizontal)
+	if err != nil {
+		return nil, err
+	}
 
 	// "thin" the edges using non-max suppression procedure
 	thinEdges := nonMaxSuppression(blurred, g, theta)
 
 	// hysteresis
 	hist := threshold(thinEdges, g, lower, upper)
+	//_ = threshold(thinEdges, g, lower, upper)
 
 	return hist, nil
 }
@@ -48,45 +53,49 @@ func CannyRGBA(img *image.RGBA, lower float64, upper float64, kernelSize uint) (
 	return CannyGray(grayscale.Grayscale(img), lower, upper, kernelSize)
 }
 
-func gradientAndOrientation(vertical *image.Gray, horizontal *image.Gray) ([][]float64, [][]float64) {
+func gradientAndOrientation(vertical *image.Gray, horizontal *image.Gray) ([][]float64, [][]float64, error) {
 	size := vertical.Bounds().Size()
 	theta := make([][]float64, size.X)
 	g := make([][]float64, size.X)
 	for x := 0; x < size.X; x++ {
 		theta[x] = make([]float64, size.Y)
 		g[x] = make([]float64, size.Y)
+		err := errors.New("none")
 		for y := 0; y < size.Y; y++ {
 			px := float64(vertical.GrayAt(x, y).Y)
 			py := float64(horizontal.GrayAt(x, y).Y)
 			g[x][y] = math.Hypot(px, py)
-			theta[x][y] = orientation(math.Atan2(float64(vertical.GrayAt(x, y).Y), float64(horizontal.GrayAt(x, y).Y)))
+			theta[x][y], err = orientation(math.Atan2(float64(vertical.GrayAt(x, y).Y), float64(horizontal.GrayAt(x, y).Y)))
+			if err != nil {
+				return nil, nil, err
+			}
 		}
 	}
-	return g, theta
+	return g, theta, nil
 }
 
 func isBetween(val float64, lowerBound float64, upperBound float64) bool {
 	return val >= lowerBound && val < upperBound
 }
 
-func orientation(x float64) float64 {
+func orientation(x float64) (float64, error) {
 	angle := 180 * x / math.Pi
-	if isBetween(angle, -22.5, 22.5) || isBetween(angle, -180, -157.5) {
-		return 0
-	}
-	if isBetween(angle, 22.5, 67.5) || isBetween(angle, -157.5, -112.5) {
-		return 0
+	if isBetween(angle, 0, 22.5) || isBetween(angle, -180, -157.5) {
+		return 0, nil
 	}
 	if isBetween(angle, 157.5, 180) || isBetween(angle, -22.5, 0) {
-		return 45
+		return 0, nil
+	}
+	if isBetween(angle, 22.5, 67.5) || isBetween(angle, -157.5, -112.5) {
+		return 45, nil
 	}
 	if isBetween(angle, 67.5, 112.5) || isBetween(angle, -112.5, -67.5) {
-		return 90
+		return 90, nil
 	}
 	if isBetween(angle, 112.5, 157.5) || isBetween(angle, -67.5, -22.5) {
-		return 135
+		return 135, nil
 	}
-	return -1
+	return 0, errors.New("invalid angle")
 }
 
 func isBiggerThenNeighbours(val float64, neighbour1 float64, neighbour2 float64) bool {
@@ -101,24 +110,22 @@ func nonMaxSuppression(img *image.Gray, g [][]float64, theta [][]float64) *image
 		if x > 0 && x < size.X-1 && y > 0 && y < size.Y-1 {
 			switch theta[x][y] {
 			case 45:
-				if isBiggerThenNeighbours(g[x][y], g[x-1][y-1], g[x+1][y+1]) {
-					isLocalMax = true
-				}
-			case 90:
-				if isBiggerThenNeighbours(g[x][y], g[x][y+1], g[x][y-1]) {
-					isLocalMax = true
-				}
-			case 135:
 				if isBiggerThenNeighbours(g[x][y], g[x+1][y-1], g[x-1][y+1]) {
 					isLocalMax = true
 				}
-			case 0:
+			case 90:
 				if isBiggerThenNeighbours(g[x][y], g[x+1][y], g[x-1][y]) {
 					isLocalMax = true
 				}
+			case 135:
+				if isBiggerThenNeighbours(g[x][y], g[x-1][y-1], g[x+1][y+1]) {
+					isLocalMax = true
+				}
+			case 0:
+				if isBiggerThenNeighbours(g[x][y], g[x][y+1], g[x][y-1]) {
+					isLocalMax = true
+				}
 			}
-		} else {
-			isLocalMax = true
 		}
 		if isLocalMax {
 			thinEdges.SetGray(x, y, color.Gray{Y: utils.MaxUint8})
@@ -143,7 +150,7 @@ func threshold(img *image.Gray, g [][]float64, lowerBound float64, upperBound fl
 	})
 	utils.ForEachPixel(size, func(x int, y int) {
 		p := img.GrayAt(x, y)
-		if p.Y == utils.MaxUint8 {
+		if p.Y == utils.MaxUint8  && x > 0 && x < size.X - 1 && y > 0 && y < size.Y - 1 {
 			if g[x][y] >= lowerBound && g[x][y] <= upperBound {
 				if res.GrayAt(x-1, y-1).Y == utils.MaxUint8 || res.GrayAt(x-1, y).Y == utils.MaxUint8 ||
 					res.GrayAt(x-1, y+1).Y == utils.MaxUint8 || res.GrayAt(x, y-1).Y == utils.MaxUint8 ||
