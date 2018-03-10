@@ -12,7 +12,7 @@ This repository contains a collection of image processing algorithms written in 
 * Image padding (BorderConstant, BorderReplicate, BorderReflect)
 * Convolution
 * Blur (Average - Box, Gaussian)
-* Edge detection (Sobel, Laplacian)
+* Edge detection (Sobel, Laplacian, Canny)
 * Resize (Nearest Neighbour, Linear, Catmull-Rom, Lanczos)
 
 ## Install
