@@ -17,7 +17,7 @@ This repository contains a collection of image processing algorithms written in 
 
 ## Install
 ```
-go get -u https://github.com/Ernyoke/Imger/...
+go get -u github.com/Ernyoke/Imger/...
 ```
 
 ## Merge into ```master```
