@@ -2,15 +2,16 @@ package edgedetection
 
 import (
 	"github.com/Ernyoke/Imger/blur"
+	"github.com/Ernyoke/Imger/grayscale"
 	"github.com/Ernyoke/Imger/padding"
 	"github.com/Ernyoke/Imger/utils"
 	"image"
 	"image/color"
 	"math"
-	"github.com/Ernyoke/Imger/grayscale"
 )
 
-// Computes the edges of a given image using the Canny edge detection algorithm.
+// CannyGray computes the edges of a given grayscale image using the Canny edge detection algorithm. The returned image
+// is a grayscale image represented on 8 bits.
 func CannyGray(img *image.Gray, lower float64, upper float64, kernelSize uint) (*image.Gray, error) {
 
 	// blur the image using Gaussian filter
@@ -41,6 +42,8 @@ func CannyGray(img *image.Gray, lower float64, upper float64, kernelSize uint) (
 	return hist, nil
 }
 
+// CannyRGBA computes the edges of a given RGBA image using the Canny edge detection algorithm. The returned image is a
+// grayscale image represented on 8 bits.
 func CannyRGBA(img *image.RGBA, lower float64, upper float64, kernelSize uint) (*image.Gray, error) {
 	return CannyGray(grayscale.Grayscale(img), lower, upper, kernelSize)
 }

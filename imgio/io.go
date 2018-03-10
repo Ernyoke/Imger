@@ -48,8 +48,8 @@ func encode(img image.Image, path string) error {
 	return errors.New("unsupported extension")
 }
 
-// reads the image from the given path and return a grayscale image.
-// Returns an error if the path is not readable or the specified resource does not exist.
+// ImreadGray reads the image from the given path and return a grayscale image. Returns an error if the path is not
+// readable or the specified resource does not exist.
 func ImreadGray(path string) (*image.Gray, error) {
 	img, err := decode(path)
 	if err != nil {
@@ -61,8 +61,8 @@ func ImreadGray(path string) (*image.Gray, error) {
 	return gray, nil
 }
 
-// reads the image from the given path and return a grayscale16 image.
-// Returns an error if the path is not readable or the specified resource does not exist.
+// ImreadGray16 reads the image from the given path and return a grayscale16 image. Returns an error if the path is not
+// readable or the specified resource does not exist.
 func ImreadGray16(path string) (*image.Gray16, error) {
 	img, err := decode(path)
 	if err != nil {
@@ -74,8 +74,8 @@ func ImreadGray16(path string) (*image.Gray16, error) {
 	return gray16, nil
 }
 
-// reads the image from the given path and return a RGBA image.
-// Returns an error if the path is not readable or the specified resource does not exist.
+// ImreadRGBA reads the image from the given path and return a RGBA image. Returns an error if the path is not readable
+// or the specified resource does not exist.
 func ImreadRGBA(path string) (*image.RGBA, error) {
 	img, err := decode(path)
 	if err != nil {
@@ -100,7 +100,8 @@ func ImreadRGBA64(path string) (*image.RGBA64, error) {
 	return rgba64, nil
 }
 
-// saves the image under the location specified by the "path" string. Returns an error if the location is not writable.
+// Imwrite saves the image under the location specified by the "path" string. Returns an error if the location is
+// not writable.
 func Imwrite(img image.Image, path string) error {
 	return encode(img, path)
 }
