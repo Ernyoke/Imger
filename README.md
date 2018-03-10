@@ -1,5 +1,7 @@
 # Imger
+[![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/anthonynsimon/bild/blob/master/LICENSE) 
 [![Build Status](https://travis-ci.org/Ernyoke/Imger.svg?branch=dev)](https://travis-ci.org/Ernyoke/Imger)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Ernyoke/Imger)](https://goreportcard.com/report/github.com/Ernyoke/Imger)
 
 This repository contains a collection of image processing algorithms written in pure Go. The packages are under development, their API may change over time.
 
@@ -10,12 +12,12 @@ This repository contains a collection of image processing algorithms written in 
 * Image padding (BorderConstant, BorderReplicate, BorderReflect)
 * Convolution
 * Blur (Average - Box, Gaussian)
-* Edge detection (Sobel, Laplacian)
+* Edge detection (Sobel, Laplacian, Canny)
 * Resize (Nearest Neighbour, Linear, Catmull-Rom, Lanczos)
 
 ## Install
 ```
-go get -u https://github.com/Ernyoke/Imger/...
+go get -u github.com/Ernyoke/Imger/...
 ```
 
 ## Tests and examples

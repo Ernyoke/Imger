@@ -8,6 +8,10 @@ import (
 	"math"
 )
 
+// Applies average blur to a grayscale image. The amount of bluring effect depends on the kernel size, where
+// both width and height can be specified. The anchor point specifies a point inside the kernel. The pixel value
+// will be updated after the convolution was done for the given area.
+// Border types supported: see convolution package.
 func BoxGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border padding.Border) (*image.Gray, error) {
 	kernel := generateBoxKernel(&kernelSize)
 	result, error := convolution.ConvolveGray(img, kernel.Normalize(), anchor, border)
@@ -17,6 +21,10 @@ func BoxGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border
 	return result, nil
 }
 
+// Applies average blur to an RGBA image. The amount of bluring effect depends on the kernel size, where
+// both width and height can be specified. The anchor point specifies a point inside the kernel. The pixel value
+// will be updated after the convolution was done for the given area.
+// Border types supported: see convolution package.
 func BoxRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, border padding.Border) (*image.RGBA, error) {
 	kernel := generateBoxKernel(&kernelSize)
 	result, error := convolution.ConvolveRGBA(img, kernel.Normalize(), anchor, border)
@@ -26,6 +34,9 @@ func BoxRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, border
 	return result, nil
 }
 
+// Applies average blur to a grayscale image. The amount of bluring effect depends on the kernel radius and sigma value.
+// The anchor point specifies a point inside the kernel. The pixel value  will be updated after the convolution was
+// done for the given area. For border types see convolution package.
 func GaussianBlurGray(img *image.Gray, radius float64, sigma float64, border padding.Border) (*image.Gray, error) {
 	if radius <= 0 {
 		return nil, errors.New("radius must be bigger then 0")
@@ -33,6 +44,9 @@ func GaussianBlurGray(img *image.Gray, radius float64, sigma float64, border pad
 	return convolution.ConvolveGray(img, generateGaussianKernel(radius, sigma).Normalize(), image.Point{X: int(math.Ceil(radius)), Y: int(math.Ceil(radius))}, border)
 }
 
+// Applies average blur to an RGBA image. The amount of bluring effect depends on the kernel radius and sigma value.
+// The anchor point specifies a point inside the kernel. The pixel value  will be updated after the convolution was
+// done for the given area. For border types see convolution package.
 func GaussianBlurRGBA(img *image.RGBA, radius float64, sigma float64, border padding.Border) (*image.RGBA, error) {
 	if radius <= 0 {
 		return nil, errors.New("radius must be bigger then 0")
