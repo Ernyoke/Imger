@@ -12,13 +12,13 @@ import (
 type Interpolation int
 
 const (
-	// Takes the nearest pixel.
+	// InterNearest: takes the nearest pixel.
 	InterNearest Interpolation = iota
-	// Linear interpolation between two pixels. More info: https://en.wikipedia.org/wiki/Linear_interpolation
+	// InterLinear: Linear interpolation between two pixels. More info: https://en.wikipedia.org/wiki/Linear_interpolation
 	InterLinear
-	// Catmull-Rom resampling. More info: https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline
+	// InterCatmullRom: Catmull-Rom resampling. More info: https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline
 	InterCatmullRom
-	// Lanczos resampling. More info: https://en.wikipedia.org/wiki/Lanczos_resampling
+	// InterLanczos: Lanczos resampling. More info: https://en.wikipedia.org/wiki/Lanczos_resampling
 	InterLanczos
 )
 
@@ -270,7 +270,7 @@ func resizeVerticalRGBA(img *image.RGBA, fy float64, filter Filter) (*image.RGBA
 	return res, nil
 }
 
-// Resize an grayscale (Gray) image.
+// ResizeGray resizes an grayscale (Gray) image.
 // Input parameters: rbga imaga which will be resized; fx, fy scaling factors, their value has to be a positive float,
 // the new size of the image will be computed as originalWidth * fx and originalHeight * fy; interpolation method,
 // currently the following methods are supported: InterNearest, InterLinear, InterCatmullRom, InterLanczos.
@@ -295,7 +295,7 @@ func ResizeGray(img *image.Gray, fx float64, fy float64, interpolation Interpola
 	return nil, errors.New("invalid interpolation method")
 }
 
-// Resize an RGBA image.
+// ResizeRGBA resizes an RGBA image.
 // Input parameters: rbga imaga which will be resized; fx, fy scaling factors, their value has to be a positive float,
 // the new size of the image will be computed as originalWidth * fx and originalHeight * fy; interpolation method,
 // currently the following methods are supported: InterNearest, InterLinear, InterCatmullRom, InterLanczos.

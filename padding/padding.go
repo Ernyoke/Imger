@@ -8,9 +8,13 @@ import (
 
 type Border int
 
+// Supported border types
 const (
+	// BorderConstant: xxxabcdefghxxx - where x is a black ( color.Gray{0} ) pixel
 	BorderConstant Border = iota
+	// BorderReplicate: aaaabcdefghhhh - replicates the nearest pixel
 	BorderReplicate
+	// BorderReflect: cbabcdefgfed - reflects the nearest pixel group
 	BorderReflect
 )
 
@@ -101,6 +105,14 @@ func rightPaddingReflect(img image.Image, padded image.Image, p Paddings, setPix
 	}
 }
 
+// PaddingGray appends padding to a given grayscale image. The size of the padding is calculated from the kernel size
+// and the anchor point. Supported border types are: BorderConstant, BorderReplicate, BorderReflect.
+// Example of usage:
+//
+//		 Imger.PaddingGray(img, {5, 5}, {1, 1}, BorderReflect)
+//
+// Note: this will add a 1px padding for the top and left borders of the image and a 3px padding fot the bottom and
+// right borders of the image.
 func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border Border) (*image.Gray, error) {
 	originalSize := img.Bounds().Size()
 	p, error := calculatePaddings(kernelSize, anchor)
@@ -151,6 +163,14 @@ func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, bo
 	return padded, nil
 }
 
+// PaddingRGBA appends padding to a given RGBA image. The size of the padding is calculated from the kernel size
+// and the anchor point. Supported border types are: BorderConstant, BorderReplicate, BorderReflect.
+// Example of usage:
+//
+// 		Imger.PaddingRGBA(img, {5, 5}, {1, 1}, BorderReflect)
+//
+// Note: this will add a 1px padding for the top and left borders of the image and a 3px padding fot the bottom and
+// right borders of the image.
 func PaddingRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, border Border) (*image.RGBA, error) {
 	originalSize := img.Bounds().Size()
 	p, error := calculatePaddings(kernelSize, anchor)

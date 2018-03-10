@@ -6,53 +6,53 @@ import (
 	"image/color"
 )
 
-const HSIZE = 256
-const CHANNELS = 3
+const hsize = 256
+const channels = 3
 
-// Computes the histogram for a grayscale image. Returns an array of 256 uint64 values containing distribution of
-// the pixel values.
-func HistogramGray(img *image.Gray) [HSIZE]uint64 {
-	var res [HSIZE]uint64
+// HistogramGray computes the histogram for a grayscale image. Returns an array of 256 uint64 values containing
+// distribution of the pixel values.
+func HistogramGray(img *image.Gray) [hsize]uint64 {
+	var res [hsize]uint64
 	utils.ForEachGrayPixel(img, func(pixel color.Gray) {
 		res[pixel.Y]++
 	})
 	return res
 }
 
-// Computes the histogram for red channel from an RGBA image. Returns an array of 256 uint64 values containing
-// distribution of the pixel values.
-func HistogramRGBARed(img *image.RGBA) [HSIZE]uint64 {
-	var res [HSIZE]uint64
+// HistogramRGBARed computes the histogram for red channel from an RGBA image. Returns an array of 256 uint64 values
+// containing distribution of the pixel values.
+func HistogramRGBARed(img *image.RGBA) [hsize]uint64 {
+	var res [hsize]uint64
 	utils.ForEachRGBARedPixel(img, func(red uint8) {
 		res[red]++
 	})
 	return res
 }
 
-// Computes the histogram for green channel from an RGBA image. Returns an array of 256 uint64 values containing
-// distribution of the pixel values.
-func HistogramRGBAGreen(img *image.RGBA) [HSIZE]uint64 {
-	var res [HSIZE]uint64
+// HistogramRGBAGreen computes the histogram for green channel from an RGBA image. Returns an array of 256 uint64 values
+// containing distribution of the pixel values.
+func HistogramRGBAGreen(img *image.RGBA) [hsize]uint64 {
+	var res [hsize]uint64
 	utils.ForEachRGBAGreenPixel(img, func(green uint8) {
 		res[green]++
 	})
 	return res
 }
 
-// Computes the histogram for blue channel from an RGBA image. Returns an array of 256 uint64 values containing
-// distribution of the pixel values.
-func HistogramRGBABlue(img *image.RGBA) [HSIZE]uint64 {
-	var res [HSIZE]uint64
+// HistogramRGBABlue computes the histogram for blue channel from an RGBA image. Returns an array of 256 uint64 values
+// containing distribution of the pixel values.
+func HistogramRGBABlue(img *image.RGBA) [hsize]uint64 {
+	var res [hsize]uint64
 	utils.ForEachRGBABluePixel(img, func(blue uint8) {
 		res[blue]++
 	})
 	return res
 }
 
-// Computes the histogram for a RGBA image. Returns an 2D (shape: [3][256]) array of uint64 values containing
-// distribution of color values from each RGBA channel.
-func HistogramRGBA(img *image.RGBA) [CHANNELS][HSIZE]uint64 {
-	var res [CHANNELS][HSIZE]uint64
+// HistogramRGBA computes the histogram for a RGBA image. Returns an 2D (shape: [3][256]) array of uint64 values
+// containing distribution of color values from each RGBA channel.
+func HistogramRGBA(img *image.RGBA) [channels][hsize]uint64 {
+	var res [channels][hsize]uint64
 	utils.ForEachRGBAPixel(img, func(pixel color.RGBA) {
 		res[0][pixel.R]++
 		res[1][pixel.G]++
@@ -61,7 +61,8 @@ func HistogramRGBA(img *image.RGBA) [CHANNELS][HSIZE]uint64 {
 	return res
 }
 
-// Computes and draws the histogram of a grayscale image. The size of the image is 256*scale width and 256*scale height.
+// DrawHistogramGray computes and draws the histogram of a grayscale image. The size of the image is 256*scale width
+// and 256*scale height.
 func DrawHistogramGray(img *image.Gray, size image.Point) *image.Gray {
 	h := HistogramGray(img)
 	normHist := normalizeHistogram(h, uint64(size.Y))
@@ -74,7 +75,8 @@ func DrawHistogramGray(img *image.Gray, size image.Point) *image.Gray {
 	return res
 }
 
-// Computes and draws the histogram of a RGBA image. The size of the image is 256*scale width and 256*scale height.
+// DrawHistogramRGBA computes and draws the histogram of a RGBA image. The size of the image is 256*scale width and
+// 256*scale height.
 func DrawHistogramRGBA(img *image.RGBA, size image.Point) *image.RGBA {
 	h := HistogramRGBA(img)
 	normRHist := normalizeHistogram(h[0], uint64(size.Y))
@@ -107,8 +109,8 @@ func DrawHistogramRGBA(img *image.RGBA, size image.Point) *image.RGBA {
 
 //---------------------------------------------------------------------------------------------
 func drawerFunc(size image.Point, getNormAt func(i int) uint64, setPixel func(x, y int)) {
-	scaleX := float64(size.X) / float64(HSIZE)
-	for i := 0; i < HSIZE; i++ {
+	scaleX := float64(size.X) / float64(hsize)
+	for i := 0; i < hsize; i++ {
 		for width := int(float64(i) * scaleX); width < int((float64(i)+1.0)*scaleX); width++ {
 			for height := size.Y; height >= size.Y-int(getNormAt(i)); height-- {
 				setPixel(width, height)
@@ -117,9 +119,9 @@ func drawerFunc(size image.Point, getNormAt func(i int) uint64, setPixel func(x,
 	}
 }
 
-func normalizeHistogram(v [HSIZE]uint64, maxHeight uint64) [HSIZE]uint64 {
+func normalizeHistogram(v [hsize]uint64, maxHeight uint64) [hsize]uint64 {
 	max := utils.GetMax(v[:])
-	var norm [HSIZE]uint64
+	var norm [hsize]uint64
 	for i := 0; i < len(v); i++ {
 		norm[i] = v[i] * maxHeight / max
 	}

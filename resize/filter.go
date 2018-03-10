@@ -2,21 +2,21 @@ package resize
 
 import "math"
 
-// Interface for resampling filters
+// Filter: Interface for resampling filters
 type Filter interface {
 	Interpolate(float64) float64
 	GetS() float64
 }
 
-// Struct for Linear filter
+// Linear: Struct for Linear filter
 type Linear struct{}
 
-// Creates a new Linear filter
+// NewLinear creates a new Linear filter
 func NewLinear() *Linear {
 	return &Linear{}
 }
 
-// Returns the coefficient for x value using Linear interpolation
+// Interpolate returns the coefficient for x value using Linear interpolation
 func (r *Linear) Interpolate(x float64) float64 {
 	x = math.Abs(x)
 	if x < 1.0 {
@@ -25,20 +25,20 @@ func (r *Linear) Interpolate(x float64) float64 {
 	return 0
 }
 
-// Returns the support value for Linear filter
+// GetS returns the support value for Linear filter
 func (r *Linear) GetS() float64 {
 	return 1.0
 }
 
-// Struct for Catmull-Rom filter
+// CatmullRom: Struct for Catmull-Rom filter
 type CatmullRom struct{}
 
-// Creates a new Catmull-Rom filter
+// NewCatmullRom creates a new Catmull-Rom filter
 func NewCatmullRom() *CatmullRom {
 	return &CatmullRom{}
 }
 
-// Returns the coefficient for x value using Catmull-Rom interpolation
+// Interpolate returns the coefficient for x value using Catmull-Rom interpolation
 func (r *CatmullRom) Interpolate(x float64) float64 {
 	b := 0.0
 	c := 0.5
@@ -52,20 +52,20 @@ func (r *CatmullRom) Interpolate(x float64) float64 {
 	return 0
 }
 
-// Returns the support value for Catmull-Rom filter
+// GetS returns the support value for Catmull-Rom filter
 func (r *CatmullRom) GetS() float64 {
 	return 2.0
 }
 
-// Struct for Lanczos filter
+// Lanczos: struct for Lanczos filter
 type Lanczos struct{}
 
-// Creates a new Lanczos filter
+// NewLanczos creates a new Lanczos filter
 func NewLanczos() *Lanczos {
 	return &Lanczos{}
 }
 
-// Returns the coefficient for x value using Lanczos interpolation
+// Interpolate returns the coefficient for x value using Lanczos interpolation
 func (r *Lanczos) Interpolate(x float64) float64 {
 	x = math.Abs(x)
 	if x > 0.0 && x < 3.0 {
@@ -74,7 +74,7 @@ func (r *Lanczos) Interpolate(x float64) float64 {
 	return 0.0
 }
 
-// Returns the support value for Lanczos filter
+// GetS returns the support value for Lanczos filter
 func (r *Lanczos) GetS() float64 {
 	return 3.0
 }
