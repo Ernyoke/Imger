@@ -17,7 +17,7 @@ func setupTestCaseGray(t *testing.T) *image.Gray {
 }
 
 func setupTestCaseRGBA(t *testing.T) *image.RGBA {
-	path := "../res/girl.jpg"
+	path := "../res/engine.png"
 	img, err := imgio.ImreadRGBA(path)
 	if err != nil {
 		t.Errorf("Could not read image from path: %s", path)
@@ -34,7 +34,7 @@ func tearDownTestCase(t *testing.T, img image.Image, path string) {
 
 func Test_Acceptance_CannyGray(t *testing.T) {
 	gray := setupTestCaseGray(t)
-	cny, err := CannyGray(gray, 10, 30, 5)
+	cny, err := CannyGray(gray, 15, 45, 5)
 	if err != nil {
 		t.Fatalf("Should not reach this point!")
 	}
@@ -43,7 +43,7 @@ func Test_Acceptance_CannyGray(t *testing.T) {
 
 func Test_Acceptance_CannyRGBA(t *testing.T) {
 	rgba := setupTestCaseRGBA(t)
-	cny, err := CannyRGBA(rgba, 10, 30, 5)
+	cny, err := CannyRGBA(rgba, 15, 45, 5)
 	if err != nil {
 		t.Fatalf("Should not reach this point!")
 	}
