@@ -2,13 +2,13 @@ package resize
 
 import "math"
 
-// Filter: Interface for resampling filters
+// Filter - Interface for resampling filters
 type Filter interface {
 	Interpolate(float64) float64
 	GetS() float64
 }
 
-// Linear: Struct for Linear filter
+// Linear - Struct for Linear filter
 type Linear struct{}
 
 // NewLinear creates a new Linear filter

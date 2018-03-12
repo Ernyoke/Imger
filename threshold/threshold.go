@@ -8,42 +8,42 @@ import (
 	"image/color"
 )
 
-// Method: global threshold methods
+// Method is an enum type for global threshold methods
 type Method int
 
 const (
-	//ThreshBinary:
+	//ThreshBinary
 	//				 _
 	//				| maxVal if src(x, y) > thresh
-	// dst(x, y) =  |
+	// dst(x, y) =	|
 	//				| 0 otherwise
 	//				|_
 	ThreshBinary Method = iota
-	//ThreshBinaryInv:
+	//ThreshBinaryInv
 	//				 _
 	//				| 0 if src(x, y) > thresh
-	// dst(x, y) =  |
+	// dst(x, y) =	|
 	//				| maxVal otherwise
 	//				|_
 	ThreshBinaryInv
-	//ThreshTrunc:
+	//ThreshTrunc
 	//				 _
 	//				| thresh if src(x, y) > thresh
-	// dst(x, y) =  |
+	// dst(x, y) =	|
 	//				| src(x, y) otherwise
 	//				|_
 	ThreshTrunc
-	//ThreshToZero:
+	//ThreshToZero
 	//				 _
 	//				| src(x, y) if src(x, y) > thresh
-	// dst(x, y) =  |
+	// dst(x, y) =	|
 	//				| 0 otherwise
 	//				|_
 	ThreshToZero
-	//ThreshToZeroInv:
+	//ThreshToZeroInv
 	//				 _
 	//				| 0 if src(x, y) > thresh
-	// dst(x, y) =  |
+	// dst(x, y) =	|
 	//				| src(x, y) otherwise
 	//				|_
 	ThreshToZeroInv

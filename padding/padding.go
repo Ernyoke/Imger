@@ -6,22 +6,27 @@ import (
 	"image/color"
 )
 
+// Border is an enum type for supported padding types
 type Border int
 
-// Supported border types
 const (
-	// BorderConstant: xxxabcdefghxxx - where x is a black ( color.Gray{0} ) pixel
+	// BorderConstant - xxxabcdefghxxx - where x is a black ( color.Gray{0} ) pixel
 	BorderConstant Border = iota
-	// BorderReplicate: aaaabcdefghhhh - replicates the nearest pixel
+	// BorderReplicate - aaaabcdefghhhh - replicates the nearest pixel
 	BorderReplicate
-	// BorderReflect: cbabcdefgfed - reflects the nearest pixel group
+	// BorderReflect - cbabcdefgfed - reflects the nearest pixel group
 	BorderReflect
 )
 
+// Padding holds the padding sizes for each padding
 type Paddings struct {
+	// PaddingLeft is the size of the left padding
 	PaddingLeft   int
+	// PaddingRight is the size of the right padding
 	PaddingRight  int
+	// PaddingTop is the size of the top padding
 	PaddingTop    int
+	// PaddingBottom is the size of the bottom padding
 	PaddingBottom int
 }
 

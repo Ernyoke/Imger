@@ -152,14 +152,18 @@ func threshold(img *image.Gray, g [][]float64, lowerBound float64, upperBound fl
 		p := img.GrayAt(x, y)
 		if p.Y == utils.MaxUint8  && x > 0 && x < size.X - 1 && y > 0 && y < size.Y - 1 {
 			if g[x][y] >= lowerBound && g[x][y] <= upperBound {
-				if res.GrayAt(x-1, y-1).Y == utils.MaxUint8 || res.GrayAt(x-1, y).Y == utils.MaxUint8 ||
-					res.GrayAt(x-1, y+1).Y == utils.MaxUint8 || res.GrayAt(x, y-1).Y == utils.MaxUint8 ||
-					res.GrayAt(x, y+1).Y == utils.MaxUint8 || res.GrayAt(x+1, y-1).Y == utils.MaxUint8 ||
-					res.GrayAt(x+1, y).Y == utils.MaxUint8 || res.GrayAt(x+1, y+1).Y == utils.MaxUint8 {
+				if checkNeighbours(x, y, res) {
 					res.SetGray(x, y, color.Gray{Y: utils.MinUint8})
 				}
 			}
 		}
 	})
 	return res
+}
+
+func checkNeighbours(x, y int, img *image.Gray) bool {
+	return img.GrayAt(x-1, y-1).Y == utils.MaxUint8 || img.GrayAt(x-1, y).Y == utils.MaxUint8 ||
+		img.GrayAt(x-1, y+1).Y == utils.MaxUint8 || img.GrayAt(x, y-1).Y == utils.MaxUint8 ||
+		img.GrayAt(x, y+1).Y == utils.MaxUint8 || img.GrayAt(x+1, y-1).Y == utils.MaxUint8 ||
+		img.GrayAt(x+1, y).Y == utils.MaxUint8 || img.GrayAt(x+1, y+1).Y == utils.MaxUint8
 }
