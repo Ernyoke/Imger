@@ -1,9 +1,9 @@
 package resize
 
 import (
+	"github.com/Ernyoke/Imger/imgio"
 	"image"
 	"testing"
-	"github.com/Ernyoke/Imger/imgio"
 )
 
 // -----------------------------Acceptance tests------------------------------------

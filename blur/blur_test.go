@@ -1,11 +1,11 @@
 package blur
 
 import (
+	"github.com/Ernyoke/Imger/imgio"
 	"github.com/Ernyoke/Imger/padding"
 	"github.com/Ernyoke/Imger/utils"
 	"image"
 	"testing"
-	"github.com/Ernyoke/Imger/imgio"
 )
 
 // ---------------------------------Unit tests------------------------------------

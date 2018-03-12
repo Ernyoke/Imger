@@ -1,9 +1,9 @@
 package edgedetection
 
 import (
-	"testing"
-	"image"
 	"github.com/Ernyoke/Imger/imgio"
+	"image"
+	"testing"
 )
 
 // -----------------------------Acceptance tests------------------------------------

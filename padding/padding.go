@@ -21,11 +21,11 @@ const (
 // Padding holds the padding sizes for each padding
 type Paddings struct {
 	// PaddingLeft is the size of the left padding
-	PaddingLeft   int
+	PaddingLeft int
 	// PaddingRight is the size of the right padding
-	PaddingRight  int
+	PaddingRight int
 	// PaddingTop is the size of the top padding
-	PaddingTop    int
+	PaddingTop int
 	// PaddingBottom is the size of the bottom padding
 	PaddingBottom int
 }
