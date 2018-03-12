@@ -1,14 +1,23 @@
 package threshold
 
 import (
+	"github.com/Ernyoke/Imger/imgio"
 	"image"
 	"testing"
-	"github.com/Ernyoke/Imger/imgio"
 )
 
 // -----------------------------Acceptance tests------------------------------------
 func setupTestCaseGray(t *testing.T) *image.Gray {
 	path := "../res/girl.jpg"
+	img, err := imgio.ImreadGray(path)
+	if err != nil {
+		t.Errorf("Could not read image from path: %s", path)
+	}
+	return img
+}
+
+func setupTestCaseOtsu(t *testing.T) *image.Gray {
+	path := "../res/building.jpg"
 	img, err := imgio.ImreadGray(path)
 	if err != nil {
 		t.Errorf("Could not read image from path: %s", path)
@@ -90,6 +99,12 @@ func Test_Acceptance_Threshold16ToZeroInv(t *testing.T) {
 	gray := setupTestCaseGray16(t)
 	thresh, _ := Threshold16(gray, 32000, ThreshToZeroInv)
 	tearDownTestCase(t, thresh, "../res/threshold/thresh16ToZeroInv.jpg")
+}
+
+func Test_Acceptance_OtsuThreshold(t *testing.T) {
+	gray := setupTestCaseOtsu(t)
+	thresh, _ := OtsuThreshold(gray, ThreshBinary)
+	tearDownTestCase(t, thresh, "../res/threshold/otsuThreshBin.jpg")
 }
 
 //---------------------------------------------------------------------------------
