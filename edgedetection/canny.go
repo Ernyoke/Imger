@@ -1,6 +1,7 @@
 package edgedetection
 
 import (
+	"errors"
 	"github.com/Ernyoke/Imger/blur"
 	"github.com/Ernyoke/Imger/grayscale"
 	"github.com/Ernyoke/Imger/padding"
@@ -8,7 +9,6 @@ import (
 	"image"
 	"image/color"
 	"math"
-	"errors"
 )
 
 // CannyGray computes the edges of a given grayscale image using the Canny edge detection algorithm. The returned image
@@ -150,7 +150,7 @@ func threshold(img *image.Gray, g [][]float64, lowerBound float64, upperBound fl
 	})
 	utils.ForEachPixel(size, func(x int, y int) {
 		p := img.GrayAt(x, y)
-		if p.Y == utils.MaxUint8  && x > 0 && x < size.X - 1 && y > 0 && y < size.Y - 1 {
+		if p.Y == utils.MaxUint8 && x > 0 && x < size.X-1 && y > 0 && y < size.Y-1 {
 			if g[x][y] >= lowerBound && g[x][y] <= upperBound {
 				if checkNeighbours(x, y, res) {
 					res.SetGray(x, y, color.Gray{Y: utils.MinUint8})
