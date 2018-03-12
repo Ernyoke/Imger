@@ -8,7 +8,7 @@ This repository contains a collection of image processing algorithms written in 
 ## Currently supported
 * IO (ImreadGray, ImreadGray16, ImreadRGBA, ImreadRGBA64, Imwrite). Supported extensions: jpg, jpeg, png
 * Grayscale
-* Threshold (Binary, BinaryInv, Trunc, ToZero, ToZeroInv)
+* Threshold (Binary, BinaryInv, Trunc, ToZero, ToZeroInv, Otsu)
 * Image padding (BorderConstant, BorderReplicate, BorderReflect)
 * Convolution
 * Blur (Average - Box, Gaussian)
