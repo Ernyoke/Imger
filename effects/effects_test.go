@@ -1,10 +1,31 @@
 package effects
 
 import (
-	"testing"
-	"image"
 	"github.com/Ernyoke/Imger/imgio"
+	"github.com/Ernyoke/Imger/utils"
+	"image"
+	"testing"
 )
+
+// --------------------------------Unit tests---------------------------------------
+func Test_Sepia(t *testing.T) {
+	rgba := image.RGBA{
+		Rect:   image.Rect(0, 0, 3, 1),
+		Stride: 4,
+		Pix: []uint8{
+			0x01, 0x01, 0x01, 0xFF, 0x01, 0x01, 0x01, 0xFF, 0x01, 0x01, 0x01, 0xFF,
+		},
+	}
+	expected := image.RGBA{
+		Rect:   image.Rect(0, 0, 3, 1),
+		Stride: 4,
+		Pix: []uint8{
+			0x01, 0x01, 0x00, 0xFF, 0x01, 0x01, 0x00, 0xFF, 0x01, 0x01, 0x00, 0xFF,
+		},
+	}
+	actual := Sepia(&rgba)
+	utils.CompareRGBAImages(t, &expected, actual)
+}
 
 // -----------------------------Acceptance tests------------------------------------
 func setupTestCaseGray(t *testing.T) *image.Gray {

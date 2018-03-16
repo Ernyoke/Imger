@@ -8,6 +8,12 @@ import (
 	"image/color"
 )
 
+// PixelateGray enlarges the pixels of a grayscale image. The factor value specifies how much should be the pixels
+// enlarged.
+// Example of usage:
+//
+//		 res, err := effects.PixelateGray(img, 5.0)
+//
 func PixelateGray(img *image.Gray, factor float64) (*image.Gray, error) {
 	if factor < 1.0 {
 		return nil, errors.New("invalid factor, should be greater then 1.0")
@@ -24,6 +30,11 @@ func PixelateGray(img *image.Gray, factor float64) (*image.Gray, error) {
 	return upscaled, nil
 }
 
+// PixelateRGBA enlarges the pixels of a RGBA image. The factor value specifies how much should be the pixels enlarged.
+// Example of usage:
+//
+//		 res, err := effects.PixelateRGBA(img, 5.0)
+//
 func PixelateRGBA(img *image.RGBA, factor float64) (*image.RGBA, error) {
 	if factor < 1.0 {
 		return nil, errors.New("invalid factor, should be greater then 1.0")
@@ -40,6 +51,11 @@ func PixelateRGBA(img *image.RGBA, factor float64) (*image.RGBA, error) {
 	return upscaled, nil
 }
 
+// Sepia applies Sepia tone to an RGBA image.
+// Example of usage:
+//
+//		 res := effects.Sepia(img)
+//
 func Sepia(img *image.RGBA) *image.RGBA {
 	res := image.NewRGBA(img.Rect)
 	utils.ForEachPixel(img.Bounds().Size(), func(x, y int) {
@@ -51,7 +67,9 @@ func Sepia(img *image.RGBA) *image.RGBA {
 		resR := r*0.393 + g*0.769 + b*0.189
 		resG := r*0.349 + g*0.686 + b*0.168
 		resB := r*0.272 + g*0.534 + b*0.131
-		resPixel := color.RGBA{R: uint8(utils.ClampF64(resR, 0, 255)), G: uint8(utils.ClampF64(resG, 0, 255)), B: uint8(utils.ClampF64(resB, 0, 255)), A: pixel.A}
+		resPixel := color.RGBA{R: uint8(utils.ClampF64(resR, utils.MinUint8, float64(utils.MaxUint8))),
+			G: uint8(utils.ClampF64(resG, utils.MinUint8, float64(utils.MaxUint8))),
+			B: uint8(utils.ClampF64(resB, utils.MinUint8, float64(utils.MaxUint8))), A: pixel.A}
 
 		res.SetRGBA(x, y, resPixel)
 	})
