@@ -26,7 +26,7 @@ func resizeNearestGray(img *image.Gray, fx float64, fy float64) (*image.Gray, er
 	oldSize := img.Bounds().Size()
 	newSize := image.Point{X: int(float64(oldSize.X) * fx), Y: int(float64(oldSize.Y) * fy)}
 	newImg := image.NewGray(image.Rect(0, 0, newSize.X, newSize.Y))
-	utils.ForEachPixel(newSize, func(x int, y int) {
+	utils.ParallelForEachPixel(newSize, func(x int, y int) {
 		oldXTemp := float64(x) / fx
 		var oldX int
 		if fraction := oldXTemp - float64(int(oldXTemp)); fraction >= 0.5 {
@@ -141,7 +141,7 @@ func resizeNearestRGBA(img *image.RGBA, fx float64, fy float64) (*image.RGBA, er
 	oldSize := img.Bounds().Size()
 	newSize := image.Point{X: int(float64(oldSize.X) * fx), Y: int(float64(oldSize.Y) * fy)}
 	newImg := image.NewRGBA(image.Rect(0, 0, newSize.X, newSize.Y))
-	utils.ForEachPixel(newSize, func(x int, y int) {
+	utils.ParallelForEachPixel(newSize, func(x int, y int) {
 		oldXTemp := float64(x) / fx
 		var oldX int
 		if fraction := oldXTemp - float64(int(oldXTemp)); fraction >= 0.5 {
@@ -276,7 +276,7 @@ func resizeVerticalRGBA(img *image.RGBA, fy float64, filter Filter) (*image.RGBA
 // currently the following methods are supported: InterNearest, InterLinear, InterCatmullRom, InterLanczos.
 // Example of usage:
 //
-//		result := Imger.ResizeGray(img, 2.5, 3.5, Imger.InterLinear)
+//		res, err := resize.ResizeGray(img, 2.5, 3.5, resize.InterLinear)
 //
 func ResizeGray(img *image.Gray, fx float64, fy float64, interpolation Interpolation) (*image.Gray, error) {
 	if fx < 0 || fy < 0 {
@@ -301,7 +301,7 @@ func ResizeGray(img *image.Gray, fx float64, fy float64, interpolation Interpola
 // currently the following methods are supported: InterNearest, InterLinear, InterCatmullRom, InterLanczos.
 // Example of usage:
 //
-//		result := Imger.ResizeRGBA(img, 2.5, 3.5, Imger.InterLinear)
+//		res, err := resize.ResizeRGBA(img, 2.5, 3.5, resize.InterLinear)
 //
 func ResizeRGBA(img *image.RGBA, fx float64, fy float64, interpolation Interpolation) (*image.RGBA, error) {
 	if fx < 0 || fy < 0 {

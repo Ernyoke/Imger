@@ -15,7 +15,7 @@ import (
 //
 func AddScalarToGray(img *image.Gray, value int) *image.Gray {
 	res := image.NewGray(img.Rect)
-	utils.ForEachPixel(img.Bounds().Size(), func(x, y int) {
+	utils.ParallelForEachPixel(img.Bounds().Size(), func(x, y int) {
 		pixel := int(img.GrayAt(x, y).Y)
 		pixel += value
 		res.SetGray(x, y, color.Gray{Y: uint8(utils.ClampInt(pixel, utils.MinUint8, int(utils.MaxUint8)))})
@@ -36,7 +36,7 @@ func AddGray(img1 *image.Gray, img2 *image.Gray) (*image.Gray, error) {
 		return nil, errors.New("the size of the two image does not match")
 	}
 	res := image.NewGray(img1.Bounds())
-	utils.ForEachPixel(size1, func(x int, y int) {
+	utils.ParallelForEachPixel(size1, func(x int, y int) {
 		p1 := img1.GrayAt(x, y)
 		p2 := img2.GrayAt(x, y)
 		sum := utils.ClampInt(int(p1.Y)+int(p2.Y), utils.MinUint8, int(utils.MaxUint8))
@@ -60,7 +60,7 @@ func AddGrayWeighted(img1 *image.Gray, w1 float64, img2 *image.Gray, w2 float64)
 		return nil, errors.New("the size of the two image does not match")
 	}
 	res := image.NewGray(img1.Bounds())
-	utils.ForEachPixel(size1, func(x int, y int) {
+	utils.ParallelForEachPixel(size1, func(x int, y int) {
 		p1 := img1.GrayAt(x, y)
 		p2 := img2.GrayAt(x, y)
 		sum := utils.ClampF64(float64(p1.Y)*w1+float64(p2.Y)*w2, utils.MinUint8, float64(utils.MaxUint8))

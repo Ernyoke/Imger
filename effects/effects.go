@@ -64,7 +64,7 @@ func PixelateRGBA(img *image.RGBA, factor float64) (*image.RGBA, error) {
 // Sepia applies Sepia tone to an RGBA image.
 func Sepia(img *image.RGBA) *image.RGBA {
 	res := image.NewRGBA(img.Rect)
-	utils.ForEachPixel(img.Bounds().Size(), func(x, y int) {
+	utils.ParallelForEachPixel(img.Bounds().Size(), func(x, y int) {
 		pixel := img.RGBAAt(x, y)
 		r := float64(pixel.R)
 		g := float64(pixel.G)
@@ -114,4 +114,30 @@ func SharpenGray(img *image.Gray) (*image.Gray, error) {
 // SharpenRGBA takes an RGBA image and returns another RGBA image where each edge is added to the original image.
 func SharpenRGBA(img *image.RGBA) (*image.RGBA, error) {
 	return convolution.ConvolveRGBA(img, &sharpenKernel, image.Point{X: 1, Y: 1}, padding.BorderReflect)
+}
+
+// InvertGray takes a grayscale image and return its inverted grayscale image.
+func InvertGray(img *image.Gray) *image.Gray {
+	size := img.Bounds().Size()
+	inverted := image.NewGray(img.Rect)
+	utils.ParallelForEachPixel(size, func(x, y int) {
+		original := img.GrayAt(x, y).Y
+		inverted.SetGray(x, y, color.Gray{Y: utils.MaxUint8 - original})
+	})
+	return inverted
+}
+
+// InvertRGBA takes an RGBA image and return its inverted RGBA image.
+func InvertRGBA(img *image.RGBA) *image.RGBA {
+	size := img.Bounds().Size()
+	inverted := image.NewRGBA(img.Rect)
+	utils.ParallelForEachPixel(size, func(x, y int) {
+		originalColor := img.RGBAAt(x, y)
+		invertedColor := color.RGBA{R: utils.MaxUint8 - originalColor.R,
+			G: utils.MaxUint8 - originalColor.G,
+			B: utils.MaxUint8 - originalColor.B,
+			A: originalColor.A}
+		inverted.SetRGBA(x, y, invertedColor)
+	})
+	return inverted
 }

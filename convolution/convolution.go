@@ -15,7 +15,7 @@ func ConvolveGray(img *image.Gray, kernel *Kernel, anchor image.Point, border pa
 	}
 	originalSize := img.Bounds().Size()
 	resultImage := image.NewGray(img.Bounds())
-	utils.ForEachPixel(originalSize, func(x int, y int) {
+	utils.ParallelForEachPixel(originalSize, func(x int, y int) {
 		sum := float64(0)
 		for ky := 0; ky < kernelSize.Y; ky++ {
 			for kx := 0; kx < kernelSize.X; kx++ {
@@ -38,7 +38,7 @@ func ConvolveRGBA(img *image.RGBA, kernel *Kernel, anchor image.Point, border pa
 	}
 	originalSize := img.Bounds().Size()
 	resultImage := image.NewRGBA(img.Bounds())
-	utils.ForEachPixel(originalSize, func(x int, y int) {
+	utils.ParallelForEachPixel(originalSize, func(x int, y int) {
 		sumR, sumG, sumB := 0.0, 0.0, 0.0
 		for kx := 0; kx < kernelSize.X; kx++ {
 			for ky := 0; ky < kernelSize.Y; ky++ {
