@@ -12,13 +12,13 @@ import (
 type Interpolation int
 
 const (
-	// InterNearest: takes the nearest pixel.
+	// InterNearest - takes the nearest pixel.
 	InterNearest Interpolation = iota
-	// InterLinear: Linear interpolation between two pixels. More info: https://en.wikipedia.org/wiki/Linear_interpolation
+	// InterLinear - Linear interpolation between two pixels. More info: https://en.wikipedia.org/wiki/Linear_interpolation
 	InterLinear
-	// InterCatmullRom: Catmull-Rom resampling. More info: https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline
+	// InterCatmullRom - Catmull-Rom resampling. More info: https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline
 	InterCatmullRom
-	// InterLanczos: Lanczos resampling. More info: https://en.wikipedia.org/wiki/Lanczos_resampling
+	// InterLanczos - Lanczos resampling. More info: https://en.wikipedia.org/wiki/Lanczos_resampling
 	InterLanczos
 )
 
