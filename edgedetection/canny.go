@@ -105,7 +105,7 @@ func isBiggerThenNeighbours(val float64, neighbour1 float64, neighbour2 float64)
 func nonMaxSuppression(img *image.Gray, g [][]float64, theta [][]float64) *image.Gray {
 	size := img.Bounds().Size()
 	thinEdges := image.NewGray(image.Rect(0, 0, size.X, size.Y))
-	utils.ForEachPixel(size, func(x, y int) {
+	utils.ParallelForEachPixel(size, func(x, y int) {
 		isLocalMax := false
 		if x > 0 && x < size.X-1 && y > 0 && y < size.Y-1 {
 			switch theta[x][y] {
@@ -137,7 +137,7 @@ func nonMaxSuppression(img *image.Gray, g [][]float64, theta [][]float64) *image
 func threshold(img *image.Gray, g [][]float64, lowerBound float64, upperBound float64) *image.Gray {
 	size := img.Bounds().Size()
 	res := image.NewGray(image.Rect(0, 0, size.X, size.Y))
-	utils.ForEachPixel(size, func(x int, y int) {
+	utils.ParallelForEachPixel(size, func(x int, y int) {
 		p := img.GrayAt(x, y)
 		if p.Y == utils.MaxUint8 {
 			if g[x][y] < lowerBound {
@@ -148,7 +148,7 @@ func threshold(img *image.Gray, g [][]float64, lowerBound float64, upperBound fl
 			}
 		}
 	})
-	utils.ForEachPixel(size, func(x int, y int) {
+	utils.ParallelForEachPixel(size, func(x int, y int) {
 		p := img.GrayAt(x, y)
 		if p.Y == utils.MaxUint8 && x > 0 && x < size.X-1 && y > 0 && y < size.Y-1 {
 			if g[x][y] >= lowerBound && g[x][y] <= upperBound {

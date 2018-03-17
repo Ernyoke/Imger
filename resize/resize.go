@@ -26,7 +26,7 @@ func resizeNearestGray(img *image.Gray, fx float64, fy float64) (*image.Gray, er
 	oldSize := img.Bounds().Size()
 	newSize := image.Point{X: int(float64(oldSize.X) * fx), Y: int(float64(oldSize.Y) * fy)}
 	newImg := image.NewGray(image.Rect(0, 0, newSize.X, newSize.Y))
-	utils.ForEachPixel(newSize, func(x int, y int) {
+	utils.ParallelForEachPixel(newSize, func(x int, y int) {
 		oldXTemp := float64(x) / fx
 		var oldX int
 		if fraction := oldXTemp - float64(int(oldXTemp)); fraction >= 0.5 {
@@ -141,7 +141,7 @@ func resizeNearestRGBA(img *image.RGBA, fx float64, fy float64) (*image.RGBA, er
 	oldSize := img.Bounds().Size()
 	newSize := image.Point{X: int(float64(oldSize.X) * fx), Y: int(float64(oldSize.Y) * fy)}
 	newImg := image.NewRGBA(image.Rect(0, 0, newSize.X, newSize.Y))
-	utils.ForEachPixel(newSize, func(x int, y int) {
+	utils.ParallelForEachPixel(newSize, func(x int, y int) {
 		oldXTemp := float64(x) / fx
 		var oldX int
 		if fraction := oldXTemp - float64(int(oldXTemp)); fraction >= 0.5 {

@@ -64,7 +64,7 @@ func PixelateRGBA(img *image.RGBA, factor float64) (*image.RGBA, error) {
 // Sepia applies Sepia tone to an RGBA image.
 func Sepia(img *image.RGBA) *image.RGBA {
 	res := image.NewRGBA(img.Rect)
-	utils.ForEachPixel(img.Bounds().Size(), func(x, y int) {
+	utils.ParallelForEachPixel(img.Bounds().Size(), func(x, y int) {
 		pixel := img.RGBAAt(x, y)
 		r := float64(pixel.R)
 		g := float64(pixel.G)
@@ -120,7 +120,7 @@ func SharpenRGBA(img *image.RGBA) (*image.RGBA, error) {
 func InvertGray(img *image.Gray) *image.Gray {
 	size := img.Bounds().Size()
 	inverted := image.NewGray(img.Rect)
-	utils.ForEachPixel(size, func(x, y int) {
+	utils.ParallelForEachPixel(size, func(x, y int) {
 		original := img.GrayAt(x, y).Y
 		inverted.SetGray(x, y, color.Gray{Y: utils.MaxUint8 - original})
 	})
@@ -131,7 +131,7 @@ func InvertGray(img *image.Gray) *image.Gray {
 func InvertRGBA(img *image.RGBA) *image.RGBA {
 	size := img.Bounds().Size()
 	inverted := image.NewRGBA(img.Rect)
-	utils.ForEachPixel(size, func(x, y int) {
+	utils.ParallelForEachPixel(size, func(x, y int) {
 		originalColor := img.RGBAAt(x, y)
 		invertedColor := color.RGBA{R: utils.MaxUint8 - originalColor.R,
 			G: utils.MaxUint8 - originalColor.G,
