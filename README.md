@@ -15,7 +15,7 @@ This repository contains a collection of image processing algorithms written in 
 * Blur (Average - Box, Gaussian)
 * Edge detection (Sobel, Laplacian, Canny)
 * Resize (Nearest Neighbour, Linear, Catmull-Rom, Lanczos)
-* Effects (Pixelate, Sepia, Emboss, Sharpen)
+* Effects (Pixelate, Sepia, Emboss, Sharpen, Invert)
 
 ## Install
 ```

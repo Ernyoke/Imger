@@ -115,3 +115,29 @@ func SharpenGray(img *image.Gray) (*image.Gray, error) {
 func SharpenRGBA(img *image.RGBA) (*image.RGBA, error) {
 	return convolution.ConvolveRGBA(img, &sharpenKernel, image.Point{X: 1, Y: 1}, padding.BorderReflect)
 }
+
+// InvertGray takes a grayscale image and return its inverted grayscale image.
+func InvertGray(img *image.Gray) *image.Gray {
+	size := img.Bounds().Size()
+	inverted := image.NewGray(img.Rect)
+	utils.ForEachPixel(size, func(x, y int) {
+		original := img.GrayAt(x, y).Y
+		inverted.SetGray(x, y, color.Gray{Y: utils.MaxUint8 - original})
+	})
+	return inverted
+}
+
+// InvertRGBA takes an RGBA image and return its inverted RGBA image.
+func InvertRGBA(img *image.RGBA) *image.RGBA {
+	size := img.Bounds().Size()
+	inverted := image.NewRGBA(img.Rect)
+	utils.ForEachPixel(size, func(x, y int) {
+		originalColor := img.RGBAAt(x, y)
+		invertedColor := color.RGBA{R: utils.MaxUint8 - originalColor.R,
+			G: utils.MaxUint8 - originalColor.G,
+			B: utils.MaxUint8 - originalColor.B,
+			A: originalColor.A}
+		inverted.SetRGBA(x, y, invertedColor)
+	})
+	return inverted
+}

@@ -27,6 +27,44 @@ func Test_Sepia(t *testing.T) {
 	utils.CompareRGBAImages(t, &expected, actual)
 }
 
+func Test_InvertedGray(t *testing.T) {
+	gray := image.Gray{
+		Rect:   image.Rect(0, 0, 4, 1),
+		Stride: 4,
+		Pix: []uint8{
+			0x00, 0xFF, 0x80, 0xAB,
+		},
+	}
+	expected := image.Gray{
+		Rect:   image.Rect(0, 0, 4, 1),
+		Stride: 4,
+		Pix: []uint8{
+			0xFF, 0x00, 0x7F, 0x54,
+		},
+	}
+	actual := InvertGray(&gray)
+	utils.CompareGrayImages(t, &expected, actual)
+}
+
+func Test_InvertedRGBA(t *testing.T) {
+	rgba := image.RGBA{
+		Rect:   image.Rect(0, 0, 3, 1),
+		Stride: 4,
+		Pix: []uint8{
+			0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x80, 0x7F, 0xAB, 0xFF,
+		},
+	}
+	expected := image.RGBA{
+		Rect:   image.Rect(0, 0, 3, 1),
+		Stride: 4,
+		Pix: []uint8{
+			0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0x7F, 0x80, 0x54, 0xFF,
+		},
+	}
+	actual := InvertRGBA(&rgba)
+	utils.CompareRGBAImages(t, &expected, actual)
+}
+
 // -----------------------------Acceptance tests------------------------------------
 func setupTestCaseGray(t *testing.T) *image.Gray {
 	path := "../res/girl.jpg"
@@ -111,4 +149,16 @@ func Test_Acceptance_SharpenRGBA(t *testing.T) {
 		t.Fatalf("Should not reach this point!")
 	}
 	tearDownTestCase(t, sharp, "../res/effects/sharpenRGBA.jpg")
+}
+
+func Test_Acceptance_InvertGray(t *testing.T) {
+	gray := setupTestCaseGray(t)
+	inerted := InvertGray(gray)
+	tearDownTestCase(t, inerted, "../res/effects/invertedGray.jpg")
+}
+
+func Test_Acceptance_InvertedRGBA(t *testing.T) {
+	rgba := setupTestCaseRGBA(t)
+	inverted := InvertRGBA(rgba)
+	tearDownTestCase(t, inverted, "../res/effects/invertedRGBA.jpg")
 }
