@@ -87,7 +87,7 @@ func ImreadRGBA(path string) (*image.RGBA, error) {
 	return rgba, nil
 }
 
-// reads the image from the given path and return a RGBA64 image.
+// ImreadRGBA64 reads the image from the given path and return a RGBA64 image.
 // Returns an error if the path is not readable or the specified resource does not exist.
 func ImreadRGBA64(path string) (*image.RGBA64, error) {
 	img, err := decode(path)

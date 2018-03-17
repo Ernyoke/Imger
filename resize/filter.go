@@ -30,7 +30,7 @@ func (r *Linear) GetS() float64 {
 	return 1.0
 }
 
-// CatmullRom: Struct for Catmull-Rom filter
+// CatmullRom - Struct for Catmull-Rom filter
 type CatmullRom struct{}
 
 // NewCatmullRom creates a new Catmull-Rom filter
@@ -57,7 +57,7 @@ func (r *CatmullRom) GetS() float64 {
 	return 2.0
 }
 
-// Lanczos: struct for Lanczos filter
+// Lanczos - struct for Lanczos filter
 type Lanczos struct{}
 
 // NewLanczos creates a new Lanczos filter

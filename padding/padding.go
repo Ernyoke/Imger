@@ -18,7 +18,7 @@ const (
 	BorderReflect
 )
 
-// Padding holds the padding sizes for each padding
+// Paddings struct holds the padding sizes for each padding
 type Paddings struct {
 	// PaddingLeft is the size of the left padding
 	PaddingLeft int
