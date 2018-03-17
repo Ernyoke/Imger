@@ -114,7 +114,7 @@ func rightPaddingReflect(img image.Image, padded image.Image, p Paddings, setPix
 // and the anchor point. Supported border types are: BorderConstant, BorderReplicate, BorderReflect.
 // Example of usage:
 //
-//		 Imger.PaddingGray(img, {5, 5}, {1, 1}, BorderReflect)
+//		 res, err := padding.PaddingGray(img, {5, 5}, {1, 1}, BorderReflect)
 //
 // Note: this will add a 1px padding for the top and left borders of the image and a 3px padding fot the bottom and
 // right borders of the image.
@@ -172,7 +172,7 @@ func PaddingGray(img *image.Gray, kernelSize image.Point, anchor image.Point, bo
 // and the anchor point. Supported border types are: BorderConstant, BorderReplicate, BorderReflect.
 // Example of usage:
 //
-// 		Imger.PaddingRGBA(img, {5, 5}, {1, 1}, BorderReflect)
+// 		res, err := padding.PaddingRGBA(img, {5, 5}, {1, 1}, BorderReflect)
 //
 // Note: this will add a 1px padding for the top and left borders of the image and a 3px padding fot the bottom and
 // right borders of the image.
