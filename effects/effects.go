@@ -2,11 +2,21 @@ package effects
 
 import (
 	"errors"
+	"github.com/Ernyoke/Imger/blend"
+	"github.com/Ernyoke/Imger/convolution"
+	"github.com/Ernyoke/Imger/grayscale"
+	"github.com/Ernyoke/Imger/padding"
 	"github.com/Ernyoke/Imger/resize"
 	"github.com/Ernyoke/Imger/utils"
 	"image"
 	"image/color"
 )
+
+var sharpenKernel = convolution.Kernel{Content: [][]float64{
+	{0, -1, 0},
+	{-1, 5, -1},
+	{0, -1, 0},
+}, Width: 3, Height: 3}
 
 // PixelateGray enlarges the pixels of a grayscale image. The factor value specifies how much should be the pixels
 // enlarged.
@@ -52,10 +62,6 @@ func PixelateRGBA(img *image.RGBA, factor float64) (*image.RGBA, error) {
 }
 
 // Sepia applies Sepia tone to an RGBA image.
-// Example of usage:
-//
-//		 res := effects.Sepia(img)
-//
 func Sepia(img *image.RGBA) *image.RGBA {
 	res := image.NewRGBA(img.Rect)
 	utils.ForEachPixel(img.Bounds().Size(), func(x, y int) {
@@ -76,10 +82,36 @@ func Sepia(img *image.RGBA) *image.RGBA {
 	return res
 }
 
-func Emboss(img *image.RGBA) *image.RGBA {
-	return nil
+// EmbossGray takes a grayscale image and returns a copy of the image in which each pixel has been replaced either by a
+// highlight or a shadow representation.
+func EmbossGray(img *image.Gray) (*image.Gray, error) {
+	var kernel = convolution.Kernel{Content: [][]float64{
+		{-1, -1, 0},
+		{-1, 0, 1},
+		{0, 1, 1},
+	}, Width: 3, Height: 3}
+
+	conv, err := convolution.ConvolveGray(img, &kernel, image.Point{X: 1, Y: 1}, padding.BorderReflect)
+	if err != nil {
+		return nil, err
+	}
+	return blend.AddScalarToGray(conv, 128), nil
 }
 
-func Sharpen(img *image.RGBA) *image.RGBA {
-	return nil
+// EmbossRGBA takes an RGBA image and returns a grayscale image in which each pixel has been replaced either by a
+// highlight or a shadow representation.
+func EmbossRGBA(img *image.RGBA) (*image.Gray, error) {
+	gray := grayscale.Grayscale(img)
+	return EmbossGray(gray)
+}
+
+// SharpenGray takes a grayscale image and returns another grayscale image where each edge is added to the original
+// image.
+func SharpenGray(img *image.Gray) (*image.Gray, error) {
+	return convolution.ConvolveGray(img, &sharpenKernel, image.Point{X: 1, Y: 1}, padding.BorderReflect)
+}
+
+// SharpenRGBA takes an RGBA image and returns another RGBA image where each edge is added to the original image.
+func SharpenRGBA(img *image.RGBA) (*image.RGBA, error) {
+	return convolution.ConvolveRGBA(img, &sharpenKernel, image.Point{X: 1, Y: 1}, padding.BorderReflect)
 }

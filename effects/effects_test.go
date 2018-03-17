@@ -76,3 +76,39 @@ func Test_Acceptance_Sepia(t *testing.T) {
 	sepia := Sepia(rgba)
 	tearDownTestCase(t, sepia, "../res/effects/sepia.jpg")
 }
+
+func Test_Acceptance_EmbossGray(t *testing.T) {
+	gray := setupTestCaseGray(t)
+	emboss, err := EmbossGray(gray)
+	if err != nil {
+		t.Fatalf("Should not reach this point!")
+	}
+	tearDownTestCase(t, emboss, "../res/effects/embossGray.jpg")
+}
+
+func Test_Acceptance_EmbossRGBA(t *testing.T) {
+	rgba := setupTestCaseRGBA(t)
+	emboss, err := EmbossRGBA(rgba)
+	if err != nil {
+		t.Fatalf("Should not reach this point!")
+	}
+	tearDownTestCase(t, emboss, "../res/effects/embossRGBA.jpg")
+}
+
+func Test_Acceptance_SharpenGray(t *testing.T) {
+	gray := setupTestCaseGray(t)
+	sharp, err := SharpenGray(gray)
+	if err != nil {
+		t.Fatalf("Should not reach this point!")
+	}
+	tearDownTestCase(t, sharp, "../res/effects/sharpenGray.jpg")
+}
+
+func Test_Acceptance_SharpenRGBA(t *testing.T) {
+	rgba := setupTestCaseRGBA(t)
+	sharp, err := SharpenRGBA(rgba)
+	if err != nil {
+		t.Fatalf("Should not reach this point!")
+	}
+	tearDownTestCase(t, sharp, "../res/effects/sharpenRGBA.jpg")
+}
