@@ -16,6 +16,7 @@ This repository contains a collection of image processing algorithms written in 
 * Edge detection (Sobel, Laplacian, Canny)
 * Resize (Nearest Neighbour, Linear, Catmull-Rom, Lanczos)
 * Effects (Pixelate, Sepia, Emboss, Sharpen, Invert)
+* Transform (Rotate)
 
 ## Install
 ```
