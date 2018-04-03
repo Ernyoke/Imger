@@ -6,16 +6,19 @@ import (
 	"math"
 )
 
+// Matrix interface for the Kernel
 type Matrix interface {
 	At(x, y int) float64
 }
 
+// Kernel is a 2 dimensional matrix used mainly for convolution.
 type Kernel struct {
 	Content [][]float64
 	Width   int
 	Height  int
 }
 
+// NewKernel creates a new Kernel with the given width and height. The value for every position of the kernel is 0.
 func NewKernel(width int, height int) (*Kernel, error) {
 	if width < 0 || height < 0 {
 		return nil, errors.New("negative kernel size")
@@ -27,18 +30,22 @@ func NewKernel(width int, height int) (*Kernel, error) {
 	return &Kernel{Content: m, Width: width, Height: height}, nil
 }
 
+// At returns a value from the position of {x, y} of a kernel.
 func (k *Kernel) At(x, y int) float64 {
 	return k.Content[x][y]
 }
 
+// Set sets a value at a given {x, y} position
 func (k *Kernel) Set(x int, y int, value float64) {
 	k.Content[x][y] = value
 }
 
+// Size returns the size of the kernel. The size is a type of image.Point containing the width and height of the kernel.
 func (k *Kernel) Size() image.Point {
 	return image.Point{X: k.Width, Y: k.Height}
 }
 
+// Absum returns the sum of every absolute value from a kernel.
 func (k *Kernel) AbSum() float64 {
 	var sum float64
 	for x := 0; x < k.Height; x++ {
@@ -49,6 +56,7 @@ func (k *Kernel) AbSum() float64 {
 	return sum
 }
 
+// Normalize returns a normalized kernel where each value is divided by the absolute sum of the kernel.
 func (k *Kernel) Normalize() *Kernel {
 	normalized, _ := NewKernel(k.Width, k.Height)
 	sum := k.AbSum()
