@@ -12,35 +12,35 @@ import (
 type Method int
 
 const (
-	//ThreshBinary
+	// ThreshBinary
 	//				 _
 	//				| maxVal if src(x, y) > thresh
 	// dst(x, y) =	|
 	//				| 0 otherwise
 	//				|_
 	ThreshBinary Method = iota
-	//ThreshBinaryInv
+	// ThreshBinaryInv
 	//				 _
 	//				| 0 if src(x, y) > thresh
 	// dst(x, y) =	|
 	//				| maxVal otherwise
 	//				|_
 	ThreshBinaryInv
-	//ThreshTrunc
+	// ThreshTrunc
 	//				 _
 	//				| thresh if src(x, y) > thresh
 	// dst(x, y) =	|
 	//				| src(x, y) otherwise
 	//				|_
 	ThreshTrunc
-	//ThreshToZero
+	// ThreshToZero
 	//				 _
 	//				| src(x, y) if src(x, y) > thresh
 	// dst(x, y) =	|
 	//				| 0 otherwise
 	//				|_
 	ThreshToZero
-	//ThreshToZeroInv
+	// ThreshToZeroInv
 	//				 _
 	//				| 0 if src(x, y) > thresh
 	// dst(x, y) =	|
@@ -107,7 +107,7 @@ func Threshold(img *image.Gray, t uint8, method Method) (*image.Gray, error) {
 	return threshold(img, setPixel), nil
 }
 
-// Threshold returns a grayscale image represented on 16 bits as result which was segmented using one of the following
+// Threshold16 returns a grayscale image represented on 16 bits as result which was segmented using one of the following
 // Methods: ThreshBinary, ThreshBinaryInv, ThreshTrunc, ThreshToZero, ThreshToZeroInv
 func Threshold16(img *image.Gray16, t uint16, method Method) (*image.Gray16, error) {
 	var setPixel func(*image.Gray16, int, int)

@@ -7,6 +7,13 @@ import (
 	"image/color"
 )
 
+// ConvolveGray applies a convolution matrix (kernel) to a grayscale image.
+// Example of usage:
+//
+// 		res, err := convolution.ConvolveGray(img, kernel, {1, 1}, BorderReflect)
+//
+// Note: the anchor represents a point inside the area of the kernel. After every step of the convolution the position
+// specified by the anchor point gets updated on the result image.
 func ConvolveGray(img *image.Gray, kernel *Kernel, anchor image.Point, border padding.Border) (*image.Gray, error) {
 	kernelSize := kernel.Size()
 	padded, error := padding.PaddingGray(img, kernelSize, anchor, border)
@@ -30,6 +37,13 @@ func ConvolveGray(img *image.Gray, kernel *Kernel, anchor image.Point, border pa
 	return resultImage, nil
 }
 
+// ConvolveRGBA applies a convolution matrix (kernel) to an RGBA image.
+// Example of usage:
+//
+// 		res, err := convolution.ConvolveRGBA(img, kernel, {1, 1}, BorderReflect)
+//
+// Note: the anchor represents a point inside the area of the kernel. After every step of the convolution the position
+// specified by the anchor point gets updated on the result image.
 func ConvolveRGBA(img *image.RGBA, kernel *Kernel, anchor image.Point, border padding.Border) (*image.RGBA, error) {
 	kernelSize := kernel.Size()
 	padded, error := padding.PaddingRGBA(img, kernelSize, anchor, border)
