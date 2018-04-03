@@ -1,5 +1,5 @@
 # Imger
-[![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/anthonynsimon/bild/blob/master/LICENSE) 
+[![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/anthonynsimon/bild/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/Ernyoke/Imger.svg?branch=dev)](https://travis-ci.org/Ernyoke/Imger)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Ernyoke/Imger)](https://goreportcard.com/report/github.com/Ernyoke/Imger)
 
@@ -16,6 +16,7 @@ This repository contains a collection of image processing algorithms written in 
 * Edge detection (Sobel, Laplacian, Canny)
 * Resize (Nearest Neighbour, Linear, Catmull-Rom, Lanczos)
 * Effects (Pixelate, Sepia, Emboss, Sharpen, Invert)
+* Transform (Rotate)
 
 ## Install
 ```
