@@ -7,6 +7,13 @@ import (
 	"math"
 )
 
+// RotateGray rotates a grayscale image counterclockwise with a given angle. The point which will represent the center
+// ot the rotation is specified by the anchor argument. The result image can have its original size or it can be
+// resized to fit in the area of the image.
+// Example of usage:
+//
+// 		res, err := transform.RotateGray(img, 90.0, {512, 512}, true)
+//
 func RotateGray(img *image.Gray, angle float64, anchor image.Point, resizeToFit bool) (*image.Gray, error) {
 	size := img.Bounds().Size()
 	if anchor.X < 0 || anchor.Y < 0 || anchor.X > size.X || anchor.Y > size.Y {
@@ -24,6 +31,13 @@ func RotateGray(img *image.Gray, angle float64, anchor image.Point, resizeToFit 
 	return result, nil
 }
 
+// RotateRGBA rotates an RGBA image counterclockwise with a given angle. The point which will represent the center
+// ot the rotation is specified by the anchor argument. The result image can have its original size or it can be
+// resized to fit in the area of the image.
+// Example of usage:
+//
+// 		res, err := transform.RotateGray(img, 90.0, {512, 512}, true)
+//
 func RotateRGBA(img *image.RGBA, angle float64, anchor image.Point, resizeToFit bool) (*image.RGBA, error) {
 	size := img.Bounds().Size()
 	if anchor.X < 0 || anchor.Y < 0 || anchor.X > size.X || anchor.Y > size.Y {

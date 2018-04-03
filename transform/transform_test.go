@@ -151,7 +151,7 @@ func Test_ComputeOffset180(t *testing.T) {
 	}
 }
 
-func Test_GetOriginalPixelPosition(t *testing.T) {
+func Test_GetOriginalPixelPosition90(t *testing.T) {
 	x := 0
 	y := 0
 	size := image.Point{X: 1024, Y: 768}
@@ -160,6 +160,21 @@ func Test_GetOriginalPixelPosition(t *testing.T) {
 	offset := computeOffset(size, computeFitSize(size, radians))
 	expectedX := 1024
 	expectedY := 0
+	actualX, actualY := getOriginalPixelPosition(x, y, radians, anchor, offset)
+	if actualX != expectedX && actualY != expectedY {
+		t.Errorf("Expected value [%d %d] is not eqaul with actual value [%d %d]", expectedX, expectedY, actualX, actualY)
+	}
+}
+
+func Test_GetOriginalPixelPosition45(t *testing.T) {
+	x := 0
+	y := 0
+	size := image.Point{X: 1024, Y: 768}
+	radians := angleToRadians(45)
+	anchor := image.Point{X: 512, Y: 384}
+	offset := computeOffset(size, computeFitSize(size, radians))
+	expectedX := 512
+	expectedY := -512
 	actualX, actualY := getOriginalPixelPosition(x, y, radians, anchor, offset)
 	if actualX != expectedX && actualY != expectedY {
 		t.Errorf("Expected value [%d %d] is not eqaul with actual value [%d %d]", expectedX, expectedY, actualX, actualY)
