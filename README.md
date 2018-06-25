@@ -17,6 +17,7 @@ This repository contains a collection of image processing algorithms written in 
 * Resize (Nearest Neighbour, Linear, Catmull-Rom, Lanczos)
 * Effects (Pixelate, Sepia, Emboss, Sharpen, Invert)
 * Transform (Rotate)
+* Generate (LinearGradient, SigmoidalGradient)
 
 ## Install
 ```
