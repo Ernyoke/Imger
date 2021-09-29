@@ -8,6 +8,7 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // Reads and decodes image from a given path. Supported extensions are: jpg, jpeg, png
@@ -17,7 +18,7 @@ func decode(path string) (image.Image, error) {
 	if err != nil {
 		return nil, err
 	}
-	extension := filepath.Ext(path)
+	extension := strings.ToLower(filepath.Ext(path))
 	switch extension {
 	case ".jpg":
 		fallthrough
@@ -36,7 +37,7 @@ func encode(img image.Image, path string) error {
 		return err
 	}
 	defer file.Close()
-	extension := filepath.Ext(path)
+	extension := strings.ToLower(filepath.Ext(path))
 	switch extension {
 	case ".jpg":
 		fallthrough
