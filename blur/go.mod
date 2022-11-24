@@ -11,8 +11,8 @@ replace github.com/ernyoke/imger/utils => ../utils
 replace github.com/ernyoke/imger/imgio => ../imgio
 
 require (
-	github.com/ernyoke/imger/convolution v0.0.0-20221124204153-eba1fd6634f9
-	github.com/ernyoke/imger/imgio v0.0.0-20221124204153-eba1fd6634f9
-	github.com/ernyoke/imger/padding v0.0.0-20221124204153-eba1fd6634f9
-	github.com/ernyoke/imger/utils v0.0.0-20221124204153-eba1fd6634f9
+	github.com/ernyoke/imger/convolution v0.0.0-20221124211744-c532613c62c5
+	github.com/ernyoke/imger/imgio v0.0.0-20221124211744-c532613c62c5
+	github.com/ernyoke/imger/padding v0.0.0-20221124211744-c532613c62c5
+	github.com/ernyoke/imger/utils v0.0.0-20221124211744-c532613c62c5
 )
