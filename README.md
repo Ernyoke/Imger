@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/Ernyoke/Imger.svg?branch=dev)](https://travis-ci.org/Ernyoke/Imger)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Ernyoke/Imger)](https://goreportcard.com/report/github.com/Ernyoke/Imger)
 
-This repository contains a collection of image processing algorithms written in pure Go. The packages are under development, their API may change over time.
+This repository contains a collection of image processing algorithms written in pure Go.
 
 ## Currently supported
 * IO (ImreadGray, ImreadGray16, ImreadRGBA, ImreadRGBA64, Imwrite). Supported extensions: jpg, jpeg, png
@@ -19,14 +19,8 @@ This repository contains a collection of image processing algorithms written in 
 * Transform (Rotate)
 
 ## Install
-```
-go get -u github.com/Ernyoke/Imger/...
-```
-
-## Merge into ```master```
-```
-git checkout master
-git merge --no-commit --no-ff dev
+```bash
+go get -u github.com/ernyoke/imger/...
 ```
 
 ## License
