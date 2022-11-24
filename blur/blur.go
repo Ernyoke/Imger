@@ -2,8 +2,8 @@ package blur
 
 import (
 	"errors"
-	"github.com/Ernyoke/Imger/convolution"
-	"github.com/Ernyoke/Imger/padding"
+	"github.com/ernyoke/imger/convolution"
+	"github.com/ernyoke/imger/padding"
 	"image"
 	"math"
 )
@@ -14,11 +14,7 @@ import (
 // Border types supported: see convolution package.
 func BoxGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border padding.Border) (*image.Gray, error) {
 	kernel := generateBoxKernel(&kernelSize)
-	result, error := convolution.ConvolveGray(img, kernel.Normalize(), anchor, border)
-	if error != nil {
-		return nil, error
-	}
-	return result, nil
+	return convolution.ConvolveGray(img, kernel.Normalize(), anchor, border)
 }
 
 // BoxRGBA applies average blur to an RGBA image. The amount of bluring effect depends on the kernel size, where
@@ -27,11 +23,7 @@ func BoxGray(img *image.Gray, kernelSize image.Point, anchor image.Point, border
 // Border types supported: see convolution package.
 func BoxRGBA(img *image.RGBA, kernelSize image.Point, anchor image.Point, border padding.Border) (*image.RGBA, error) {
 	kernel := generateBoxKernel(&kernelSize)
-	result, error := convolution.ConvolveRGBA(img, kernel.Normalize(), anchor, border)
-	if error != nil {
-		return nil, error
-	}
-	return result, nil
+	return convolution.ConvolveRGBA(img, kernel.Normalize(), anchor, border)
 }
 
 // GaussianBlurGray applies average blur to a grayscale image. The amount of bluring effect depends on the kernel radius

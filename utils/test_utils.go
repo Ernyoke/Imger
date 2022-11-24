@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-// Compares two Gray images and prints out if there is a difference between the pixels
+// CompareGrayImages Compares two Gray images and prints out if there is a difference between the pixels
 func CompareGrayImages(t *testing.T, expected *image.Gray, actual *image.Gray) {
 	expectedSize := expected.Bounds().Size()
 	actualSize := actual.Bounds().Size()
@@ -28,7 +28,7 @@ func CompareGrayImages(t *testing.T, expected *image.Gray, actual *image.Gray) {
 	}
 }
 
-// Compares two Gray images within a given interval (pixel +/- offset) and prints out if there is a difference between the pixels
+// CompareGrayImagesWithOffset Compares two Gray images within a given interval (pixel +/- offset) and prints out if there is a difference between the pixels
 func CompareGrayImagesWithOffset(t *testing.T, expected *image.Gray, actual *image.Gray, offset uint16) {
 	expectedSize := expected.Bounds().Size()
 	actualSize := actual.Bounds().Size()
@@ -48,7 +48,7 @@ func CompareGrayImagesWithOffset(t *testing.T, expected *image.Gray, actual *ima
 	}
 }
 
-// Compares two RGBA images and prints out if there is a difference between the pixels
+// CompareRGBAImages Compares two RGBA images and prints out if there is a difference between the pixels
 func CompareRGBAImages(t *testing.T, expected *image.RGBA, actual *image.RGBA) {
 	if !expected.Bounds().Size().Eq(actual.Bounds().Size()) {
 		t.Fatal("img1 and img2 have different sizes!")
@@ -73,7 +73,7 @@ func CompareRGBAImages(t *testing.T, expected *image.RGBA, actual *image.RGBA) {
 	}
 }
 
-// Compares two RGBA images within a given interval (pixel +/- offset) and prints out if there is a difference between the pixels
+// CompareRGBAImagesWithOffset Compares two RGBA images within a given interval (pixel +/- offset) and prints out if there is a difference between the pixels
 func CompareRGBAImagesWithOffset(t *testing.T, expected *image.RGBA, actual *image.RGBA, offset uint16) {
 	if !expected.Bounds().Size().Eq(actual.Bounds().Size()) {
 		t.Fatal("img1 and img2 have different sizes!")
@@ -98,7 +98,7 @@ func CompareRGBAImagesWithOffset(t *testing.T, expected *image.RGBA, actual *ima
 	}
 }
 
-// Print out gray image pixels to console
+// PrintGray Print out gray image pixels to console
 func PrintGray(t *testing.T, gray *image.Gray) {
 	size := gray.Bounds().Size()
 	for y := 0; y < size.Y; y++ {
@@ -109,7 +109,7 @@ func PrintGray(t *testing.T, gray *image.Gray) {
 	}
 }
 
-// Print out gray image pixels to console
+// PrintRGBA Print out gray image pixels to console
 func PrintRGBA(t *testing.T, rgba *image.RGBA) {
 	size := rgba.Bounds().Size()
 	for y := 0; y < size.Y; y++ {
@@ -120,7 +120,7 @@ func PrintRGBA(t *testing.T, rgba *image.RGBA) {
 	}
 }
 
-// Compares 2 float values and returns true if they are inside of the interval of [-eps, +eps]
+// IsEqualFloat64 Compares 2 float values and returns true if they are inside of the interval of [-eps, +eps]
 func IsEqualFloat64(x float64, y float64) bool {
 	eps := 0.0000001
 	return math.Abs(x-y) <= eps

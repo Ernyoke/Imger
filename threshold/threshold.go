@@ -2,8 +2,8 @@ package threshold
 
 import (
 	"errors"
-	"github.com/Ernyoke/Imger/histogram"
-	"github.com/Ernyoke/Imger/utils"
+	"github.com/ernyoke/imger/histogram"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"image/color"
 )

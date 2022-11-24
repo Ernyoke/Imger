@@ -2,12 +2,12 @@ package effects
 
 import (
 	"errors"
-	"github.com/Ernyoke/Imger/blend"
-	"github.com/Ernyoke/Imger/convolution"
-	"github.com/Ernyoke/Imger/grayscale"
-	"github.com/Ernyoke/Imger/padding"
-	"github.com/Ernyoke/Imger/resize"
-	"github.com/Ernyoke/Imger/utils"
+	"github.com/ernyoke/imger/blend"
+	"github.com/ernyoke/imger/convolution"
+	"github.com/ernyoke/imger/grayscale"
+	"github.com/ernyoke/imger/padding"
+	"github.com/ernyoke/imger/resize"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"image/color"
 )

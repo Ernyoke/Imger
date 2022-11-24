@@ -1,10 +1,10 @@
 package edgedetection
 
 import (
-	"github.com/Ernyoke/Imger/blend"
-	"github.com/Ernyoke/Imger/convolution"
-	"github.com/Ernyoke/Imger/grayscale"
-	"github.com/Ernyoke/Imger/padding"
+	"github.com/ernyoke/imger/blend"
+	"github.com/ernyoke/imger/convolution"
+	"github.com/ernyoke/imger/grayscale"
+	"github.com/ernyoke/imger/padding"
 	"image"
 )
 

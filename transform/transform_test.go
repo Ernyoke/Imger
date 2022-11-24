@@ -1,8 +1,8 @@
 package transform
 
 import (
-	"github.com/Ernyoke/Imger/imgio"
-	"github.com/Ernyoke/Imger/utils"
+	"github.com/ernyoke/imger/imgio"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"math"
 	"testing"

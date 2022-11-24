@@ -1,7 +1,7 @@
 package histogram
 
 import (
-	"github.com/Ernyoke/Imger/imgio"
+	"github.com/ernyoke/imger/imgio"
 	"image"
 	"testing"
 )

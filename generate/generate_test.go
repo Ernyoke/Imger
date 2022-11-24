@@ -1,7 +1,7 @@
 package generate
 
 import (
-	"github.com/Ernyoke/Imger/imgio"
+	"github.com/ernyoke/imger/imgio"
 	"image"
 	"image/color"
 	"testing"

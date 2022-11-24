@@ -1,8 +1,8 @@
 package convolution
 
 import (
-	"github.com/Ernyoke/Imger/padding"
-	"github.com/Ernyoke/Imger/utils"
+	"github.com/ernyoke/imger/padding"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"image/color"
 )
@@ -46,9 +46,9 @@ func ConvolveGray(img *image.Gray, kernel *Kernel, anchor image.Point, border pa
 // specified by the anchor point gets updated on the result image.
 func ConvolveRGBA(img *image.RGBA, kernel *Kernel, anchor image.Point, border padding.Border) (*image.RGBA, error) {
 	kernelSize := kernel.Size()
-	padded, error := padding.PaddingRGBA(img, kernelSize, anchor, border)
-	if error != nil {
-		return nil, error
+	padded, err := padding.PaddingRGBA(img, kernelSize, anchor, border)
+	if err != nil {
+		return nil, err
 	}
 	originalSize := img.Bounds().Size()
 	resultImage := image.NewRGBA(img.Bounds())

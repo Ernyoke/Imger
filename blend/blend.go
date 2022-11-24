@@ -2,12 +2,12 @@ package blend
 
 import (
 	"errors"
-	"github.com/Ernyoke/Imger/utils"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"image/color"
 )
 
-// AddScalarToGray takes a grayscale image and and adds an integer value to all pixels of the image. If the  result
+// AddScalarToGray takes a grayscale image and adds an integer value to all pixels of the image. If the  result
 // overflows uint8, the result will be clamped to max uint8 (255).
 // Example of usage:
 //

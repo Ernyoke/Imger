@@ -2,7 +2,7 @@ package transform
 
 import (
 	"errors"
-	"github.com/Ernyoke/Imger/utils"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"math"
 )

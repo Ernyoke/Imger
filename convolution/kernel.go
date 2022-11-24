@@ -45,7 +45,7 @@ func (k *Kernel) Size() image.Point {
 	return image.Point{X: k.Width, Y: k.Height}
 }
 
-// Absum returns the sum of every absolute value from a kernel.
+// AbSum returns the sum of every absolute value from a kernel.
 func (k *Kernel) AbSum() float64 {
 	var sum float64
 	for x := 0; x < k.Height; x++ {

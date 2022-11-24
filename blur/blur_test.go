@@ -1,9 +1,9 @@
 package blur
 
 import (
-	"github.com/Ernyoke/Imger/imgio"
-	"github.com/Ernyoke/Imger/padding"
-	"github.com/Ernyoke/Imger/utils"
+	"github.com/ernyoke/imger/imgio"
+	"github.com/ernyoke/imger/padding"
+	"github.com/ernyoke/imger/utils"
 	"image"
 	"testing"
 )
@@ -19,8 +19,8 @@ func TestGrayGaussianBlurZeroRadius(t *testing.T) {
 			0x00, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0x80, 0x80, 0x80, 0xFF,
 		},
 	}
-	_, error := GaussianBlurRGBA(&input, 0, 6, padding.BorderReflect)
-	if error != nil {
+	_, err := GaussianBlurRGBA(&input, 0, 6, padding.BorderReflect)
+	if err != nil {
 		//ok
 	} else {
 		t.Fatal("no error thrown")
@@ -46,9 +46,9 @@ func TestGrayGaussianBlurOneRadius(t *testing.T) {
 			0x3B, 0x59, 0x36,
 		},
 	}
-	result, error := GaussianBlurGray(&input, 1, 2, padding.BorderConstant)
-	if error != nil {
-		t.Fatal(error)
+	result, err := GaussianBlurGray(&input, 1, 2, padding.BorderConstant)
+	if err != nil {
+		t.Fatal(err)
 	}
 	utils.CompareGrayImagesWithOffset(t, expected, result, 1)
 }
@@ -72,9 +72,9 @@ func TestRGBAGaussianBlurOneRadius(t *testing.T) {
 			0x3B, 0x3B, 0x3B, 0xFF, 0x59, 0x59, 0x59, 0xFF, 0x36, 0x36, 0x36, 0xFF,
 		},
 	}
-	actual, error := GaussianBlurRGBA(&input, 1, 2, padding.BorderConstant)
-	if error != nil {
-		t.Fatal(error)
+	actual, err := GaussianBlurRGBA(&input, 1, 2, padding.BorderConstant)
+	if err != nil {
+		t.Fatal(err)
 	}
 	//utils.PrintRGBA(t, actual)
 	utils.CompareRGBAImagesWithOffset(t, expected, actual, 1)
