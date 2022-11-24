@@ -22,5 +22,11 @@ This repository contains a collection of image processing algorithms written in 
 go get -u github.com/ernyoke/imger/...
 ```
 
+## Running the Tests
+
+```bash
+go test ./...
+```
+
 ## License
 This project is under the MIT License. See the LICENSE file for the full license text.
