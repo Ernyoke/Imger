@@ -4,4 +4,4 @@ go 1.18
 
 replace github.com/ernyoke/imger/utils => ../utils
 
-require github.com/ernyoke/imger/utils v1.0.0
+require github.com/ernyoke/imger/utils v0.1.0
