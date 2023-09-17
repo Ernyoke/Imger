@@ -19,7 +19,7 @@ This repository contains a collection of image processing algorithms written in 
 
 ## Install
 ```bash
-go get -u github.com/ernyoke/imger/...
+go get -u github.com/ernyoke/imger@v1.0.0
 ```
 
 ## Running the Tests
