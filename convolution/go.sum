@@ -1,0 +1,6 @@
+github.com/ernyoke/imger/imgio v0.0.0-20221124204153-eba1fd6634f9 h1:bD6toEpXo8hdc69bF8gDgpMLHo6Ra+vwH5cMR/lxR48=
+github.com/ernyoke/imger/imgio v0.0.0-20221124204153-eba1fd6634f9/go.mod h1:ry03ilkzAH3jXbi/h/UiskaAn/9NYpnB7fOpq8hHkL8=
+github.com/ernyoke/imger/padding v0.0.0-20221124211744-c532613c62c5 h1:E73Cy+YFQZ2o6WP0IcwkGyRmLSEYHg3gx8+v1t2nt7k=
+github.com/ernyoke/imger/padding v0.0.0-20221124211744-c532613c62c5/go.mod h1:aQURc7lytM/N07SxU6zwyRWRhfjEgd6MaLSMEDrHKEg=
+github.com/ernyoke/imger/utils v0.0.0-20221124214108-87705497ff2c h1:tR5WV9aci/dipiJQ/ZL1Bz6nJpy3Ai0XJc61SJXpJ8Q=
+github.com/ernyoke/imger/utils v0.0.0-20221124214108-87705497ff2c/go.mod h1:FVYCJWtgdWsVBLyl50svceOg8RS34oryItRqog+ZqCo=
