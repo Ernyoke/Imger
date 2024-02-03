@@ -1,9 +1,11 @@
 package threshold
 
 import (
-	"github.com/ernyoke/imger/imgio"
+	"fmt"
 	"image"
 	"testing"
+
+	"github.com/ernyoke/imger/imgio"
 )
 
 // -----------------------------Acceptance tests------------------------------------
@@ -105,6 +107,28 @@ func Test_Acceptance_OtsuThreshold(t *testing.T) {
 	gray := setupTestCaseOtsu(t)
 	thresh, _ := OtsuThreshold(gray, ThreshBinary)
 	tearDownTestCase(t, thresh, "../res/threshold/otsuThreshBin.jpg")
+}
+
+func Test_Acceptance_OtsuThreshold_Cropped(t *testing.T) {
+	thresholdMethods := map[string]Method{
+		"Bin":       ThreshBinary,
+		"BinInv":    ThreshBinaryInv,
+		"Trunc":     ThreshTrunc,
+		"ToZero":    ThreshToZero,
+		"ToZeroInv": ThreshToZeroInv,
+	}
+
+	for name, meth := range thresholdMethods {
+		t.Run(name, func(t *testing.T) {
+			gray := setupTestCaseOtsu(t)
+			cropped := gray.SubImage(image.Rect(100, 100, gray.Bounds().Max.X-100, gray.Bounds().Max.Y-100))
+			thresh, err := OtsuThreshold(cropped.(*image.Gray), meth)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			tearDownTestCase(t, thresh, fmt.Sprintf("../res/threshold/otsuThresh%sCropped.jpg", name))
+		})
+	}
 }
 
 //---------------------------------------------------------------------------------
