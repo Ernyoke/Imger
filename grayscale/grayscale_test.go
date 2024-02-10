@@ -1,9 +1,10 @@
 package grayscale
 
 import (
-	"github.com/ernyoke/imger/imgio"
 	"image"
 	"testing"
+
+	"github.com/ernyoke/imger/imgio"
 )
 
 // -----------------------------Acceptance tests------------------------------------
@@ -29,10 +30,24 @@ func Test_Acceptance_GrayScale(t *testing.T) {
 	tearDownTestCase(t, gray, "../res/grayscale/gray.jpg")
 }
 
+func Test_Acceptance_GrayScaleCropped(t *testing.T) {
+	rgba := setupTestCaseRGBA(t)
+	cropped := rgba.SubImage(image.Rect(100, 100, rgba.Bounds().Max.X-100, rgba.Bounds().Max.Y-100))
+	gray := Grayscale(cropped)
+	tearDownTestCase(t, gray, "../res/grayscale/cropped_gray.jpg")
+}
+
 func Test_Acceptance_GrayScale16(t *testing.T) {
 	rgba := setupTestCaseRGBA(t)
 	gray := Grayscale16(rgba)
 	tearDownTestCase(t, gray, "../res/grayscale/gray16.jpg")
+}
+
+func Test_Acceptance_GrayScale16Cropped(t *testing.T) {
+	rgba := setupTestCaseRGBA(t)
+	cropped := rgba.SubImage(image.Rect(100, 100, rgba.Bounds().Max.X-100, rgba.Bounds().Max.Y-100))
+	gray := Grayscale16(cropped)
+	tearDownTestCase(t, gray, "../res/grayscale/cropped_gray16.jpg")
 }
 
 // ---------------------------------------------------------------------------------
