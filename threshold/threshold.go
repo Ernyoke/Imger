@@ -2,10 +2,11 @@ package threshold
 
 import (
 	"errors"
-	"github.com/ernyoke/imger/histogram"
-	"github.com/ernyoke/imger/utils"
 	"image"
 	"image/color"
+
+	"github.com/ernyoke/imger/histogram"
+	"github.com/ernyoke/imger/utils"
 )
 
 // Method is an enum type for global threshold methods
@@ -176,8 +177,9 @@ func OtsuThreshold(img *image.Gray, method Method) (*image.Gray, error) {
 func threshold(img *image.Gray, setPixel func(*image.Gray, int, int)) *image.Gray {
 	size := img.Bounds().Size()
 	gray := image.NewGray(img.Bounds())
+	offset := img.Bounds().Min
 	utils.ParallelForEachPixel(size, func(x, y int) {
-		setPixel(gray, x, y)
+		setPixel(gray, x+offset.X, y+offset.Y)
 	})
 	return gray
 }
@@ -185,8 +187,9 @@ func threshold(img *image.Gray, setPixel func(*image.Gray, int, int)) *image.Gra
 func threshold16(img *image.Gray16, setPixel16 func(*image.Gray16, int, int)) *image.Gray16 {
 	size := img.Bounds().Size()
 	gray := image.NewGray16(img.Bounds())
+	offset := img.Bounds().Min
 	utils.ParallelForEachPixel(size, func(x, y int) {
-		setPixel16(gray, x, y)
+		setPixel16(gray, x+offset.X, y+offset.Y)
 	})
 	return gray
 }
